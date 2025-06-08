@@ -1,0 +1,506 @@
+using System.Reflection.Metadata.Ecma335;
+using System.Windows.Forms;
+using System.Xml.Schema;
+using System.Xml.XPath;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace NightreignSaveManager
+{
+    //main form class
+    public partial class Form1 : Form
+    {
+        //set mouse pos for click-drag move form
+        private Point initialMousePosition;
+
+        //setup paths
+        static string rootPath = AppDomain.CurrentDomain.BaseDirectory;
+        static string archivePath = Path.Combine(rootPath, "archive");
+        static string backupPath = Path.Combine(rootPath, "backup");
+
+        static string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
+        static string savefilePath = Directory.GetDirectories(baseDir)
+            .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17).ToList()[0];
+
+        //refreshlistview1 method
+        private async void RefreshListView1()
+        {
+            listView1.Items.Clear();
+            await Task.Delay(500);
+            string[] archiveFiles = Directory.GetFiles(archivePath);
+            foreach (var file in archiveFiles)
+            {
+                string filename = Path.GetFileName(file);
+                string type = Path.GetExtension(file).TrimStart('.');  // Replace this with actual logic if needed
+                //skip if not a er save
+                if (type != "co2" ^ type != "sl2" ^ type != "bak")
+                {
+                    continue;
+                }
+                if (type == "co2")
+                {
+                    type = "Seemless";
+                }
+                else if (type == "sl2")
+                {
+                    type = "Vanilla";
+                }
+                else if (type == "bak")
+                {
+                    type = "Backup";
+                }
+                string date = File.GetLastWriteTime(file).ToString("yyyy-MM-dd HH:mm");
+
+                ListViewItem item = new ListViewItem(filename);
+                item.SubItems.Add(type);
+                item.SubItems.Add(date);
+
+                listView1.Items.Add(item);
+            }
+        }
+        //refreshlistview2 method
+        private async void RefreshListView2()
+        {
+            listView2.Items.Clear();
+            await Task.Delay(500);
+            string[] files = Directory.GetFiles(savefilePath);
+            foreach (var file in files)
+            {
+                string filename = Path.GetFileName(file);
+                string type = Path.GetExtension(file).TrimStart('.');  // Replace this with actual logic if needed
+                bool active = false;
+                if (type == "sl2" || type == "co2")
+                {
+                    active = true;
+                }
+                //skip if not a er save
+                if (type != "co2" ^ type != "sl2" ^ type != "bak")
+                {
+                    continue;
+                }
+                if (type == "co2")
+                {
+                    type = "Seemless";
+                }
+                else if (type == "sl2")
+                {
+                    type = "Vanilla";
+                }
+                else if (type == "bak")
+                {
+                    type = "Backup";
+                }
+                string date = File.GetLastWriteTime(file).ToString("yyyy-MM-dd HH:mm");
+
+                ListViewItem item = new ListViewItem(filename);
+                item.SubItems.Add(type);
+                item.SubItems.Add(date);
+                item.SubItems.Add(active.ToString());
+
+                listView2.Items.Add(item);
+            }
+        }
+        //Initialize Form
+        public Form1()
+        {
+            InitializeComponent();
+            menuStrip1.Renderer = new ToolStripProfessionalRenderer(new MyColorTable());
+        }
+
+        //Load
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //create archive directory
+            if (!Directory.Exists(archivePath))
+            {
+                Directory.CreateDirectory(archivePath);
+            }
+            //create backup directory
+            if (!Directory.Exists(backupPath))
+            {
+                Directory.CreateDirectory(backupPath);
+            }
+
+            //setup listview1
+            listView1.View = View.Details;
+            listView1.Columns.Add("Filename", 150);
+            listView1.Columns.Add("Type", 60);
+            listView1.Columns.Add("Last Modified", 100);
+            RefreshListView1();
+
+            //setup listview2
+            listView2.View = View.Details;
+            listView2.Columns.Add("Filename", 100);
+            listView2.Columns.Add("Type", 60);
+            listView2.Columns.Add("Date", 100);
+            listView2.Columns.Add("Active", 30);
+            listView2.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.HeaderSize);
+            RefreshListView2();
+        }
+
+        //custom colortable
+        public class MyColorTable : ProfessionalColorTable
+        {
+            public override Color ToolStripDropDownBackground
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+            public override Color ImageMarginGradientBegin
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+            public override Color ImageMarginGradientMiddle
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+            public override Color ImageMarginGradientEnd
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+            public override Color MenuBorder
+            {
+                get
+                {
+                    return Color.WhiteSmoke;
+                }
+            }
+            public override Color MenuItemBorder
+            {
+                get
+                {
+                    return Color.WhiteSmoke;
+                }
+            }
+            public override Color MenuItemSelected
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+            public override Color MenuStripGradientBegin
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+            public override Color MenuStripGradientEnd
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+            public override Color MenuItemSelectedGradientBegin
+            {
+                get
+                {
+                    return Color.FromArgb(100, 80, 80, 80);
+                }
+            }
+            public override Color MenuItemSelectedGradientEnd
+            {
+                get
+                {
+                    return Color.FromArgb(100, 80, 80, 80);
+                }
+            }
+            public override Color MenuItemPressedGradientBegin
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+            public override Color MenuItemPressedGradientEnd
+            {
+                get
+                {
+                    return Color.FromArgb(100, 220, 220, 220);
+                }
+            }
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        //mouse down event on panel for click drag form
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                initialMousePosition = e.Location;
+            }
+        }
+        //mouse movement position
+        private void panel1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Point currentMousePosition = e.Location;
+                int deltaX = currentMousePosition.X - initialMousePosition.X;
+                int deltaY = currentMousePosition.Y - initialMousePosition.Y;
+                Location = new Point(Location.X + deltaX, Location.Y + deltaY);
+            }
+        }
+        //mouse release for click drag form
+        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Reset the initial mouse position when dragging is released
+            // Optional, but good practice
+            initialMousePosition = Point.Empty;
+        }
+        //close click
+        private void pictureBox1_Click_1(object sender, EventArgs e)
+        {
+            this.Close(); // Closes the current form
+        }
+        //close mouse over color change
+        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        {
+            closeButton.BackColor = Color.FromArgb(100, 220, 220, 220); // Change to your desired highlight color
+        }
+        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        {
+            closeButton.BackColor = Color.Transparent; // Change to your desired highlight color
+        }
+        //minimize click
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            // Before Minimizing
+            this.FormBorderStyle = FormBorderStyle.Sizable;
+            this.WindowState = FormWindowState.Minimized;
+        }
+        //minimize fix
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.FormBorderStyle = FormBorderStyle.None;
+            }
+        }
+        //minimize mouse over color change
+        private void pictureBox2_MouseEnter(object sender, EventArgs e)
+        {
+            miniButton.BackColor = Color.FromArgb(100, 250, 250, 250); // Change to your desired highlight color
+        }
+        private void pictureBox2_MouseLeave(object sender, EventArgs e)
+        {
+            miniButton.BackColor = Color.Transparent; // Change to your desired highlight color
+        }
+        //open save dir
+        private void openSaveDir_Click(object sender, EventArgs e)
+        {
+            string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
+            var matchingFolders = Directory.GetDirectories(baseDir)
+            .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17)
+            .ToList();
+            string path = matchingFolders[0];
+
+            if (Directory.Exists(path))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", path);
+            }
+            else
+            {
+                MessageBox.Show("Folder does not exist.");
+            }
+        }
+        //open archive dir
+        private void openArchiveDir_Click(Object sender, EventArgs e)
+        {
+            if (Directory.Exists(archivePath))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", archivePath);
+            }
+            else
+            {
+                MessageBox.Show("Folder does not exist.");
+            }
+        }
+        //open backup dir
+        private void openBackupDir_Click(Object sender, EventArgs e)
+        {
+            if (Directory.Exists(backupPath))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", backupPath);
+            }
+            else
+            {
+                MessageBox.Show("Folder does not exist.");
+            }
+        }
+        //vanilla import
+        private void vanillaSaveFileToolStripMenuItem_Click(object obj, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "Select a file(s)";
+                openFileDialog.Multiselect = true;
+                openFileDialog.InitialDirectory = savefilePath;
+                openFileDialog.Filter = "Save Files (*.sl2)|*.sl2";
+                //if ok selected
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string newFileName = Prompt.ShowDialog("Name the save file:", "Rename File"); //fix this
+                    //if null
+                    if (newFileName != null)
+                    {
+                        string selectedFile = openFileDialog.SafeFileName;
+                        File.Copy(openFileDialog.FileName, archivePath + @"\" + newFileName + ".sl2");
+                        RefreshListView1();
+                        // Now `selectedFile` contains the full file path
+                        MessageBox.Show(selectedFile + " has been imported as: " + newFileName);
+                    }
+
+                }
+            }
+        }
+        //seemeless import
+        private void seemlessSaveFileToolStripMenuItem_Click(object obj, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
+                var matchingFolders = Directory.GetDirectories(baseDir)
+                .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17)
+                .ToList();
+                string path = matchingFolders[0];
+                openFileDialog.Title = "Select a file(s)";
+                openFileDialog.Multiselect = true;
+                openFileDialog.InitialDirectory = path;
+                openFileDialog.Filter = "Save Files (*.co2)|*.co2";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string newFileName = Prompt.ShowDialog("Name the save file:", "Rename File"); //fix this
+                    //if null
+                    if (newFileName != null)
+                    {
+                        string selectedFile = openFileDialog.SafeFileName;
+                        File.Copy(openFileDialog.FileName, archivePath + @"\" + newFileName + ".co2");
+                        RefreshListView1();
+                        // Now `selectedFile` contains the full file path
+                        MessageBox.Show(selectedFile + " has been imported as: " + newFileName);
+                    }
+                }
+            }
+        }
+        //refresh listview1
+        private void button3_Click(object obj, EventArgs e)
+        {
+            RefreshListView1();
+        }
+        //refresh listview2
+        private void button6_Click(object obj, EventArgs e)
+        {
+            RefreshListView2();
+        }
+        //listview disable selections
+        private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                e.Item.Selected = false; // Immediately deselect
+            }
+        }
+        //make active click
+        private void button2_Click(object obj, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 0)
+            {
+                if (listView1.SelectedItems[0].Text.Contains(".sl2"))
+                {
+                    MessageBox.Show
+                    (
+                    "Make " + listView1.SelectedItems[0].Text + " your active Vanilla save file?"
+                    );
+                }
+                else
+                {
+                    MessageBox.Show
+                    (
+                    "Make " + listView1.SelectedItems[0].Text + " your active Seemless save file?"
+                    );
+                }
+            }
+        }
+        //bakcup all active click
+        private void button7_Click(object obj, EventArgs e)
+        {
+            foreach (System.Windows.Forms.ListViewItem item in listView2.Items)
+            {
+                var filePath = Path.Combine(savefilePath, item.Text);
+                var backupFilePath = Path.Combine(backupPath, item.Text);
+                File.Copy(filePath, backupFilePath, true);
+            }
+            // Now `selectedFile` contains the full file path
+            MessageBox.Show("All active save files have successfully backed up.");
+        }
+    }
+    //rename dialog prompt
+    public static class Prompt
+    {
+        public static string? ShowDialog(string text, string caption)
+        {
+            System.Windows.Forms.Form prompt = new System.Windows.Forms.Form();
+            prompt.Width = 200;
+            prompt.Height = 150;
+            prompt.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            prompt.Text = caption;
+            prompt.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+
+            System.Windows.Forms.Label textLabel = new System.Windows.Forms.Label();
+            textLabel.Left = 20;
+            textLabel.Top = 20;
+            textLabel.Text = text;
+            textLabel.AutoSize = true;
+
+            System.Windows.Forms.TextBox textBox = new System.Windows.Forms.TextBox();
+            textBox.Left = 20;
+            textBox.Top = 40;
+            textBox.Width = 140;
+
+            System.Windows.Forms.Button confirmation = new System.Windows.Forms.Button();
+            confirmation.Text = "OK";
+            confirmation.Left = 60;
+            confirmation.Width = 80;
+            confirmation.Top = 80;
+            confirmation.DialogResult = System.Windows.Forms.DialogResult.OK;
+
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+
+            prompt.Controls.Add(textLabel);
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.AcceptButton = confirmation;
+
+            System.Windows.Forms.DialogResult result = prompt.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                return textBox.Text;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+}
