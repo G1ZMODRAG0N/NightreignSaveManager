@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             toolStripSeparator1 = new ToolStripSeparator();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -53,26 +54,36 @@
             restoreSeemlessBackupToolStripMenuItem = new ToolStripMenuItem();
             restoreVanillaBackupToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
-            rEADMEToolStripMenuItem = new ToolStripMenuItem();
-            aboutToolStripMenuItem = new ToolStripMenuItem();
+            readmeButton = new ToolStripMenuItem();
+            checkForUpdateToolStripMenuItem = new ToolStripMenuItem();
+            aboutButton = new ToolStripMenuItem();
             pictureBox2 = new PictureBox();
-            button2 = new Button();
+            makeActiveButton = new Button();
             button1 = new Button();
             listView1 = new ListView();
+            contextMenu = new ContextMenuStrip(components);
+            makeActiveToolStripMenuItem = new ToolStripMenuItem();
+            renameContextButton = new ToolStripMenuItem();
+            backupToolStripMenuItem = new ToolStripMenuItem();
+            removeToolStripMenuItem = new ToolStripMenuItem();
             label1 = new Label();
             listView2 = new ListView();
             label2 = new Label();
-            button3 = new Button();
             button6 = new Button();
-            button7 = new Button();
+            backupAllButton = new Button();
             button4 = new Button();
             label3 = new Label();
+            toolTip1 = new ToolTip(components);
+            viewBackups = new Button();
+            backupListView = new ListView();
+            convertToolStripMenuItem = new ToolStripMenuItem();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)closeButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)miniButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            contextMenu.SuspendLayout();
             SuspendLayout();
             // 
             // toolStripSeparator1
@@ -100,7 +111,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(350, 35);
             panel1.TabIndex = 15;
-            panel1.Paint += panel1_Paint;
             panel1.MouseDown += panel1_MouseDown;
             panel1.MouseMove += panel1_MouseMove;
             panel1.MouseUp += panel1_MouseUp;
@@ -163,7 +173,6 @@
             menuStrip1.Size = new Size(254, 35);
             menuStrip1.TabIndex = 11;
             menuStrip1.Text = "menuStrip1";
-            menuStrip1.ItemClicked += menuStrip1_ItemClicked;
             menuStrip1.MouseDown += panel1_MouseDown;
             menuStrip1.MouseMove += panel1_MouseMove;
             menuStrip1.MouseUp += panel1_MouseUp;
@@ -177,6 +186,7 @@
             fileToolStripMenuItem1.Padding = new Padding(0);
             fileToolStripMenuItem1.Size = new Size(29, 35);
             fileToolStripMenuItem1.Text = "File";
+            fileToolStripMenuItem1.Click += viewBackupsClose_Click;
             // 
             // openToolStripMenuItem
             // 
@@ -265,6 +275,7 @@
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(61, 35);
             toolsToolStripMenuItem.Text = "Options";
+            toolsToolStripMenuItem.Click += viewBackupsClose_Click;
             // 
             // customizeToolStripMenuItem
             // 
@@ -319,54 +330,66 @@
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { rEADMEToolStripMenuItem, aboutToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { readmeButton, checkForUpdateToolStripMenuItem, aboutButton });
             helpToolStripMenuItem.ForeColor = Color.WhiteSmoke;
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(44, 35);
             helpToolStripMenuItem.Text = "Help";
+            helpToolStripMenuItem.Click += viewBackupsClose_Click;
             // 
-            // rEADMEToolStripMenuItem
+            // readmeButton
             // 
-            rEADMEToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            rEADMEToolStripMenuItem.ForeColor = SystemColors.Control;
-            rEADMEToolStripMenuItem.Name = "rEADMEToolStripMenuItem";
-            rEADMEToolStripMenuItem.Size = new Size(117, 22);
-            rEADMEToolStripMenuItem.Text = "Readme";
+            readmeButton.BackColor = Color.FromArgb(50, 50, 50);
+            readmeButton.ForeColor = SystemColors.Control;
+            readmeButton.Name = "readmeButton";
+            readmeButton.Size = new Size(171, 22);
+            readmeButton.Text = "Readme";
+            readmeButton.Click += readmeButton_Click;
             // 
-            // aboutToolStripMenuItem
+            // checkForUpdateToolStripMenuItem
             // 
-            aboutToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            aboutToolStripMenuItem.ForeColor = SystemColors.Control;
-            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(117, 22);
-            aboutToolStripMenuItem.Text = "About";
+            checkForUpdateToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
+            checkForUpdateToolStripMenuItem.ForeColor = SystemColors.Control;
+            checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
+            checkForUpdateToolStripMenuItem.Size = new Size(171, 22);
+            checkForUpdateToolStripMenuItem.Text = "Check for Updates";
+            // 
+            // aboutButton
+            // 
+            aboutButton.BackColor = Color.FromArgb(50, 50, 50);
+            aboutButton.ForeColor = SystemColors.Control;
+            aboutButton.Name = "aboutButton";
+            aboutButton.Size = new Size(171, 22);
+            aboutButton.Text = "About";
+            aboutButton.Click += aboutButton_Click;
             // 
             // pictureBox2
             // 
             pictureBox2.BackColor = Color.Transparent;
-            pictureBox2.Cursor = Cursors.Hand;
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(-3, 32);
+            pictureBox2.Location = new Point(0, 32);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(353, 64);
             pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox2.TabIndex = 16;
             pictureBox2.TabStop = false;
+            pictureBox2.Click += viewBackupsClose_Click;
             // 
-            // button2
+            // makeActiveButton
             // 
-            button2.AutoSize = true;
-            button2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button2.BackColor = SystemColors.ButtonFace;
-            button2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button2.ForeColor = Color.Black;
-            button2.Location = new Point(11, 135);
-            button2.Name = "button2";
-            button2.Size = new Size(88, 27);
-            button2.TabIndex = 1;
-            button2.Text = "Make Active";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            makeActiveButton.AutoSize = true;
+            makeActiveButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            makeActiveButton.BackColor = SystemColors.ButtonFace;
+            makeActiveButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            makeActiveButton.ForeColor = Color.Black;
+            makeActiveButton.Location = new Point(11, 135);
+            makeActiveButton.Name = "makeActiveButton";
+            makeActiveButton.Size = new Size(88, 27);
+            makeActiveButton.TabIndex = 1;
+            makeActiveButton.Text = "Make Active";
+            toolTip1.SetToolTip(makeActiveButton, "Set a file to be the current save to load into");
+            makeActiveButton.UseVisualStyleBackColor = true;
+            makeActiveButton.Click += makeActiveButton_Click;
             // 
             // button1
             // 
@@ -375,17 +398,19 @@
             button1.BackColor = Color.FromArgb(80, 80, 80);
             button1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(86, 102);
+            button1.Location = new Point(21, 102);
             button1.Name = "button1";
-            button1.Size = new Size(179, 27);
+            button1.Size = new Size(197, 27);
             button1.TabIndex = 0;
-            button1.Text = "Convert to Vanilla/Seemless";
+            button1.Text = "Convert to Vanilla<->Seemless";
+            toolTip1.SetToolTip(button1, "Change the extension of a save file .sl2/.co2 for either Seemless or Vanilla");
             button1.UseVisualStyleBackColor = true;
             // 
             // listView1
             // 
             listView1.BackColor = Color.FromArgb(80, 80, 80);
             listView1.BorderStyle = BorderStyle.FixedSingle;
+            listView1.ContextMenuStrip = contextMenu;
             listView1.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             listView1.ForeColor = SystemColors.Control;
             listView1.FullRowSelect = true;
@@ -398,6 +423,42 @@
             listView1.TabIndex = 18;
             listView1.UseCompatibleStateImageBehavior = false;
             // 
+            // contextMenu
+            // 
+            contextMenu.BackColor = SystemColors.ButtonFace;
+            contextMenu.Items.AddRange(new ToolStripItem[] { makeActiveToolStripMenuItem, convertToolStripMenuItem, renameContextButton, backupToolStripMenuItem, removeToolStripMenuItem });
+            contextMenu.Name = "contextMenuStrip1";
+            contextMenu.RenderMode = ToolStripRenderMode.Professional;
+            contextMenu.ShowImageMargin = false;
+            contextMenu.Size = new Size(156, 136);
+            // 
+            // makeActiveToolStripMenuItem
+            // 
+            makeActiveToolStripMenuItem.Name = "makeActiveToolStripMenuItem";
+            makeActiveToolStripMenuItem.Size = new Size(155, 22);
+            makeActiveToolStripMenuItem.Text = "Make Active";
+            makeActiveToolStripMenuItem.Click += makeActiveButton_Click;
+            // 
+            // renameContextButton
+            // 
+            renameContextButton.Name = "renameContextButton";
+            renameContextButton.Size = new Size(155, 22);
+            renameContextButton.Text = "Rename";
+            renameContextButton.Click += renameContextButton_Click;
+            // 
+            // backupToolStripMenuItem
+            // 
+            backupToolStripMenuItem.Name = "backupToolStripMenuItem";
+            backupToolStripMenuItem.Size = new Size(155, 22);
+            backupToolStripMenuItem.Text = "Backup";
+            backupToolStripMenuItem.Click += bakcupContextButton_Click;
+            // 
+            // removeToolStripMenuItem
+            // 
+            removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            removeToolStripMenuItem.Size = new Size(155, 22);
+            removeToolStripMenuItem.Text = "Remove";
+            // 
             // label1
             // 
             label1.BackColor = Color.FromArgb(50, 50, 50);
@@ -406,7 +467,7 @@
             label1.Name = "label1";
             label1.Size = new Size(327, 19);
             label1.TabIndex = 22;
-            label1.Text = "Game Save Files";
+            label1.Text = "Game Save Files (read-only)";
             label1.TextAlign = ContentAlignment.TopCenter;
             // 
             // listView2
@@ -424,6 +485,7 @@
             listView2.Size = new Size(327, 166);
             listView2.Sorting = SortOrder.Ascending;
             listView2.TabIndex = 23;
+            toolTip1.SetToolTip(listView2, "Game save files are only to provide you an overview of active files. (read-only)");
             listView2.UseCompatibleStateImageBehavior = false;
             listView2.ItemSelectionChanged += listView1_ItemSelectionChanged;
             // 
@@ -438,21 +500,6 @@
             label2.Text = "Archived Save Files";
             label2.TextAlign = ContentAlignment.TopCenter;
             // 
-            // button3
-            // 
-            button3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button3.BackColor = SystemColors.ButtonFace;
-            button3.BackgroundImageLayout = ImageLayout.Center;
-            button3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button3.ForeColor = Color.Black;
-            button3.Image = (Image)resources.GetObject("button3.Image");
-            button3.Location = new Point(297, 323);
-            button3.Name = "button3";
-            button3.Size = new Size(32, 32);
-            button3.TabIndex = 25;
-            button3.UseVisualStyleBackColor = false;
-            button3.Click += button3_Click;
-            // 
             // button6
             // 
             button6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -465,23 +512,25 @@
             button6.Name = "button6";
             button6.Size = new Size(32, 32);
             button6.TabIndex = 26;
+            toolTip1.SetToolTip(button6, "Refresh list");
             button6.UseVisualStyleBackColor = false;
             button6.Click += button6_Click;
             // 
-            // button7
+            // backupAllButton
             // 
-            button7.AutoSize = true;
-            button7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button7.BackColor = Color.FromArgb(80, 80, 80);
-            button7.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button7.ForeColor = Color.Black;
-            button7.Location = new Point(112, 135);
-            button7.Name = "button7";
-            button7.Size = new Size(134, 27);
-            button7.TabIndex = 27;
-            button7.Text = "Backup Game Saves";
-            button7.UseVisualStyleBackColor = true;
-            button7.Click += button7_Click;
+            backupAllButton.AutoSize = true;
+            backupAllButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            backupAllButton.BackColor = Color.FromArgb(80, 80, 80);
+            backupAllButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            backupAllButton.ForeColor = Color.Black;
+            backupAllButton.Location = new Point(112, 135);
+            backupAllButton.Name = "backupAllButton";
+            backupAllButton.Size = new Size(134, 27);
+            backupAllButton.TabIndex = 27;
+            backupAllButton.Text = "Backup Game Saves";
+            toolTip1.SetToolTip(backupAllButton, "Backup all current save files (overwrites existing)");
+            backupAllButton.UseVisualStyleBackColor = true;
+            backupAllButton.Click += backupAllButton_Click;
             // 
             // button4
             // 
@@ -495,6 +544,7 @@
             button4.Size = new Size(81, 27);
             button4.TabIndex = 28;
             button4.Text = "Restore All";
+            toolTip1.SetToolTip(button4, "Restore all active game save files");
             button4.UseVisualStyleBackColor = true;
             // 
             // label3
@@ -508,6 +558,46 @@
             label3.Text = "v1.0.1";
             label3.TextAlign = ContentAlignment.BottomRight;
             // 
+            // viewBackups
+            // 
+            viewBackups.AutoSize = true;
+            viewBackups.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            viewBackups.BackColor = Color.FromArgb(80, 80, 80);
+            viewBackups.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            viewBackups.ForeColor = Color.Black;
+            viewBackups.Location = new Point(233, 102);
+            viewBackups.Name = "viewBackups";
+            viewBackups.Size = new Size(96, 27);
+            viewBackups.TabIndex = 30;
+            viewBackups.Text = "View Backups";
+            toolTip1.SetToolTip(viewBackups, "Change the extension of a save file .sl2/.co2 for either Seemless or Vanilla");
+            viewBackups.UseVisualStyleBackColor = true;
+            viewBackups.Click += viewBackups_Click;
+            // 
+            // backupListView
+            // 
+            backupListView.BackColor = Color.FromArgb(80, 80, 80);
+            backupListView.Enabled = false;
+            backupListView.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            backupListView.ForeColor = SystemColors.Control;
+            backupListView.FullRowSelect = true;
+            backupListView.Location = new Point(21, 135);
+            backupListView.MultiSelect = false;
+            backupListView.Name = "backupListView";
+            backupListView.Size = new Size(308, 279);
+            backupListView.Sorting = SortOrder.Ascending;
+            backupListView.TabIndex = 31;
+            backupListView.UseCompatibleStateImageBehavior = false;
+            backupListView.Visible = false;
+            backupListView.SelectedIndexChanged += viewBackupsClose_Click;
+            backupListView.Click += viewBackupsClose_Click;
+            // 
+            // convertToolStripMenuItem
+            // 
+            convertToolStripMenuItem.Name = "convertToolStripMenuItem";
+            convertToolStripMenuItem.Size = new Size(155, 22);
+            convertToolStripMenuItem.Text = "Convert";
+            // 
             // Form1
             // 
             AutoScaleMode = AutoScaleMode.None;
@@ -515,17 +605,18 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(350, 570);
+            Controls.Add(backupListView);
+            Controls.Add(viewBackups);
             Controls.Add(label3);
             Controls.Add(button4);
-            Controls.Add(button7);
-            Controls.Add(button3);
+            Controls.Add(backupAllButton);
             Controls.Add(button6);
             Controls.Add(listView2);
             Controls.Add(listView1);
             Controls.Add(panel1);
             Controls.Add(pictureBox2);
             Controls.Add(button1);
-            Controls.Add(button2);
+            Controls.Add(makeActiveButton);
             Controls.Add(label2);
             Controls.Add(label1);
             DoubleBuffered = true;
@@ -542,6 +633,7 @@
             Text = "NR Save Manager";
             Load += Form1_Load;
             SizeChanged += Form1_Resize;
+            Click += viewBackupsClose_Click;
             MouseDown += panel1_MouseDown;
             MouseMove += panel1_MouseMove;
             MouseUp += panel1_MouseUp;
@@ -552,6 +644,7 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            contextMenu.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -571,7 +664,7 @@
         private ToolStripMenuItem customizeToolStripMenuItem;
         private ToolStripMenuItem optionsToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem aboutButton;
         private PictureBox pictureBox1;
         private ToolStripMenuItem toSeemlessToolStripMenuItem;
         private ToolStripMenuItem toVanillaToolStripMenuItem;
@@ -580,20 +673,29 @@
         private ListView listView1;
         private ToolStripMenuItem restoreVanillaBackupToolStripMenuItem;
         private ToolStripMenuItem restoreSeemlessBackupToolStripMenuItem;
-        private ToolStripMenuItem rEADMEToolStripMenuItem;
+        private ToolStripMenuItem readmeButton;
         private Button button1;
-        private Button button2;
+        private Button makeActiveButton;
         private Label label1;
         private ListView listView2;
         private Label label2;
-        private Button button3;
         private Button button6;
-        private Button button7;
+        private Button backupAllButton;
         private Button button4;
         private Label label3;
         private ToolStripMenuItem openDirectoryToolStripMenuItem;
         private ToolStripMenuItem openSaveDir;
         private ToolStripMenuItem openBackupDir;
         private ToolStripMenuItem openArchiveDir;
+        private ContextMenuStrip contextMenu;
+        private ToolStripMenuItem makeActiveToolStripMenuItem;
+        private ToolStripMenuItem renameContextButton;
+        private ToolStripMenuItem backupToolStripMenuItem;
+        private ToolStripMenuItem removeToolStripMenuItem;
+        private ToolStripMenuItem checkForUpdateToolStripMenuItem;
+        private ToolTip toolTip1;
+        private Button viewBackups;
+        private ListView backupListView;
+        private ToolStripMenuItem convertToolStripMenuItem;
     }
 }

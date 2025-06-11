@@ -1,8 +1,10 @@
 using System.Reflection.Metadata.Ecma335;
+using System.Threading.Channels;
 using System.Windows.Forms;
 using System.Xml.Schema;
 using System.Xml.XPath;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace NightreignSaveManager
 {
@@ -21,11 +23,13 @@ namespace NightreignSaveManager
         static string savefilePath = Directory.GetDirectories(baseDir)
             .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17).ToList()[0];
 
-        //refreshlistview1 method
+        //refresh listview1 method
         private async void RefreshListView1()
         {
             listView1.Items.Clear();
+            listView1.Cursor = Cursors.WaitCursor;
             await Task.Delay(500);
+            listView1.Cursor = Cursors.Default;
             string[] archiveFiles = Directory.GetFiles(archivePath);
             foreach (var file in archiveFiles)
             {
@@ -55,13 +59,22 @@ namespace NightreignSaveManager
                 item.SubItems.Add(date);
 
                 listView1.Items.Add(item);
+
+                listView1.Items[0].Selected = true;
+                listView1.Select(); // Gives focus to the ListView, so selection is visible
             }
         }
-        //refreshlistview2 method
+        //refresh listview2 method
         private async void RefreshListView2()
         {
             listView2.Items.Clear();
+            listView2.Cursor = Cursors.WaitCursor;
+            button6.Cursor = Cursors.WaitCursor;
+            viewBackups.Cursor = Cursors.WaitCursor;
             await Task.Delay(500);
+            listView2.Cursor = Cursors.Default;
+            button6.Cursor = Cursors.Default;
+            viewBackups.Cursor = Cursors.Default;
             string[] files = Directory.GetFiles(savefilePath);
             foreach (var file in files)
             {
@@ -99,6 +112,57 @@ namespace NightreignSaveManager
                 listView2.Items.Add(item);
             }
         }
+        //refresh backuplistview method
+        private async void RefreshBackupListview()
+        {
+            backupListView.Items.Clear();
+            backupListView.Cursor = Cursors.WaitCursor;
+            await Task.Delay(500);
+            backupListView.Cursor = Cursors.Default;
+            string[] files = Directory.GetFiles(backupPath);
+            foreach (var file in files)
+            {
+                string filename = Path.GetFileName(file);
+                string type = Path.GetExtension(file).TrimStart('.');  // Replace this with actual logic if needed
+                bool active = false;
+                if (type == "sl2" || type == "co2")
+                {
+                    active = true;
+                }
+                //skip if not a er save
+                if (type != "co2" ^ type != "sl2" ^ type != "bak")
+                {
+                    continue;
+                }
+                if (type == "co2")
+                {
+                    type = "Seemless";
+                }
+                else if (type == "sl2")
+                {
+                    type = "Vanilla";
+                }
+                else if (type == "bak")
+                {
+                    type = "Backup";
+                }
+                string date = File.GetLastWriteTime(file).ToString("yyyy-MM-dd HH:mm");
+
+                ListViewItem item = new ListViewItem(filename);
+                item.SubItems.Add(type);
+                item.SubItems.Add(date);
+                item.SubItems.Add(active.ToString());
+
+                backupListView.Items.Add(item);
+            }
+        }
+        //close backup view window method
+        private void CloseBackupWindow()
+        {
+            backupListView.Enabled = false;
+            backupListView.Visible = false;
+            viewBackups.Text = "View Backups";
+        }
         //Initialize Form
         public Form1()
         {
@@ -135,6 +199,22 @@ namespace NightreignSaveManager
             listView2.Columns.Add("Active", 30);
             listView2.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.HeaderSize);
             RefreshListView2();
+
+            //setup backup listview
+            backupListView.View = View.Details;
+            backupListView.Columns.Add("Filename", 100);
+            backupListView.Columns.Add("Type", 60);
+            backupListView.Columns.Add("Last Modified", 100);
+            RefreshBackupListview();
+
+            //override contextstrip for listview
+            listView1.ContextMenuStrip = null;
+            //apply to mousedown event
+            if(listView1_MouseDown != null)
+            {
+                listView1.MouseDown += listView1_MouseDown; //fix later
+            }
+            
         }
 
         //custom colortable
@@ -231,15 +311,6 @@ namespace NightreignSaveManager
                     return Color.FromArgb(100, 220, 220, 220);
                 }
             }
-        }
-
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
         //mouse down event on panel for click drag form
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -403,11 +474,6 @@ namespace NightreignSaveManager
                 }
             }
         }
-        //refresh listview1
-        private void button3_Click(object obj, EventArgs e)
-        {
-            RefreshListView1();
-        }
         //refresh listview2
         private void button6_Click(object obj, EventArgs e)
         {
@@ -422,37 +488,154 @@ namespace NightreignSaveManager
             }
         }
         //make active click
-        private void button2_Click(object obj, EventArgs e)
+        private void makeActiveButton_Click(object obj, EventArgs e)
         {
+            if (backupListView.Visible == true)
+            {
+                CloseBackupWindow();
+                return;
+            }
             if (listView1.SelectedItems.Count > 0)
             {
                 if (listView1.SelectedItems[0].Text.Contains(".sl2"))
                 {
-                    MessageBox.Show
-                    (
-                    "Make " + listView1.SelectedItems[0].Text + " your active Vanilla save file?"
-                    );
+                    MessageBox.Show(
+                        "The currently selected item: " + listView1.SelectedItems[0].Text + " will become your active Vanilla save file. Proceed?",
+                        "Make Active",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                        );
                 }
                 else
                 {
                     MessageBox.Show
                     (
-                    "Make " + listView1.SelectedItems[0].Text + " your active Seemless save file?"
+                    "The currently selected item " + listView1.SelectedItems[0].Text + " will become your active Seemless save file. Proceed?",
+                    "Make Active",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
                     );
                 }
             }
         }
         //bakcup all active click
-        private void button7_Click(object obj, EventArgs e)
+        private void backupAllButton_Click(object obj, EventArgs e)
         {
-            foreach (System.Windows.Forms.ListViewItem item in listView2.Items)
+            //confirm
+            var confirmation = MessageBox.Show(
+                "Backup all active save files? (this will overwrite existing 'active' save files in the backup)",
+                "Backup All",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+                );
+            if (confirmation == DialogResult.Yes)
             {
-                var filePath = Path.Combine(savefilePath, item.Text);
-                var backupFilePath = Path.Combine(backupPath, item.Text);
-                File.Copy(filePath, backupFilePath, true);
+                foreach (System.Windows.Forms.ListViewItem item in listView2.Items)
+                {
+                    if(item.Text.Contains(".bak"))
+                    {
+                        continue;
+                    }
+                    var filePath = Path.Combine(savefilePath, item.Text);
+                    var backupFilePath = Path.Combine(backupPath, item.Text + ".bak");
+                    File.Copy(filePath, backupFilePath, true);
+                    // Now `selectedFile` contains the full file path
+                }
+                MessageBox.Show(
+                    "All active save files have successfully backed up!",
+                    "Success",
+                    MessageBoxButtons.OK
+                    );
             }
-            // Now `selectedFile` contains the full file path
-            MessageBox.Show("All active save files have successfully backed up.");
+        }
+        //readme button
+        private void readmeButton_Click(object sender, EventArgs e)
+        {
+            var readmePath = Path.Combine(rootPath, "README.md");
+            if (File.Exists(readmePath))
+            {
+                System.Diagnostics.Process.Start("notepad.exe", readmePath);
+            }
+            else
+            {
+                MessageBox.Show("Folder: " + readmePath + " does not exist.");
+            }
+        }
+        //about button
+        private void aboutButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                "NR SaveManager \nVersion: '1.0.1'",
+                "About",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+                );
+        }
+        //rename context click
+        private void renameContextButton_Click(object sender, EventArgs e)
+        {
+            string selectedFilename = listView1.SelectedItems[0].Text;
+            string selectednoExt = Path.GetFileNameWithoutExtension(selectedFilename);
+            string selectedExt = Path.GetExtension(selectedFilename);
+            string newFileName = Prompt.ShowDialog("Rename save file: '" + selectednoExt + "'", "Rename File"); //fix this
+            if (newFileName != null)
+            {
+                File.Copy(archivePath + @"\" + selectedFilename, archivePath + @"\" + newFileName + selectedExt, true);
+                RefreshListView1();
+            }
+        }
+        //backup context click
+        private void bakcupContextButton_Click(object sender, EventArgs e)
+        {
+            string selectedFilename = listView1.SelectedItems[0].Text;
+            string backupSourceFile = Path.Combine(archivePath, selectedFilename);
+            string backupOutputFile = Path.Combine(backupPath, selectedFilename + ".bak");
+            if (File.Exists(backupOutputFile))
+            {
+                var userInput = MessageBox.Show("Overwrite existing backup file?", "File Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (userInput == DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                File.Copy(backupSourceFile, backupOutputFile, true);
+                MessageBox.Show("Backup successful.");
+            }
+        }
+        //disallow context menu on click for non-focused items
+        private void listView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var hitTest = listView1.HitTest(e.Location);
+                if (hitTest.Item != null)
+                {
+                    listView1.FocusedItem = hitTest.Item;
+                    contextMenu.Show(listView1, e.Location);
+                }
+            }
+        }
+        //view backups click
+        private void viewBackups_Click(object sender, EventArgs e)
+        {
+            if (backupListView.Visible == true)
+            {
+                CloseBackupWindow();
+            }
+            else
+            {
+                backupListView.Enabled = true;
+                backupListView.Visible = true;
+                viewBackups.Text = "Close Window";
+                RefreshBackupListview();
+            }
+        }
+        //view backups close
+        private void viewBackupsClose_Click(object sender, EventArgs e)
+        {
+            CloseBackupWindow();
         }
     }
     //rename dialog prompt
@@ -479,17 +662,25 @@ namespace NightreignSaveManager
             textBox.Width = 140;
 
             System.Windows.Forms.Button confirmation = new System.Windows.Forms.Button();
-            confirmation.Text = "OK";
-            confirmation.Left = 60;
+            confirmation.Text = "Confirm";
+            confirmation.Left = 10;
             confirmation.Width = 80;
             confirmation.Top = 80;
             confirmation.DialogResult = System.Windows.Forms.DialogResult.OK;
+
+            System.Windows.Forms.Button cancel = new System.Windows.Forms.Button();
+            cancel.Text = "Cancel";
+            cancel.Left = 95;
+            cancel.Width = 80;
+            cancel.Top = 80;
+            cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 
             confirmation.Click += (sender, e) => { prompt.Close(); };
 
             prompt.Controls.Add(textLabel);
             prompt.Controls.Add(textBox);
             prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(cancel);
             prompt.AcceptButton = confirmation;
 
             System.Windows.Forms.DialogResult result = prompt.ShowDialog();
