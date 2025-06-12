@@ -75,6 +75,7 @@
             toolTip1 = new ToolTip(components);
             viewBackups = new Button();
             backupListView = new ListView();
+            pictureBox3 = new PictureBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)closeButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)miniButton).BeginInit();
@@ -82,6 +83,7 @@
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             contextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             SuspendLayout();
             // 
             // toolStripSeparator1
@@ -281,7 +283,7 @@
             customizeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toSeemlessToolStripMenuItem, toVanillaToolStripMenuItem });
             customizeToolStripMenuItem.ForeColor = SystemColors.Control;
             customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            customizeToolStripMenuItem.Size = new Size(180, 22);
+            customizeToolStripMenuItem.Size = new Size(143, 22);
             customizeToolStripMenuItem.Text = "Convert Save";
             // 
             // toSeemlessToolStripMenuItem
@@ -305,7 +307,7 @@
             optionsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             optionsToolStripMenuItem.ForeColor = SystemColors.Control;
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(180, 22);
+            optionsToolStripMenuItem.Size = new Size(143, 22);
             optionsToolStripMenuItem.Text = "Restore";
             optionsToolStripMenuItem.Click += restoreSaves_Click;
             // 
@@ -348,14 +350,15 @@
             // pictureBox2
             // 
             pictureBox2.BackColor = Color.Transparent;
+            pictureBox2.Cursor = Cursors.Hand;
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(0, 32);
+            pictureBox2.Location = new Point(54, 41);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(353, 64);
-            pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox2.Size = new Size(240, 58);
+            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox2.TabIndex = 16;
             pictureBox2.TabStop = false;
-            pictureBox2.Click += viewBackupsClose_Click;
+            pictureBox2.Click += titleLink_Click;
             // 
             // makeActiveButton
             // 
@@ -364,7 +367,7 @@
             makeActiveButton.BackColor = SystemColors.ButtonFace;
             makeActiveButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             makeActiveButton.ForeColor = Color.Black;
-            makeActiveButton.Location = new Point(30, 135);
+            makeActiveButton.Location = new Point(21, 135);
             makeActiveButton.Name = "makeActiveButton";
             makeActiveButton.Size = new Size(88, 27);
             makeActiveButton.TabIndex = 1;
@@ -387,6 +390,7 @@
             button1.Text = "Convert to Vanilla<->Seemless";
             toolTip1.SetToolTip(button1, "Change the extension of a save file .sl2/.co2 for either Seemless or Vanilla");
             button1.UseVisualStyleBackColor = true;
+            button1.Click += convertSave_Click;
             // 
             // listView1
             // 
@@ -426,6 +430,7 @@
             convertToolStripMenuItem.Name = "convertToolStripMenuItem";
             convertToolStripMenuItem.Size = new Size(114, 22);
             convertToolStripMenuItem.Text = "Convert";
+            convertToolStripMenuItem.Click += convertSave_Click;
             // 
             // renameContextButton
             // 
@@ -511,7 +516,7 @@
             backupAllButton.BackColor = Color.FromArgb(80, 80, 80);
             backupAllButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             backupAllButton.ForeColor = Color.Black;
-            backupAllButton.Location = new Point(124, 135);
+            backupAllButton.Location = new Point(115, 135);
             backupAllButton.Name = "backupAllButton";
             backupAllButton.Size = new Size(96, 27);
             backupAllButton.TabIndex = 27;
@@ -527,11 +532,11 @@
             button4.BackColor = Color.FromArgb(80, 80, 80);
             button4.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button4.ForeColor = Color.Black;
-            button4.Location = new Point(226, 135);
+            button4.Location = new Point(217, 135);
             button4.Name = "button4";
-            button4.Size = new Size(94, 27);
+            button4.Size = new Size(105, 27);
             button4.TabIndex = 28;
-            button4.Text = "Restore Save";
+            button4.Text = "Restore a Save";
             toolTip1.SetToolTip(button4, "Restore a save from backup and make your active save file");
             button4.UseVisualStyleBackColor = true;
             button4.Click += restoreSaves_Click;
@@ -581,6 +586,18 @@
             backupListView.SelectedIndexChanged += viewBackupsClose_Click;
             backupListView.Click += viewBackupsClose_Click;
             // 
+            // pictureBox3
+            // 
+            pictureBox3.Cursor = Cursors.Hand;
+            pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
+            pictureBox3.Location = new Point(226, 35);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(119, 16);
+            pictureBox3.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox3.TabIndex = 32;
+            pictureBox3.TabStop = false;
+            pictureBox3.Click += kofi_Click;
+            // 
             // Form1
             // 
             AutoScaleMode = AutoScaleMode.None;
@@ -597,11 +614,12 @@
             Controls.Add(listView2);
             Controls.Add(listView1);
             Controls.Add(panel1);
-            Controls.Add(pictureBox2);
             Controls.Add(button1);
             Controls.Add(makeActiveButton);
             Controls.Add(label2);
             Controls.Add(label1);
+            Controls.Add(pictureBox3);
+            Controls.Add(pictureBox2);
             DoubleBuffered = true;
             Font = new Font("Century Gothic", 10F);
             ForeColor = Color.WhiteSmoke;
@@ -628,6 +646,7 @@
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             contextMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -678,5 +697,6 @@
         private Button viewBackups;
         private ListView backupListView;
         private ToolStripMenuItem convertToolStripMenuItem;
+        private PictureBox pictureBox3;
     }
 }

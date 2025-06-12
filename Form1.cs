@@ -4,8 +4,11 @@ using System.Threading.Channels;
 using System.Windows.Forms;
 using System.Xml.Schema;
 using System.Xml.XPath;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Text;
 
 namespace NightreignSaveManager
 {
@@ -24,7 +27,7 @@ namespace NightreignSaveManager
         static string savefilePath = Directory.GetDirectories(baseDir)
             .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17).ToList()[0];
 
-        //refresh listview1 method
+        //refresh listview1
         private async void RefreshListView1()
         {
             listView1.Items.Clear();
@@ -65,7 +68,7 @@ namespace NightreignSaveManager
                 listView1.Select(); // Gives focus to the ListView, so selection is visible
             }
         }
-        //refresh listview2 method
+        //refresh listview2
         private async void RefreshListView2()
         {
             listView2.Items.Clear();
@@ -113,7 +116,7 @@ namespace NightreignSaveManager
                 listView2.Items.Add(item);
             }
         }
-        //refresh backuplistview method
+        //refresh backuplistview
         private async void RefreshBackupListview()
         {
             backupListView.Items.Clear();
@@ -157,12 +160,29 @@ namespace NightreignSaveManager
                 backupListView.Items.Add(item);
             }
         }
-        //close backup view window method
+        //close backup view window
         private void CloseBackupWindow()
         {
             backupListView.Enabled = false;
             backupListView.Visible = false;
             viewBackups.Text = "View Backups";
+        }
+        //open URL
+        public void OpenUrl(string url)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open link: " + ex.Message);
+            }
         }
         //Initialize Form
         public Form1()
@@ -719,18 +739,32 @@ namespace NightreignSaveManager
         private void convertSave_Click(object sender, EventArgs e)
         {
             string selectedFile = listView1.SelectedItems[0].Text;
-            if(Path.GetExtension(selectedFile) == ".slo2")
+            var inputFilePath = Path.Combine(archivePath, selectedFile);
+            if(Path.GetExtension(selectedFile) == ".sl2")
             {
-
-            }else if (Path.GetExtension(selectedFile) == ".co2")
+                MessageBox.Show(inputFilePath);
+            }
+            else if (Path.GetExtension(selectedFile) == ".co2")
             {
-
+                MessageBox.Show(inputFilePath);
             }
             else
             {
                 MessageBox.Show("Incorrect filetype selected.");
                 return;
             }
+        }
+        //title link click
+        private void titleLink_Click(object sender, EventArgs e)
+        {
+            CloseBackupWindow();
+            OpenUrl("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
+
+        }
+        //ko-fi click
+        private void kofi_Click(object sender, EventArgs e)
+        {
+           OpenUrl("https://ko-fi.com/g1zmo_drag0n");
         }
     }
     //rename dialog prompt
