@@ -1,3 +1,4 @@
+using System.Drawing.Text;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Channels;
 using System.Windows.Forms;
@@ -204,17 +205,17 @@ namespace NightreignSaveManager
             backupListView.View = View.Details;
             backupListView.Columns.Add("Filename", 100);
             backupListView.Columns.Add("Type", 60);
-            backupListView.Columns.Add("Last Modified", 100);
+            backupListView.Columns.Add("Last Modified", 130);
             RefreshBackupListview();
 
             //override contextstrip for listview
             listView1.ContextMenuStrip = null;
             //apply to mousedown event
-            if(listView1_MouseDown != null)
+            if (listView1_MouseDown != null)
             {
                 listView1.MouseDown += listView1_MouseDown; //fix later
             }
-            
+
         }
 
         //custom colortable
@@ -490,6 +491,7 @@ namespace NightreignSaveManager
         //make active click
         private void makeActiveButton_Click(object obj, EventArgs e)
         {
+            var selectedFile = listView1.SelectedItems[0].Text;
             if (backupListView.Visible == true)
             {
                 CloseBackupWindow();
@@ -497,30 +499,51 @@ namespace NightreignSaveManager
             }
             if (listView1.SelectedItems.Count > 0)
             {
-                if (listView1.SelectedItems[0].Text.Contains(".sl2"))
+                string typeOfSave;
+                string outPutFileType;
+                if (selectedFile.Contains(".sl2"))
                 {
-                    MessageBox.Show(
-                        "The currently selected item: " + listView1.SelectedItems[0].Text + " will become your active Vanilla save file. Proceed?",
-                        "Make Active",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question
-                        );
+                    typeOfSave = "Vanilla";
+                    outPutFileType = ".sl2";
+                }
+                else if (selectedFile.Contains(".co2"))
+                {
+                    typeOfSave = "Seemeless";
+                    outPutFileType = ".co2";
                 }
                 else
                 {
-                    MessageBox.Show
+                    return;
+                }
+                var userInput = MessageBox.Show
                     (
-                    "The currently selected item " + listView1.SelectedItems[0].Text + " will become your active Seemless save file. Proceed?",
+                    "The currently selected item " + selectedFile + " will become your active " + typeOfSave + " save file. Proceed?",
                     "Make Active",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question
                     );
+                if (userInput == DialogResult.Yes)
+                {
+                    File.Copy(Path.Combine(archivePath, selectedFile), Path.Combine(savefilePath, "NR0000" + outPutFileType), true);
+                    RefreshListView1();
+                    RefreshListView2();
+                    MessageBox.Show(
+                        selectedFile + " has been set as your 'active' " + typeOfSave + " save file",
+                        "Success",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                        );
                 }
             }
         }
         //bakcup all active click
         private void backupAllButton_Click(object obj, EventArgs e)
         {
+            if (backupListView.Visible == true)
+            {
+                CloseBackupWindow();
+                return;
+            }
             //confirm
             var confirmation = MessageBox.Show(
                 "Backup all active save files? (this will overwrite existing 'active' save files in the backup)",
@@ -532,7 +555,7 @@ namespace NightreignSaveManager
             {
                 foreach (System.Windows.Forms.ListViewItem item in listView2.Items)
                 {
-                    if(item.Text.Contains(".bak"))
+                    if (item.Text.Contains(".bak"))
                     {
                         continue;
                     }
@@ -636,6 +659,78 @@ namespace NightreignSaveManager
         private void viewBackupsClose_Click(object sender, EventArgs e)
         {
             CloseBackupWindow();
+        }
+        //restore saves click
+        private void restoreSaves_Click(Object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                if (backupListView.Visible == true)
+                {
+                    CloseBackupWindow();
+                    return;
+                }
+                openFileDialog.Title = "Select a file(s)";
+                openFileDialog.Multiselect = true;
+                openFileDialog.InitialDirectory = backupPath;
+                openFileDialog.Filter = "Backup Save Files (*.bak)|*.bak";
+                //if ok selected
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedFile = Path.GetFileNameWithoutExtension(openFileDialog.SafeFileName);
+                    string typeOfSave;
+                    string outputFile;
+                    if (Path.GetExtension(selectedFile) == ".sl2")
+                    {
+                        typeOfSave = "Vanilla";
+                        outputFile = "NR0000.sl2";
+                    }
+                    else if (Path.GetExtension(selectedFile) == ".co2")
+                    {
+                        typeOfSave = "Seemless";
+                        outputFile = "NR0000.co2";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Incorrect file type selected.");
+                        return;
+                    }
+                    var userInput = MessageBox.Show(
+                        "Restore " + selectedFile + " and make this your 'active' " + typeOfSave + " save file?",
+                        "Restore Save File",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                        );
+                    if (userInput == DialogResult.Yes)
+                    {
+                        File.Copy(openFileDialog.FileName, savefilePath + @"\" + outputFile, true);
+                        RefreshListView2();
+                        MessageBox.Show(
+                            selectedFile + " has been restored and set as your 'active'" + typeOfSave + " save file",
+                            "Success",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                            );
+                    }
+                }
+            }
+        }
+        //convert save click
+        private void convertSave_Click(object sender, EventArgs e)
+        {
+            string selectedFile = listView1.SelectedItems[0].Text;
+            if(Path.GetExtension(selectedFile) == ".slo2")
+            {
+
+            }else if (Path.GetExtension(selectedFile) == ".co2")
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("Incorrect filetype selected.");
+                return;
+            }
         }
     }
     //rename dialog prompt
