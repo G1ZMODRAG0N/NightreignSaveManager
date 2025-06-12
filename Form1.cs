@@ -9,6 +9,10 @@ using System.Runtime.InteropServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Text;
+using System.Drawing.Imaging;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace NightreignSaveManager
 {
@@ -27,6 +31,48 @@ namespace NightreignSaveManager
         static string savefilePath = Directory.GetDirectories(baseDir)
             .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17).ToList()[0];
 
+        //setup check for updates
+        private async Task CheckForUpdatesAsync()
+        {
+            string currentVersion = "1.0.1";
+            string repoOwner = "G1ZMODRAG0N";
+            string repoName = "NightreignSaveManager";
+            string apiUrl = $"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest";
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("UpdateChecker/1.0"); // GitHub requires a User-Agent
+
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(apiUrl);
+                    response.EnsureSuccessStatusCode();
+
+                    string json = await response.Content.ReadAsStringAsync();
+                    using (JsonDocument doc = JsonDocument.Parse(json))
+                    {
+                        string latestVersion = doc.RootElement.GetProperty("tag_name").GetString().TrimStart('v');
+
+                        if (Version.TryParse(currentVersion, out var current) &&
+                            Version.TryParse(latestVersion, out var latest))
+                        {
+                            if (latest > current)
+                            {
+                                MessageBox.Show($"New version available: {latest}\nVisit GitHub to download it.", "Update Available");
+                            }
+                            else
+                            {
+                                MessageBox.Show("You're using the latest version.", "Up to Date");
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error checking for updates:\n{ex.Message}", "Error");
+                }
+            }
+        }
         //refresh listview1
         private async void RefreshListView1()
         {
@@ -166,6 +212,7 @@ namespace NightreignSaveManager
             backupListView.Enabled = false;
             backupListView.Visible = false;
             viewBackups.Text = "View Backups";
+            EnableAll();
         }
         //open URL
         public void OpenUrl(string url)
@@ -182,6 +229,30 @@ namespace NightreignSaveManager
             catch (Exception ex)
             {
                 MessageBox.Show("Unable to open link: " + ex.Message);
+            }
+        }
+        //disable all
+        public void DisableAll()
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl.Name == "viewBackups" || ctrl.Name == "closeButton" || ctrl.Name == "miniButton")
+                {
+                    continue;
+                }
+                ctrl.Enabled = false;
+            }
+        }
+        //enable all
+        public void EnableAll()
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl.Name == "viewBackups" || ctrl.Name == "closeButton" || ctrl.Name == "miniButton")
+                {
+                    continue;
+                }
+                ctrl.Enabled = true;
             }
         }
         //Initialize Form
@@ -669,6 +740,7 @@ namespace NightreignSaveManager
             }
             else
             {
+                DisableAll();
                 backupListView.Enabled = true;
                 backupListView.Visible = true;
                 viewBackups.Text = "Close Window";
@@ -738,21 +810,52 @@ namespace NightreignSaveManager
         //convert save click
         private void convertSave_Click(object sender, EventArgs e)
         {
+            if (backupListView.Visible == true)
+            {
+                CloseBackupWindow();
+                return;
+            }
             string selectedFile = listView1.SelectedItems[0].Text;
             var inputFilePath = Path.Combine(archivePath, selectedFile);
-            if(Path.GetExtension(selectedFile) == ".sl2")
+            string fileExt;
+            string fileType;
+
+            if (Path.GetExtension(selectedFile) == ".sl2")
             {
-                MessageBox.Show(inputFilePath);
+                fileExt = ".co2";
+                fileType = "Seemless";
             }
             else if (Path.GetExtension(selectedFile) == ".co2")
             {
-                MessageBox.Show(inputFilePath);
+                fileExt = ".sl2";
+                fileType = "Vanilla";
             }
             else
             {
                 MessageBox.Show("Incorrect filetype selected.");
                 return;
             }
+
+            if (File.Exists(Path.ChangeExtension(inputFilePath, fileExt)))
+            {
+                MessageBox.Show(
+                    "A file with that name already exists. Please rename or remove the file before converting.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                    );
+                return;
+            }
+
+            File.Copy(inputFilePath, Path.ChangeExtension(inputFilePath, fileExt));
+            File.Delete(inputFilePath);
+            MessageBox.Show("Save file has been converted to a " + fileType + " save.");
+            RefreshListView1();
+        }
+        //refresh listview1 click
+        private void refreshToolTip_Click(object sender, EventArgs e)
+        {
+            RefreshListView1();
         }
         //title link click
         private void titleLink_Click(object sender, EventArgs e)
@@ -764,7 +867,29 @@ namespace NightreignSaveManager
         //ko-fi click
         private void kofi_Click(object sender, EventArgs e)
         {
-           OpenUrl("https://ko-fi.com/g1zmo_drag0n");
+            OpenUrl("https://ko-fi.com/g1zmo_drag0n");
+        }
+        //remove click
+        private void remove_Click(object sender, EventArgs e)
+        {
+            var selectedFile = listView1.SelectedItems[0].Text;
+            var filePath = Path.Combine(archivePath, selectedFile);
+            var userInput = MessageBox.Show(
+                "Delete selected save file: " + selectedFile + "?",
+                "Remove",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+                );
+            if (userInput == DialogResult.Yes)
+            {
+                File.Delete(filePath);
+                RefreshListView1();
+            }
+        }
+        //check updates click
+        private async void checkUpdates_Click(object sender, EventArgs e)
+        {
+            await CheckForUpdatesAsync();
         }
     }
     //rename dialog prompt

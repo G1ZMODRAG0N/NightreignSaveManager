@@ -48,9 +48,8 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             toolsToolStripMenuItem = new ToolStripMenuItem();
             customizeToolStripMenuItem = new ToolStripMenuItem();
-            toSeemlessToolStripMenuItem = new ToolStripMenuItem();
-            toVanillaToolStripMenuItem = new ToolStripMenuItem();
             optionsToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             readmeButton = new ToolStripMenuItem();
             checkForUpdateToolStripMenuItem = new ToolStripMenuItem();
@@ -65,6 +64,7 @@
             renameContextButton = new ToolStripMenuItem();
             backupToolStripMenuItem = new ToolStripMenuItem();
             removeToolStripMenuItem = new ToolStripMenuItem();
+            refreshToolTip = new ToolStripMenuItem();
             label1 = new Label();
             listView2 = new ListView();
             label2 = new Label();
@@ -270,7 +270,7 @@
             // toolsToolStripMenuItem
             // 
             toolsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { customizeToolStripMenuItem, optionsToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { customizeToolStripMenuItem, optionsToolStripMenuItem, toolStripMenuItem1 });
             toolsToolStripMenuItem.ForeColor = Color.WhiteSmoke;
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(61, 35);
@@ -280,36 +280,29 @@
             // customizeToolStripMenuItem
             // 
             customizeToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            customizeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toSeemlessToolStripMenuItem, toVanillaToolStripMenuItem });
             customizeToolStripMenuItem.ForeColor = SystemColors.Control;
             customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            customizeToolStripMenuItem.Size = new Size(143, 22);
-            customizeToolStripMenuItem.Text = "Convert Save";
-            // 
-            // toSeemlessToolStripMenuItem
-            // 
-            toSeemlessToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            toSeemlessToolStripMenuItem.ForeColor = SystemColors.Control;
-            toSeemlessToolStripMenuItem.Name = "toSeemlessToolStripMenuItem";
-            toSeemlessToolStripMenuItem.Size = new Size(137, 22);
-            toSeemlessToolStripMenuItem.Text = "To Seemless";
-            // 
-            // toVanillaToolStripMenuItem
-            // 
-            toVanillaToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            toVanillaToolStripMenuItem.ForeColor = SystemColors.Control;
-            toVanillaToolStripMenuItem.Name = "toVanillaToolStripMenuItem";
-            toVanillaToolStripMenuItem.Size = new Size(137, 22);
-            toVanillaToolStripMenuItem.Text = "To Vanilla";
+            customizeToolStripMenuItem.Size = new Size(117, 22);
+            customizeToolStripMenuItem.Text = "Convert";
+            customizeToolStripMenuItem.Click += convertSave_Click;
             // 
             // optionsToolStripMenuItem
             // 
             optionsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             optionsToolStripMenuItem.ForeColor = SystemColors.Control;
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(143, 22);
+            optionsToolStripMenuItem.Size = new Size(117, 22);
             optionsToolStripMenuItem.Text = "Restore";
             optionsToolStripMenuItem.Click += restoreSaves_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.BackColor = Color.FromArgb(50, 50, 50);
+            toolStripMenuItem1.ForeColor = SystemColors.Control;
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(117, 22);
+            toolStripMenuItem1.Text = "Remove";
+            toolStripMenuItem1.Click += remove_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -326,7 +319,7 @@
             readmeButton.BackColor = Color.FromArgb(50, 50, 50);
             readmeButton.ForeColor = SystemColors.Control;
             readmeButton.Name = "readmeButton";
-            readmeButton.Size = new Size(171, 22);
+            readmeButton.Size = new Size(180, 22);
             readmeButton.Text = "Readme";
             readmeButton.Click += readmeButton_Click;
             // 
@@ -335,15 +328,16 @@
             checkForUpdateToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             checkForUpdateToolStripMenuItem.ForeColor = SystemColors.Control;
             checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
-            checkForUpdateToolStripMenuItem.Size = new Size(171, 22);
+            checkForUpdateToolStripMenuItem.Size = new Size(180, 22);
             checkForUpdateToolStripMenuItem.Text = "Check for Updates";
+            checkForUpdateToolStripMenuItem.Click += checkUpdates_Click;
             // 
             // aboutButton
             // 
             aboutButton.BackColor = Color.FromArgb(50, 50, 50);
             aboutButton.ForeColor = SystemColors.Control;
             aboutButton.Name = "aboutButton";
-            aboutButton.Size = new Size(171, 22);
+            aboutButton.Size = new Size(180, 22);
             aboutButton.Text = "About";
             aboutButton.Click += aboutButton_Click;
             // 
@@ -412,11 +406,11 @@
             // contextMenu
             // 
             contextMenu.BackColor = SystemColors.ButtonFace;
-            contextMenu.Items.AddRange(new ToolStripItem[] { makeActiveToolStripMenuItem, convertToolStripMenuItem, renameContextButton, backupToolStripMenuItem, removeToolStripMenuItem });
+            contextMenu.Items.AddRange(new ToolStripItem[] { makeActiveToolStripMenuItem, convertToolStripMenuItem, renameContextButton, backupToolStripMenuItem, removeToolStripMenuItem, refreshToolTip });
             contextMenu.Name = "contextMenuStrip1";
             contextMenu.RenderMode = ToolStripRenderMode.Professional;
             contextMenu.ShowImageMargin = false;
-            contextMenu.Size = new Size(115, 114);
+            contextMenu.Size = new Size(115, 136);
             // 
             // makeActiveToolStripMenuItem
             // 
@@ -451,6 +445,14 @@
             removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             removeToolStripMenuItem.Size = new Size(114, 22);
             removeToolStripMenuItem.Text = "Remove";
+            removeToolStripMenuItem.Click += remove_Click;
+            // 
+            // refreshToolTip
+            // 
+            refreshToolTip.Name = "refreshToolTip";
+            refreshToolTip.Size = new Size(114, 22);
+            refreshToolTip.Text = "Refresh";
+            refreshToolTip.Click += refreshToolTip_Click;
             // 
             // label1
             // 
@@ -668,8 +670,6 @@
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutButton;
         private PictureBox pictureBox1;
-        private ToolStripMenuItem toSeemlessToolStripMenuItem;
-        private ToolStripMenuItem toVanillaToolStripMenuItem;
         private PictureBox miniButton;
         private PictureBox pictureBox2;
         private ListView listView1;
@@ -698,5 +698,7 @@
         private ListView backupListView;
         private ToolStripMenuItem convertToolStripMenuItem;
         private PictureBox pictureBox3;
+        private ToolStripMenuItem refreshToolTip;
+        private ToolStripMenuItem toolStripMenuItem1;
     }
 }
