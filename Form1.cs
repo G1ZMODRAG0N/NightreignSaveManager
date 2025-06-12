@@ -236,7 +236,7 @@ namespace NightreignSaveManager
         {
             foreach (Control ctrl in this.Controls)
             {
-                if (ctrl.Name == "viewBackups" || ctrl.Name == "closeButton" || ctrl.Name == "miniButton")
+                if (ctrl.Name == "viewBackups" || ctrl.Name == "closeButton" || ctrl.Name == "miniButton" || ctrl.Name == "listView1" || ctrl.Name == "listView2")
                 {
                     continue;
                 }
@@ -248,7 +248,7 @@ namespace NightreignSaveManager
         {
             foreach (Control ctrl in this.Controls)
             {
-                if (ctrl.Name == "viewBackups" || ctrl.Name == "closeButton" || ctrl.Name == "miniButton")
+                if (ctrl.Name == "viewBackups" || ctrl.Name == "closeButton" || ctrl.Name == "miniButton" || ctrl.Name == "listView1" || ctrl.Name == "listView2")
                 {
                     continue;
                 }
@@ -565,6 +565,11 @@ namespace NightreignSaveManager
                     }
                 }
             }
+        }
+        //refresh listview1
+        private void refreshList1_Click(object obj, EventArgs e)
+        {
+            RefreshListView1();
         }
         //refresh listview2
         private void button6_Click(object obj, EventArgs e)

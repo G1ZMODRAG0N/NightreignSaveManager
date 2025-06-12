@@ -74,6 +74,7 @@
             label3 = new Label();
             toolTip1 = new ToolTip(components);
             viewBackups = new Button();
+            button2 = new Button();
             backupListView = new ListView();
             pictureBox3 = new PictureBox();
             panel1.SuspendLayout();
@@ -319,7 +320,7 @@
             readmeButton.BackColor = Color.FromArgb(50, 50, 50);
             readmeButton.ForeColor = SystemColors.Control;
             readmeButton.Name = "readmeButton";
-            readmeButton.Size = new Size(180, 22);
+            readmeButton.Size = new Size(171, 22);
             readmeButton.Text = "Readme";
             readmeButton.Click += readmeButton_Click;
             // 
@@ -328,7 +329,7 @@
             checkForUpdateToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             checkForUpdateToolStripMenuItem.ForeColor = SystemColors.Control;
             checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
-            checkForUpdateToolStripMenuItem.Size = new Size(180, 22);
+            checkForUpdateToolStripMenuItem.Size = new Size(171, 22);
             checkForUpdateToolStripMenuItem.Text = "Check for Updates";
             checkForUpdateToolStripMenuItem.Click += checkUpdates_Click;
             // 
@@ -337,7 +338,7 @@
             aboutButton.BackColor = Color.FromArgb(50, 50, 50);
             aboutButton.ForeColor = SystemColors.Control;
             aboutButton.Name = "aboutButton";
-            aboutButton.Size = new Size(180, 22);
+            aboutButton.Size = new Size(171, 22);
             aboutButton.Text = "About";
             aboutButton.Click += aboutButton_Click;
             // 
@@ -570,6 +571,22 @@
             viewBackups.UseVisualStyleBackColor = true;
             viewBackups.Click += viewBackups_Click;
             // 
+            // button2
+            // 
+            button2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button2.BackColor = SystemColors.ButtonFace;
+            button2.BackgroundImageLayout = ImageLayout.Center;
+            button2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.ForeColor = Color.Black;
+            button2.Image = (Image)resources.GetObject("button2.Image");
+            button2.Location = new Point(297, 321);
+            button2.Name = "button2";
+            button2.Size = new Size(32, 32);
+            button2.TabIndex = 33;
+            toolTip1.SetToolTip(button2, "Refresh list");
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += refreshList1_Click;
+            // 
             // backupListView
             // 
             backupListView.BackColor = SystemColors.Menu;
@@ -608,6 +625,7 @@
             BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(350, 570);
             Controls.Add(backupListView);
+            Controls.Add(button2);
             Controls.Add(viewBackups);
             Controls.Add(label3);
             Controls.Add(button4);
@@ -700,5 +718,6 @@
         private PictureBox pictureBox3;
         private ToolStripMenuItem refreshToolTip;
         private ToolStripMenuItem toolStripMenuItem1;
+        private Button button2;
     }
 }
