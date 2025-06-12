@@ -34,7 +34,7 @@ namespace NightreignSaveManager
         //setup check for updates
         private async Task CheckForUpdatesAsync()
         {
-            string currentVersion = "1.0.1";
+            string currentVersion = "1.0.0";
             string repoOwner = "G1ZMODRAG0N";
             string repoName = "NightreignSaveManager";
             string apiUrl = $"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest";
@@ -679,7 +679,7 @@ namespace NightreignSaveManager
         private void aboutButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                "NR SaveManager \nVersion: '1.0.1'",
+                "NR SaveManager \nVersion: '1.0.0'",
                 "About",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
