@@ -58,11 +58,11 @@ namespace NightreignSaveManager
                         {
                             if (latest > current)
                             {
-                                MessageBox.Show($"New version available: {latest}\nVisit GitHub to download it.", "Update Available");
+                                MessageBox.Show($"New version available: {latest}\nVisit GitHub to download it.", "Update");
                             }
                             else
                             {
-                                MessageBox.Show("You're using the latest version.", "Up to Date");
+                                MessageBox.Show("You're using the latest version.", "Update");
                             }
                         }
                     }

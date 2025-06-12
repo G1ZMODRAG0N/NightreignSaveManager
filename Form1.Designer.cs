@@ -567,7 +567,7 @@
             viewBackups.Size = new Size(96, 27);
             viewBackups.TabIndex = 30;
             viewBackups.Text = "View Backups";
-            toolTip1.SetToolTip(viewBackups, "Change the extension of a save file .sl2/.co2 for either Seemless or Vanilla");
+            toolTip1.SetToolTip(viewBackups, "View list of backup files");
             viewBackups.UseVisualStyleBackColor = true;
             viewBackups.Click += viewBackups_Click;
             // 
