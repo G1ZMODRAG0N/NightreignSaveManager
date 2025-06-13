@@ -5,8 +5,8 @@
     <Description>Tool used for managing Nightreign save files.</Description>
     <Company>G1ZMO_DRAG0N</Company>
     <Product>MyApp Suite</Product>
-    <Version>1.0.3</Version>
-    <FileVersion>1.0.3</FileVersion>
+    <Version>1.0.4</Version>
+    <FileVersion>1.0.34</FileVersion>
     <Authors>G1ZMO_DRAG0N</Authors>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>

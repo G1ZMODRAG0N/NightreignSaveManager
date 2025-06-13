@@ -12,7 +12,7 @@ namespace NightreignSaveManager
         static string rootPath = AppDomain.CurrentDomain.BaseDirectory;
         static string archivePath = Path.Combine(rootPath, "archive");
         static string backupPath = Path.Combine(rootPath, "backup");
-        static string currentVersion = "1.0.3";
+        static string currentVersion = "1.0.4";
         static string lastUpdated = "06.13.25";
 
         static string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
