@@ -2,8 +2,8 @@
 
 ## Description
 
-This is a simple save manager for Nightreign. This allows you to backup, archive, and convert save files into Seemless compatible .co2 formats. 
-[Please convert save FROM Seemless at your own risk. Seemless saves have a chance to be flagged and banned from online use.]
+This is a simple save manager for Nightreign. I wanted something that let me retain my progress when playing duos. Features include the ability to backup, archive, and convert save files into Seemless compatible .co2 formats.
+[When converting a save from a Seemless save file back into a Vanilla one USE AT YOUR OWN RISK. Seemless saves have a chance to be flagged and banned from online use as we are not sure what may be modified differently from Vanilla.]
 
 ---
 
@@ -16,12 +16,16 @@ This is a simple save manager for Nightreign. This allows you to backup, archive
 - Rename save files
 - Maintain an archive of past saves 
 
+## Reuirements
+
+- .NET Framework 8.0
+
 ---
 
 ## Installation
 
-1. Drag and drop all files in NR_SaveManager_v#.#.# into a folder of your choosing.
-2. Open NightreignSaveManager.exe
+1. Drag and drop all files in NR_SaveManager_v#.#.#.zip into a folder of your choosing.
+2. Open NR_SaveManager_v1.#.#.exe
 3. Proceed to manage game saves
 
 ---

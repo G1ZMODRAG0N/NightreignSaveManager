@@ -13,6 +13,7 @@ namespace NightreignSaveManager
         static string archivePath = Path.Combine(rootPath, "archive");
         static string backupPath = Path.Combine(rootPath, "backup");
         static string currentVersion = "1.0.3";
+        static string lastUpdated = "06.13.25";
 
         static string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
         static string savefilePath = Directory.GetDirectories(baseDir)
@@ -630,7 +631,7 @@ namespace NightreignSaveManager
         private void aboutButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                "NR SaveManager \nVersion: " + currentVersion,
+                "NR_SaveManager || " + currentVersion + " || G1ZMO_DRAG0N || " + lastUpdated,
                 "About",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
