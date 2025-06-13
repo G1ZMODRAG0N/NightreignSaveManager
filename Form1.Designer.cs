@@ -550,9 +550,8 @@
             label3.Font = new Font("Century Gothic", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label3.Location = new Point(311, 555);
             label3.Name = "label3";
-            label3.Size = new Size(39, 16);
+            label3.Size = new Size(0, 16);
             label3.TabIndex = 29;
-            label3.Text = "v1.0.1";
             label3.TextAlign = ContentAlignment.BottomRight;
             // 
             // viewBackups

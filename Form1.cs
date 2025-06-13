@@ -26,6 +26,7 @@ namespace NightreignSaveManager
         static string rootPath = AppDomain.CurrentDomain.BaseDirectory;
         static string archivePath = Path.Combine(rootPath, "archive");
         static string backupPath = Path.Combine(rootPath, "backup");
+        static string currentVersion = "1.0.1";
 
         static string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
         static string savefilePath = Directory.GetDirectories(baseDir)
@@ -34,7 +35,7 @@ namespace NightreignSaveManager
         //setup check for updates
         private async Task CheckForUpdatesAsync()
         {
-            string currentVersion = "1.0.0";
+            
             string repoOwner = "G1ZMODRAG0N";
             string repoName = "NightreignSaveManager";
             string apiUrl = $"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest";
@@ -265,6 +266,7 @@ namespace NightreignSaveManager
         //Load
         private void Form1_Load(object sender, EventArgs e)
         {
+            label3.Text = currentVersion.ToString();
             //create archive directory
             if (!Directory.Exists(archivePath))
             {
@@ -684,7 +686,7 @@ namespace NightreignSaveManager
         private void aboutButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                "NR SaveManager \nVersion: '1.0.0'",
+                "NR SaveManager \nVersion: " + currentVersion,
                 "About",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
