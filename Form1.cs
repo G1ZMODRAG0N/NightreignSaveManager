@@ -10,9 +10,6 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Text;
 using System.Drawing.Imaging;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace NightreignSaveManager
 {
@@ -32,48 +29,6 @@ namespace NightreignSaveManager
         static string savefilePath = Directory.GetDirectories(baseDir)
             .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17).ToList()[0];
 
-        //setup check for updates
-        private async Task CheckForUpdatesAsync()
-        {
-            
-            string repoOwner = "G1ZMODRAG0N";
-            string repoName = "NightreignSaveManager";
-            string apiUrl = $"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest";
-
-            using (HttpClient client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("UpdateChecker/1.0"); // GitHub requires a User-Agent
-
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(apiUrl);
-                    response.EnsureSuccessStatusCode();
-
-                    string json = await response.Content.ReadAsStringAsync();
-                    using (JsonDocument doc = JsonDocument.Parse(json))
-                    {
-                        string latestVersion = doc.RootElement.GetProperty("tag_name").GetString().TrimStart('v');
-
-                        if (Version.TryParse(currentVersion, out var current) &&
-                            Version.TryParse(latestVersion, out var latest))
-                        {
-                            if (latest > current)
-                            {
-                                MessageBox.Show($"New version available: {latest}\nVisit GitHub to download it.", "Update");
-                            }
-                            else
-                            {
-                                MessageBox.Show("You're using the latest version.", "Update");
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error checking for updates:\n{ex.Message}", "Error");
-                }
-            }
-        }
         //refresh listview1
         private async void RefreshListView1()
         {
@@ -894,9 +849,9 @@ namespace NightreignSaveManager
             }
         }
         //check updates click
-        private async void checkUpdates_Click(object sender, EventArgs e)
+        private void checkUpdates_Click(object sender, EventArgs e)
         {
-            await CheckForUpdatesAsync();
+            OpenUrl("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
         }
     }
     //rename dialog prompt
