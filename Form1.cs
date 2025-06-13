@@ -1,15 +1,4 @@
-using System.Drawing.Text;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Channels;
-using System.Windows.Forms;
-using System.Xml.Schema;
-using System.Xml.XPath;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Text;
-using System.Drawing.Imaging;
 
 namespace NightreignSaveManager
 {
@@ -23,7 +12,7 @@ namespace NightreignSaveManager
         static string rootPath = AppDomain.CurrentDomain.BaseDirectory;
         static string archivePath = Path.Combine(rootPath, "archive");
         static string backupPath = Path.Combine(rootPath, "backup");
-        static string currentVersion = "1.0.2";
+        static string currentVersion = "1.0.3";
 
         static string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
         static string savefilePath = Directory.GetDirectories(baseDir)
@@ -221,7 +210,7 @@ namespace NightreignSaveManager
         //Load
         private void Form1_Load(object sender, EventArgs e)
         {
-            label3.Text = currentVersion.ToString();
+            label3.Text = "v" + currentVersion.ToString();
             //create archive directory
             if (!Directory.Exists(archivePath))
             {
