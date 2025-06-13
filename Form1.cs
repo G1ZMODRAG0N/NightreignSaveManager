@@ -177,6 +177,24 @@ namespace NightreignSaveManager
                 MessageBox.Show("Unable to open link: " + ex.Message);
             }
         }
+        //open directory
+        public void OpenProcess(string app, string path)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = app,
+                    Arguments = path,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open link: " + ex.Message);
+            }
+        }
         //disable all
         public void DisableAll()
         {
@@ -426,7 +444,7 @@ namespace NightreignSaveManager
 
             if (Directory.Exists(path))
             {
-                System.Diagnostics.Process.Start("explorer.exe", path);
+                OpenProcess("explorer.exe",path);
             }
             else
             {
@@ -438,7 +456,7 @@ namespace NightreignSaveManager
         {
             if (Directory.Exists(archivePath))
             {
-                System.Diagnostics.Process.Start("explorer.exe", archivePath);
+                OpenProcess("explorer.exe", archivePath);
             }
             else
             {
@@ -450,7 +468,7 @@ namespace NightreignSaveManager
         {
             if (Directory.Exists(backupPath))
             {
-                System.Diagnostics.Process.Start("explorer.exe", backupPath);
+                OpenProcess("explorer.exe", backupPath);
             }
             else
             {
@@ -620,7 +638,7 @@ namespace NightreignSaveManager
             var readmePath = Path.Combine(rootPath, "README.md");
             if (File.Exists(readmePath))
             {
-                System.Diagnostics.Process.Start("notepad.exe", readmePath);
+                OpenProcess("notepad.exe", readmePath);
             }
             else
             {
