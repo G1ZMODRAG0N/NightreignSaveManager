@@ -178,13 +178,31 @@ namespace NightreignSaveManager
             }
         }
         //open directory
-        public void OpenProcess(string app, string path)
+        public void OpenDir(string path)
         {
             try
             {
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    FileName = app,
+                    FileName = "explorer.exe",
+                    Arguments = path,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open link: " + ex.Message);
+            }
+        }
+        //open note
+        public void OpenNote(string path)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = "notepad.exe",
                     Arguments = path,
                     UseShellExecute = true
                 };
@@ -444,7 +462,7 @@ namespace NightreignSaveManager
 
             if (Directory.Exists(path))
             {
-                OpenProcess("explorer.exe",path);
+                OpenDir(path);
             }
             else
             {
@@ -456,7 +474,7 @@ namespace NightreignSaveManager
         {
             if (Directory.Exists(archivePath))
             {
-                OpenProcess("explorer.exe", archivePath);
+                OpenDir(archivePath);
             }
             else
             {
@@ -468,7 +486,7 @@ namespace NightreignSaveManager
         {
             if (Directory.Exists(backupPath))
             {
-                OpenProcess("explorer.exe", backupPath);
+                OpenDir(backupPath);
             }
             else
             {
@@ -638,7 +656,7 @@ namespace NightreignSaveManager
             var readmePath = Path.Combine(rootPath, "README.md");
             if (File.Exists(readmePath))
             {
-                OpenProcess("notepad.exe", readmePath);
+                OpenNote(readmePath);
             }
             else
             {
