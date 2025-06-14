@@ -18,7 +18,6 @@ This is a simple save manager for Nightreign. I wanted something that let me ret
 
 ## Reuirements
 
-- .NET Framework 8.0
 
 ---
 
