@@ -235,7 +235,7 @@ namespace NightreignSaveManager
         {
             //startup
             //check config
-            Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, false);
+            Helper.Utils.Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, false);
             //apply version to label text
             versionLabel.Text = "v" + currentVersion.ToString();
 
@@ -453,7 +453,7 @@ namespace NightreignSaveManager
 
             if (Directory.Exists(path))
             {
-                Helpers.OpenDir(path);
+                Helper.Utils.Helpers.OpenDir(path);
             }
             else
             {
@@ -465,7 +465,7 @@ namespace NightreignSaveManager
         {
             if (Directory.Exists(archivePath))
             {
-                Helpers.OpenDir(archivePath);
+                Helper.Utils.Helpers.OpenDir(archivePath);
             }
             else
             {
@@ -477,7 +477,7 @@ namespace NightreignSaveManager
         {
             if (Directory.Exists(backupPath))
             {
-                Helpers.OpenDir(backupPath);
+                Helper.Utils.Helpers.OpenDir(backupPath);
             }
             else
             {
@@ -647,7 +647,7 @@ namespace NightreignSaveManager
             var readmePath = Path.Combine(rootPath, "README.md");
             if (File.Exists(readmePath))
             {
-                Helpers.OpenNote(readmePath);
+                Helper.Utils.Helpers.OpenNote(readmePath);
             }
             else
             {
@@ -668,12 +668,17 @@ namespace NightreignSaveManager
         private void renameContextButton_Click(object sender, EventArgs e)
         {
             string selectedFilename = listView1.SelectedItems[0].Text;
+            string selectedFile = Path.Combine(archivePath, selectedFilename);
             string selectednoExt = Path.GetFileNameWithoutExtension(selectedFilename);
             string selectedExt = Path.GetExtension(selectedFilename);
             string newFileName = Prompt.ShowDialog("Rename save file: '" + selectednoExt + "'", "Rename File"); //fix this
             if (newFileName != null)
             {
-                File.Copy(archivePath + @"\" + selectedFilename, archivePath + @"\" + newFileName + selectedExt, true);
+                File.Copy(Path.Combine(archivePath, selectedFilename), Path.Combine(archivePath,newFileName + selectedExt), true);
+                if (File.Exists(selectedFile))
+                {
+                    File.Delete(selectedFile);
+                }
                 RefreshListView1();
             }
         }
@@ -840,13 +845,13 @@ namespace NightreignSaveManager
         private void titleLink_Click(object sender, EventArgs e)
         {
             CloseBackupWindow();
-            Helpers.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
+            Helper.Utils.Helpers.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
 
         }
         //ko-fi click
         private void kofi_Click(object sender, EventArgs e)
         {
-            Helpers.OpenURL("https://ko-fi.com/g1zmo_drag0n");
+            Helper.Utils.Helpers.OpenURL("https://ko-fi.com/g1zmo_drag0n");
         }
         //remove click
         private void remove_Click(object sender, EventArgs e)
@@ -868,7 +873,7 @@ namespace NightreignSaveManager
         //check updates click
         private void checkUpdates_Click(object sender, EventArgs e)
         {
-            Helpers.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
+            Helper.Utils.Helpers.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
         }
         //seemless coop click
         private void launchseemless_Click(object sender, EventArgs e)
@@ -886,7 +891,7 @@ namespace NightreignSaveManager
                         MessageBox.Show("Unable to locate Seemless Co-op Mod for Nightreign");
                         return;
                     }
-                    Helpers.OpenSeemless(path);
+                    Helper.Utils.Helpers.OpenSeemless(path);
                 }
             }
 
@@ -907,7 +912,7 @@ namespace NightreignSaveManager
                         MessageBox.Show("Unable to locate Nightreign executable.");
                         return;
                     }
-                    Helpers.OpenVanilla(path);
+                    Helper.Utils.Helpers.OpenVanilla(path);
                 }
             }
 
@@ -1021,7 +1026,7 @@ namespace NightreignSaveManager
                 MessageBox.Show("Sorry, there appears to be only 1 SteamID to use.");
                 return;
             }
-            Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, true);
+            Helper.Utils.Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, true);
             RefreshListView2();
         }
     }
@@ -1093,7 +1098,7 @@ namespace NightreignSaveManager
             {
                 string selectedID = new DirectoryInfo(listView.SelectedItems[0].Text).Name;
                 string steamURL = "https://steamcommunity.com/profiles/" + selectedID;
-                Helpers.OpenURL(steamURL);
+                Helper.Utils.Helpers.OpenURL(steamURL);
                 Debug.WriteLine(selectedID);
             };
 
@@ -1107,7 +1112,7 @@ namespace NightreignSaveManager
             steamselect.MinimizeBox = false;
             steamselect.MaximizeBox = false;
             steamselect.HelpButton = true;
-            steamselect.HelpButtonClicked += (sender, e) => { Helpers.OpenURL("https://help.steampowered.com/en/faqs/view/2816-BE67-5B69-0FEC"); };
+            steamselect.HelpButtonClicked += (sender, e) => { Helper.Utils.Helpers.OpenURL("https://help.steampowered.com/en/faqs/view/2816-BE67-5B69-0FEC"); };
 
 
             System.Windows.Forms.DialogResult result = steamselect.ShowDialog();
