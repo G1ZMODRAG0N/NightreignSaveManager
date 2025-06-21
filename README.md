@@ -35,6 +35,14 @@ All required directories for archiving and backups will be generated on first ru
 
 ---
 
+## Planned Additions
+
+- Launch shortcuts for Vanilla and Seemless
+- Additional warnings and checks for files
+- Multiple steam profile support
+- Possible relic modifications
+- Adjustments with usability
+
 ## Suggestions
 
 For feedback open an issue on GitHub https://github.com/G1ZMODRAG0N/NightreignSaveManager or comment on Nexus.
