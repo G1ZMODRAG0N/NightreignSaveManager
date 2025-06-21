@@ -1,7 +1,7 @@
-using System.Diagnostics;
-using Helper.Utils;
-using Dialog.Prompt;
 using Custom.ColorTable;
+using Dialog.Prompt;
+using Helper.Utils;
+using System.Diagnostics;
 
 namespace NightreignSaveManager
 {
@@ -22,8 +22,8 @@ namespace NightreignSaveManager
         }
 
         //set versioning
-        static string currentVersion = "1.1.0";
-        static string lastUpdated = "06.20.25";
+        static string currentVersion = "1.1.3";
+        static string lastUpdated = "06.21.25";
 
         //setup paths
         public static string rootPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -943,6 +943,11 @@ namespace NightreignSaveManager
             }
             Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, true);
             RefreshListView2();
+        }
+        //faq click
+        private void faxItem_Click(object sender, EventArgs e)
+        {
+            Helpers.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager?tab=readme-ov-file#faq");
         }
     }
 }

@@ -60,6 +60,7 @@
             helpToolStripMenuItem = new ToolStripMenuItem();
             readmeButton = new ToolStripMenuItem();
             checkForUpdateToolStripMenuItem = new ToolStripMenuItem();
+            fAQToolStripMenuItem = new ToolStripMenuItem();
             aboutButton = new ToolStripMenuItem();
             pictureBox2 = new PictureBox();
             makeActiveButton = new Button();
@@ -88,7 +89,6 @@
             backupListView = new ListView();
             pictureBox3 = new PictureBox();
             setupText = new Label();
-            fAQToolStripMenuItem = new ToolStripMenuItem();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)closeButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)miniButton).BeginInit();
@@ -326,7 +326,7 @@
             modifyToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convertToolStripMenuItem1, renameToolStripMenuItem, relicsToolStripMenuItem, steamIDToolStripMenuItem });
             modifyToolStripMenuItem.ForeColor = SystemColors.Control;
             modifyToolStripMenuItem.Name = "modifyToolStripMenuItem";
-            modifyToolStripMenuItem.Size = new Size(117, 22);
+            modifyToolStripMenuItem.Size = new Size(180, 22);
             modifyToolStripMenuItem.Text = "Modify";
             // 
             // convertToolStripMenuItem1
@@ -352,6 +352,7 @@
             // relicsToolStripMenuItem
             // 
             relicsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
+            relicsToolStripMenuItem.Enabled = false;
             relicsToolStripMenuItem.ForeColor = SystemColors.Control;
             relicsToolStripMenuItem.Name = "relicsToolStripMenuItem";
             relicsToolStripMenuItem.Size = new Size(141, 22);
@@ -362,6 +363,7 @@
             // steamIDToolStripMenuItem
             // 
             steamIDToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
+            steamIDToolStripMenuItem.Enabled = false;
             steamIDToolStripMenuItem.ForeColor = SystemColors.Control;
             steamIDToolStripMenuItem.Name = "steamIDToolStripMenuItem";
             steamIDToolStripMenuItem.Size = new Size(141, 22);
@@ -373,7 +375,7 @@
             optionsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             optionsToolStripMenuItem.ForeColor = SystemColors.Control;
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(117, 22);
+            optionsToolStripMenuItem.Size = new Size(180, 22);
             optionsToolStripMenuItem.Text = "Restore";
             optionsToolStripMenuItem.ToolTipText = "Restore a backed up save file";
             optionsToolStripMenuItem.Click += restoreSaves_Click;
@@ -383,7 +385,7 @@
             toolStripMenuItem1.BackColor = Color.FromArgb(50, 50, 50);
             toolStripMenuItem1.ForeColor = SystemColors.Control;
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(117, 22);
+            toolStripMenuItem1.Size = new Size(180, 22);
             toolStripMenuItem1.Text = "Remove";
             toolStripMenuItem1.ToolTipText = "Delete a selected save file";
             toolStripMenuItem1.Click += remove_Click;
@@ -415,6 +417,15 @@
             checkForUpdateToolStripMenuItem.Size = new Size(180, 22);
             checkForUpdateToolStripMenuItem.Text = "Check for Updates";
             checkForUpdateToolStripMenuItem.Click += checkUpdates_Click;
+            // 
+            // fAQToolStripMenuItem
+            // 
+            fAQToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
+            fAQToolStripMenuItem.ForeColor = SystemColors.Control;
+            fAQToolStripMenuItem.Name = "fAQToolStripMenuItem";
+            fAQToolStripMenuItem.Size = new Size(180, 22);
+            fAQToolStripMenuItem.Text = "FAQ";
+            fAQToolStripMenuItem.Click += faxItem_Click;
             // 
             // aboutButton
             // 
@@ -703,7 +714,7 @@
             backupListView.Location = new Point(21, 147);
             backupListView.MultiSelect = false;
             backupListView.Name = "backupListView";
-            backupListView.Size = new Size(301, 361);
+            backupListView.Size = new Size(308, 361);
             backupListView.Sorting = SortOrder.Ascending;
             backupListView.TabIndex = 31;
             backupListView.UseCompatibleStateImageBehavior = false;
@@ -736,14 +747,6 @@
             setupText.Text = "ARCHIVE EMPTY\r\nGet started by going to File > Import > Vanilla Save File(s)\r\nIt is also recommened to select 'Backup Saves' as your first action.";
             setupText.TextAlign = ContentAlignment.MiddleCenter;
             setupText.Visible = false;
-            // 
-            // fAQToolStripMenuItem
-            // 
-            fAQToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            fAQToolStripMenuItem.ForeColor = SystemColors.Control;
-            fAQToolStripMenuItem.Name = "fAQToolStripMenuItem";
-            fAQToolStripMenuItem.Size = new Size(180, 22);
-            fAQToolStripMenuItem.Text = "FAQ";
             // 
             // Form1
             // 
