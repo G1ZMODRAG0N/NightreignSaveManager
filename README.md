@@ -18,6 +18,7 @@ This is a simple save manager for Nightreign. I wanted something that let me ret
 
 ## Requirements
 
+- Currently the application is built to target framework .NET 8.0 but is self-contained. This choice was made to keep a simplistic single .exe application.
 
 ---
 
