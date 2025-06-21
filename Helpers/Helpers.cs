@@ -64,7 +64,7 @@ namespace Helper.Utils
             //set up config
             string jsonPath = Path.Combine(root, "config.json");
             string jsonFile = File.ReadAllText(jsonPath);
-            // Get the SteamID value
+            //get the SteamID value
             steamID = Regex.Match(jsonFile, @"\b\d{17}\b").ToString();//find alternative that does not use regex
             Debug.WriteLine("Default SteamID set to: " + steamID);
             //set save location path
