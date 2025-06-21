@@ -5,7 +5,7 @@
     <Description>Tool used for managing Nightreign save files.</Description>
     <Company>G1ZMO_DRAG0N</Company>
     <Product>MyApp Suite</Product>
-    <Version>1.0.4</Version>
+    <Version>1.1.0</Version>
     <FileVersion>1.0.34</FileVersion>
     <Authors>G1ZMO_DRAG0N</Authors>
     <OutputType>WinExe</OutputType>
@@ -14,7 +14,16 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <ApplicationIcon>assets\icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="assets\icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
