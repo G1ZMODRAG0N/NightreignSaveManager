@@ -2,23 +2,15 @@
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using SteamID.Select;
 
 namespace Helper.Utils
 {
     public static class Helpers
     {
-        public static string steamID;
+        public static string steamID = "";
         public static void WriteConfig(string root, List<string> folders, string version, string lastUpdate, Form form, bool change)
         {
-            //set up config
-            string jsonPath = Path.Combine(root, "config.json");
-            string jsonFile = File.ReadAllText(jsonPath);
-            Debug.WriteLine("Checking if config exists...");
-            // Get the SteamID value
-            steamID = Regex.Match(jsonFile, @"\b\d{17}\b").ToString();//find alternative that does not use regex
-            Debug.Write(steamID + "\n");   
-            //set save location path
-            Form1.savefilePath = Path.Combine(Form1.baseDir, steamID);
             //create config file on first run
             if (!File.Exists(Path.Combine(root, "config.json")) || change)
             {
@@ -53,7 +45,7 @@ namespace Helper.Utils
                     };
                 string jsontoString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
                 //write json to stream
-                using (FileStream fs = File.Create(jsonPath))
+                using (FileStream fs = File.Create(Path.Combine(root, "config.json")))
                 {
                     using (StreamWriter writer = new StreamWriter(fs))
                     {
@@ -68,6 +60,15 @@ namespace Helper.Utils
                     }
                 }
             }
+            //set up config
+            string jsonPath = Path.Combine(root, "config.json");
+            string jsonFile = File.ReadAllText(jsonPath);
+            Debug.WriteLine("Checking if config exists...");
+            // Get the SteamID value
+            steamID = Regex.Match(jsonFile, @"\b\d{17}\b").ToString();//find alternative that does not use regex
+            Debug.Write(steamID + "\n");
+            //set save location path
+            Form1.savefilePath = Path.Combine(Form1.baseDir, steamID);
         }
         //open URL
         public static void OpenURL(string url)
@@ -158,5 +159,6 @@ namespace Helper.Utils
                 MessageBox.Show("Unable to launch: " + ex.Message);
             }
         }
+        
     }
 }

@@ -1,8 +1,7 @@
 using System.Diagnostics;
 using Helper.Utils;
 using Dialog.Prompt;
-using System.Text.Json.Nodes;
-using System.Text.Json;
+using Custom.ColorTable;
 
 namespace NightreignSaveManager
 {
@@ -11,16 +10,17 @@ namespace NightreignSaveManager
     {
         //BND4 entry template
         public class BND4Entry
-    {
-        public byte[] RawData;
-        public int Index;
-        //public string OutputFolder;
-        public int Size;
-        public int Offset;
-        public int NameOffset;
-        public int FooterLength;
-        public int DataOffset;
-    }
+        {
+            public byte[] RawData;
+            public int Index;
+            //public string OutputFolder;
+            public int Size;
+            public int Offset;
+            public int NameOffset;
+            public int FooterLength;
+            public int DataOffset;
+        }
+        private const string V = @"";
 
         //set versioning
         static string currentVersion = "1.1.0";
@@ -33,11 +33,35 @@ namespace NightreignSaveManager
         public static string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
         static List<string> steamFolders = Directory.GetDirectories(baseDir)
             .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17).ToList();
-        public static string savefilePath = @"";
+        public static string savefilePath = V;
 
         //set mouse pos for click-drag move form
         private Point initialMousePosition;
-
+        //decrypt entries
+        public void DecryptEntry(byte[] rawData, int index, int size, int offset, int nameOffset, int footerLength, int dataOffset)
+        {
+            var entry = new BND4Entry
+            {
+                RawData = rawData,
+                Index = index,
+                //OutputFolder = outputFolder,
+                Size = size,
+                Offset = offset,
+                NameOffset = nameOffset,
+                FooterLength = footerLength,
+                DataOffset = dataOffset
+            };
+            var encryptedData = rawData.AsSpan(offset, offset + size);
+            //Extract IV from beginning of encrypted data
+            int iv = BitConverter.ToInt32(encryptedData);
+            Debug.Write(iv + "\n");
+        }
+        //Initialize Form
+        public Form1()
+        {
+            InitializeComponent();
+            menuStrip1.Renderer = new ToolStripProfessionalRenderer(new MyColorTable());
+        }
         //refresh listview1
         private async void RefreshListView1()
         {
@@ -78,6 +102,11 @@ namespace NightreignSaveManager
                 listView1.Items[0].Selected = true;
                 listView1.Select(); // Gives focus to the ListView, so selection is visible
             }
+            if (listView1.Items.Count <= 0)
+            {
+                setupText.Visible = true;
+            }
+            else { setupText.Visible = false; }
         }
         //refresh listview2
         private async void RefreshListView2()
@@ -177,6 +206,7 @@ namespace NightreignSaveManager
         {
             backupListView.Enabled = false;
             backupListView.Visible = false;
+            if (listView1.Items.Count <= 0) { setupText.Visible = true; }
             viewBackups.Text = "View Backups";
             EnableAll();
         }
@@ -204,38 +234,11 @@ namespace NightreignSaveManager
                 ctrl.Enabled = true;
             }
         }
-        //decrypt entries
-        public void DecryptEntry(byte[] rawData, int index, int size, int offset, int nameOffset, int footerLength, int dataOffset)
-        {
-            var entry = new BND4Entry
-            {
-                RawData = rawData,
-                Index = index,
-                //OutputFolder = outputFolder,
-                Size = size,
-                Offset = offset,
-                NameOffset = nameOffset,
-                FooterLength = footerLength,
-                DataOffset = dataOffset
-            };
-            var encryptedData = rawData.AsSpan(offset, offset + size);
-            //Extract IV from beginning of encrypted data
-            int iv = BitConverter.ToInt32(encryptedData);
-            Debug.Write(iv + "\n");
-        }
-        //Initialize Form
-        public Form1()
-        {
-            InitializeComponent();
-            menuStrip1.Renderer = new ToolStripProfessionalRenderer(new MyColorTable());
-        }
-
         //Load
         private void Form1_Load(object sender, EventArgs e)
         {
-            //startup
             //check config
-            Helper.Utils.Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, false);
+            Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, false);
             //apply version to label text
             versionLabel.Text = "v" + currentVersion.ToString();
 
@@ -281,102 +284,6 @@ namespace NightreignSaveManager
                 listView1.MouseDown += listView1_MouseDown; //fix later
             }
 
-        }
-
-        //custom colortable
-        public class MyColorTable : ProfessionalColorTable
-        {
-            public override Color ToolStripDropDownBackground
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
-            public override Color ImageMarginGradientBegin
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
-            public override Color ImageMarginGradientMiddle
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
-            public override Color ImageMarginGradientEnd
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
-            public override Color MenuBorder
-            {
-                get
-                {
-                    return Color.WhiteSmoke;
-                }
-            }
-            public override Color MenuItemBorder
-            {
-                get
-                {
-                    return Color.WhiteSmoke;
-                }
-            }
-            public override Color MenuItemSelected
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
-            public override Color MenuStripGradientBegin
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
-            public override Color MenuStripGradientEnd
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
-            public override Color MenuItemSelectedGradientBegin
-            {
-                get
-                {
-                    return Color.FromArgb(100, 80, 80, 80);
-                }
-            }
-            public override Color MenuItemSelectedGradientEnd
-            {
-                get
-                {
-                    return Color.FromArgb(100, 80, 80, 80);
-                }
-            }
-            public override Color MenuItemPressedGradientBegin
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
-            public override Color MenuItemPressedGradientEnd
-            {
-                get
-                {
-                    return Color.FromArgb(100, 220, 220, 220);
-                }
-            }
         }
         //mouse down event on panel for click drag form
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -561,6 +468,11 @@ namespace NightreignSaveManager
         //make active click
         private void makeActiveButton_Click(object obj, EventArgs e)
         {
+            if (listView1.Items.Count <= 0)
+            {
+                MessageBox.Show("There are no files in the archive to make active...");
+                return;
+            }
             var selectedFile = listView1.SelectedItems[0].Text;
             if (backupListView.Visible == true)
             {
@@ -606,7 +518,7 @@ namespace NightreignSaveManager
                 }
             }
         }
-        //bakcup all active click
+        //backup all active click
         private void backupAllButton_Click(object obj, EventArgs e)
         {
             if (backupListView.Visible == true)
@@ -664,9 +576,13 @@ namespace NightreignSaveManager
                 MessageBoxIcon.Information
                 );
         }
-        //rename context click
+        //rename click
         private void renameContextButton_Click(object sender, EventArgs e)
         {
+            if (listView1.Items.Count <= 0)
+            {
+                return;
+            }
             string selectedFilename = listView1.SelectedItems[0].Text;
             string selectedFile = Path.Combine(archivePath, selectedFilename);
             string selectednoExt = Path.GetFileNameWithoutExtension(selectedFilename);
@@ -674,7 +590,7 @@ namespace NightreignSaveManager
             string newFileName = Prompt.ShowDialog("Rename save file: '" + selectednoExt + "'", "Rename File"); //fix this
             if (newFileName != null)
             {
-                File.Copy(Path.Combine(archivePath, selectedFilename), Path.Combine(archivePath,newFileName + selectedExt), true);
+                File.Copy(Path.Combine(archivePath, selectedFilename), Path.Combine(archivePath, newFileName + selectedExt), true);
                 if (File.Exists(selectedFile))
                 {
                     File.Delete(selectedFile);
@@ -727,6 +643,7 @@ namespace NightreignSaveManager
                 DisableAll();
                 backupListView.Enabled = true;
                 backupListView.Visible = true;
+                setupText.Visible = false;
                 viewBackups.Text = "Close Window";
                 RefreshBackupListview();
             }
@@ -799,6 +716,11 @@ namespace NightreignSaveManager
                 CloseBackupWindow();
                 return;
             }
+            if (listView1.Items.Count <= 0)
+            {
+                MessageBox.Show("There are no files in the archive to covnert...");
+                return;
+            }
             string selectedFile = listView1.SelectedItems[0].Text;
             var inputFilePath = Path.Combine(archivePath, selectedFile);
             string fileExt;
@@ -856,6 +778,10 @@ namespace NightreignSaveManager
         //remove click
         private void remove_Click(object sender, EventArgs e)
         {
+            if (listView1.Items.Count <= 0)
+            {
+                return;
+            }
             var selectedFile = listView1.SelectedItems[0].Text;
             var filePath = Path.Combine(archivePath, selectedFile);
             var userInput = MessageBox.Show(
@@ -886,7 +812,7 @@ namespace NightreignSaveManager
                 var file = Path.Combine(path, "nrsc_launcher.exe");
                 if (Path.Exists(path))
                 {
-                    if(!File.Exists(file))
+                    if (!File.Exists(file))
                     {
                         MessageBox.Show("Unable to locate Seemless Co-op Mod for Nightreign");
                         return;
@@ -989,7 +915,7 @@ namespace NightreignSaveManager
                             Debug.WriteLine("Entry " + i + " has invalid size...skipping");
                             continue;
                         }
-                        if (entryDataOffset <=0 || entryDataOffset + entrySize > raw.Length)
+                        if (entryDataOffset <= 0 || entryDataOffset + entrySize > raw.Length)
                         {
                             Debug.WriteLine("Entry " + i + " has invalid data offset...skipping");
                             continue;
@@ -1004,11 +930,11 @@ namespace NightreignSaveManager
                             Debug.WriteLine("Processing entry: " + i);
                             DecryptEntry(raw, i, entrySize, entryDataOffset, entryNameOffset, entryFooterLength, entryDataOffset);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             Debug.Write(ex.Message);
                         }
-                        
+
                     }
                 }
             }
@@ -1021,7 +947,7 @@ namespace NightreignSaveManager
         //change default steamID click
         private void changeSteamID_Click(object sender, EventArgs e)
         {
-            if(steamFolders.Count == 1)
+            if (steamFolders.Count == 1)
             {
                 MessageBox.Show("Sorry, there appears to be only 1 SteamID to use.");
                 return;
@@ -1030,101 +956,4 @@ namespace NightreignSaveManager
             RefreshListView2();
         }
     }
-
-    //steamID selection form class
-    public static class SteamSelect
-    {
-        public static string? ShowDialog(string text, string caption, List<string> path)
-        {
-            System.Windows.Forms.Form steamselect = new System.Windows.Forms.Form();
-            steamselect.Width = 300;
-            steamselect.Height = 200;
-            steamselect.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            steamselect.Text = caption;
-            steamselect.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-
-            System.Windows.Forms.Label textLabel = new System.Windows.Forms.Label();
-            textLabel.Left = 25;
-            textLabel.Top = 20;
-            textLabel.Text = text;
-            textLabel.AutoSize = true;
-
-            System.Windows.Forms.ListView listView = new System.Windows.Forms.ListView();
-            listView.Left = 25;
-            listView.Top = 40;
-            listView.Width = 235;
-            listView.Height = 70;
-            listView.FullRowSelect = true;
-            listView.View = View.Details;
-            listView.Columns.Add("SteamID(s)", listView.Width - 4);
-            listView.AllowColumnReorder = false;
-            listView.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-
-            //populate listview with steamids from folders listed
-            foreach (var folder in path)
-            {
-                string steamID = new DirectoryInfo(folder).Name;
-                ListViewItem item = new ListViewItem(steamID);
-                listView.Items.Add(item);
-                listView.Items[0].Selected = true;
-                listView.Select(); // Gives focus to the ListView, so selection is visible
-            }
-            
-            
-            //confirm button
-            System.Windows.Forms.Button confirmation = new System.Windows.Forms.Button();
-            confirmation.Text = "Select";
-            confirmation.Left = 60;
-            confirmation.Width = 80;
-            confirmation.Top = 120;
-            confirmation.DialogResult = System.Windows.Forms.DialogResult.OK;
-            confirmation.Click += (sender, e) => { steamselect.Close(); };
-
-            //cancel button
-            System.Windows.Forms.Button cancel = new System.Windows.Forms.Button();
-            cancel.Text = "Cancel";
-            cancel.Left = 150;
-            cancel.Width = 80;
-            cancel.Top = 120;
-            cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-
-            //check id button
-            System.Windows.Forms.Button checkID = new System.Windows.Forms.Button();
-            checkID.Text = "CheckID";
-            checkID.Left = 180;
-            checkID.Width = 80;
-            checkID.Top = 10;
-            checkID.Click += (sender, e) => 
-            {
-                string selectedID = new DirectoryInfo(listView.SelectedItems[0].Text).Name;
-                string steamURL = "https://steamcommunity.com/profiles/" + selectedID;
-                Helper.Utils.Helpers.OpenURL(steamURL);
-                Debug.WriteLine(selectedID);
-            };
-
-            //controls add
-            steamselect.Controls.Add(textLabel);
-            steamselect.Controls.Add(listView);
-            steamselect.Controls.Add(confirmation);
-            steamselect.Controls.Add(cancel);
-            steamselect.Controls.Add(checkID);
-            steamselect.AcceptButton = confirmation;
-            steamselect.MinimizeBox = false;
-            steamselect.MaximizeBox = false;
-            steamselect.HelpButton = true;
-            steamselect.HelpButtonClicked += (sender, e) => { Helper.Utils.Helpers.OpenURL("https://help.steampowered.com/en/faqs/view/2816-BE67-5B69-0FEC"); };
-
-
-            System.Windows.Forms.DialogResult result = steamselect.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                return listView.SelectedItems[0].Text;
-            }
-            else
-            {
-                return null;
-            }
-        }
-    }
-
 }
