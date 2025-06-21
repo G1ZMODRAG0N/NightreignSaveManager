@@ -12,11 +12,12 @@ namespace Helper.Utils
         public static void WriteConfig(string root, List<string> folders, string version, string lastUpdate, Form form, bool change)
         {
             //create config file on first run
+            Debug.WriteLine("Checking if config exists...");
             if (!File.Exists(Path.Combine(root, "config.json")) || change)
             {
+                Debug.WriteLine("Creating/Updating config. Setting SteamID...");
                 //set steamid
                 string selectedID = new DirectoryInfo(folders[0]).Name;
-                Debug.WriteLine(selectedID);
                 if (folders == null)
                 {
                     MessageBox.Show("Unable to locate steamID in the save directory. Please ensure Nightreign is properly installed...Exiting.");
@@ -63,12 +64,32 @@ namespace Helper.Utils
             //set up config
             string jsonPath = Path.Combine(root, "config.json");
             string jsonFile = File.ReadAllText(jsonPath);
-            Debug.WriteLine("Checking if config exists...");
             // Get the SteamID value
             steamID = Regex.Match(jsonFile, @"\b\d{17}\b").ToString();//find alternative that does not use regex
-            Debug.Write(steamID + "\n");
+            Debug.WriteLine("Default SteamID set to: " + steamID);
             //set save location path
             Form1.savefilePath = Path.Combine(Form1.baseDir, steamID);
+            //setup paths
+            Form1.archivePath = Path.Combine(Form1.BaseArchivePath, steamID);
+            Form1.backupPath = Path.Combine(Form1.BaseBackupPath, steamID);
+            //set archive and backup paths
+            CheckDirectories();
+        }
+        public static void CheckDirectories()
+        {
+            //create archive directory if none
+            Debug.WriteLine("Checking for archive directory...");
+            if (!Directory.Exists(Form1.archivePath))
+            {
+                Debug.WriteLine("No archive directory detected. Creating: " + Form1.archivePath);
+                Directory.CreateDirectory(Form1.archivePath);
+            }
+            //create backup directory if none
+            if (!Directory.Exists(Form1.backupPath))
+            {
+                Debug.WriteLine("No backup directory detected. Creating: " + Form1.backupPath);
+                Directory.CreateDirectory(Form1.backupPath);
+            }
         }
         //open URL
         public static void OpenURL(string url)

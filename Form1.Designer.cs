@@ -88,6 +88,7 @@
             backupListView = new ListView();
             pictureBox3 = new PictureBox();
             setupText = new Label();
+            fAQToolStripMenuItem = new ToolStripMenuItem();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)closeButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)miniButton).BeginInit();
@@ -275,7 +276,8 @@
             changeSteamProfileIDToolStripMenuItem.ForeColor = SystemColors.Control;
             changeSteamProfileIDToolStripMenuItem.Name = "changeSteamProfileIDToolStripMenuItem";
             changeSteamProfileIDToolStripMenuItem.Size = new Size(201, 22);
-            changeSteamProfileIDToolStripMenuItem.Text = "Change Steam Profile";
+            changeSteamProfileIDToolStripMenuItem.Text = "Select Default SteamID";
+            changeSteamProfileIDToolStripMenuItem.ToolTipText = "Select the default steamid to use. (Lists from available save dir)";
             changeSteamProfileIDToolStripMenuItem.Click += changeSteamID_Click;
             // 
             // launchNightreignToolStripMenuItem
@@ -285,6 +287,7 @@
             launchNightreignToolStripMenuItem.Name = "launchNightreignToolStripMenuItem";
             launchNightreignToolStripMenuItem.Size = new Size(201, 22);
             launchNightreignToolStripMenuItem.Text = "Launch Nightreign";
+            launchNightreignToolStripMenuItem.ToolTipText = "Start start_protected_game.exe";
             launchNightreignToolStripMenuItem.Click += launchVanilla_Click;
             // 
             // launchSeemlessToolStripMenuItem
@@ -294,6 +297,7 @@
             launchSeemlessToolStripMenuItem.Name = "launchSeemlessToolStripMenuItem";
             launchSeemlessToolStripMenuItem.Size = new Size(201, 22);
             launchSeemlessToolStripMenuItem.Text = "Launch Seemless Co-op";
+            launchSeemlessToolStripMenuItem.ToolTipText = "Start Seemless Coop nrsc_launcher.exe";
             launchSeemlessToolStripMenuItem.Click += launchseemless_Click;
             // 
             // exitToolStripMenuItem
@@ -332,6 +336,7 @@
             convertToolStripMenuItem1.Name = "convertToolStripMenuItem1";
             convertToolStripMenuItem1.Size = new Size(141, 22);
             convertToolStripMenuItem1.Text = "Convert";
+            convertToolStripMenuItem1.ToolTipText = "Convert a selected save file .sl2<>.co2";
             convertToolStripMenuItem1.Click += convertSave_Click;
             // 
             // renameToolStripMenuItem
@@ -341,6 +346,7 @@
             renameToolStripMenuItem.Name = "renameToolStripMenuItem";
             renameToolStripMenuItem.Size = new Size(141, 22);
             renameToolStripMenuItem.Text = "Rename";
+            renameToolStripMenuItem.ToolTipText = "Rename a selected game file";
             renameToolStripMenuItem.Click += renameContextButton_Click;
             // 
             // relicsToolStripMenuItem
@@ -350,6 +356,7 @@
             relicsToolStripMenuItem.Name = "relicsToolStripMenuItem";
             relicsToolStripMenuItem.Size = new Size(141, 22);
             relicsToolStripMenuItem.Text = "Edit Relics";
+            relicsToolStripMenuItem.ToolTipText = "Modify existing relics on a selected game ";
             relicsToolStripMenuItem.Click += modifyRelic_Click;
             // 
             // steamIDToolStripMenuItem
@@ -359,6 +366,7 @@
             steamIDToolStripMenuItem.Name = "steamIDToolStripMenuItem";
             steamIDToolStripMenuItem.Size = new Size(141, 22);
             steamIDToolStripMenuItem.Text = "Edit SteamID";
+            steamIDToolStripMenuItem.ToolTipText = "Modify the SteamID attached to the save file";
             // 
             // optionsToolStripMenuItem
             // 
@@ -367,6 +375,7 @@
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             optionsToolStripMenuItem.Size = new Size(117, 22);
             optionsToolStripMenuItem.Text = "Restore";
+            optionsToolStripMenuItem.ToolTipText = "Restore a backed up save file";
             optionsToolStripMenuItem.Click += restoreSaves_Click;
             // 
             // toolStripMenuItem1
@@ -376,12 +385,13 @@
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new Size(117, 22);
             toolStripMenuItem1.Text = "Remove";
+            toolStripMenuItem1.ToolTipText = "Delete a selected save file";
             toolStripMenuItem1.Click += remove_Click;
             // 
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { readmeButton, checkForUpdateToolStripMenuItem, aboutButton });
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { readmeButton, checkForUpdateToolStripMenuItem, fAQToolStripMenuItem, aboutButton });
             helpToolStripMenuItem.ForeColor = Color.WhiteSmoke;
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(44, 35);
@@ -393,7 +403,7 @@
             readmeButton.BackColor = Color.FromArgb(50, 50, 50);
             readmeButton.ForeColor = SystemColors.Control;
             readmeButton.Name = "readmeButton";
-            readmeButton.Size = new Size(171, 22);
+            readmeButton.Size = new Size(180, 22);
             readmeButton.Text = "Readme";
             readmeButton.Click += readmeButton_Click;
             // 
@@ -402,7 +412,7 @@
             checkForUpdateToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             checkForUpdateToolStripMenuItem.ForeColor = SystemColors.Control;
             checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
-            checkForUpdateToolStripMenuItem.Size = new Size(171, 22);
+            checkForUpdateToolStripMenuItem.Size = new Size(180, 22);
             checkForUpdateToolStripMenuItem.Text = "Check for Updates";
             checkForUpdateToolStripMenuItem.Click += checkUpdates_Click;
             // 
@@ -411,7 +421,7 @@
             aboutButton.BackColor = Color.FromArgb(50, 50, 50);
             aboutButton.ForeColor = SystemColors.Control;
             aboutButton.Name = "aboutButton";
-            aboutButton.Size = new Size(171, 22);
+            aboutButton.Size = new Size(180, 22);
             aboutButton.Text = "About";
             aboutButton.Click += aboutButton_Click;
             // 
@@ -426,6 +436,7 @@
             pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox2.TabIndex = 16;
             pictureBox2.TabStop = false;
+            toolTip1.SetToolTip(pictureBox2, "Go to releases");
             pictureBox2.Click += titleLink_Click;
             // 
             // makeActiveButton
@@ -475,6 +486,7 @@
             listView1.Size = new Size(327, 179);
             listView1.Sorting = SortOrder.Ascending;
             listView1.TabIndex = 18;
+            toolTip1.SetToolTip(listView1, "Select an archived item to modify or convert");
             listView1.UseCompatibleStateImageBehavior = false;
             // 
             // contextMenu
@@ -559,6 +571,7 @@
             label1.TabIndex = 22;
             label1.Text = "Game Save Files (read-only)";
             label1.TextAlign = ContentAlignment.TopCenter;
+            toolTip1.SetToolTip(label1, "Game save files are only to provide you an overview of active files. (this section is read-only)");
             // 
             // listView2
             // 
@@ -690,7 +703,7 @@
             backupListView.Location = new Point(21, 147);
             backupListView.MultiSelect = false;
             backupListView.Name = "backupListView";
-            backupListView.Size = new Size(308, 361);
+            backupListView.Size = new Size(301, 361);
             backupListView.Sorting = SortOrder.Ascending;
             backupListView.TabIndex = 31;
             backupListView.UseCompatibleStateImageBehavior = false;
@@ -716,13 +729,21 @@
             setupText.FlatStyle = FlatStyle.Flat;
             setupText.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             setupText.ForeColor = SystemColors.Control;
-            setupText.Location = new Point(54, 226);
+            setupText.Location = new Point(52, 226);
             setupText.Name = "setupText";
             setupText.Size = new Size(240, 101);
             setupText.TabIndex = 34;
             setupText.Text = "ARCHIVE EMPTY\r\nGet started by going to File > Import > Vanilla Save File(s)\r\nIt is also recommened to select 'Backup Saves' as your first action.";
             setupText.TextAlign = ContentAlignment.MiddleCenter;
             setupText.Visible = false;
+            // 
+            // fAQToolStripMenuItem
+            // 
+            fAQToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
+            fAQToolStripMenuItem.ForeColor = SystemColors.Control;
+            fAQToolStripMenuItem.Name = "fAQToolStripMenuItem";
+            fAQToolStripMenuItem.Size = new Size(180, 22);
+            fAQToolStripMenuItem.Text = "FAQ";
             // 
             // Form1
             // 
@@ -838,5 +859,6 @@
         private ToolStripMenuItem convertToolStripMenuItem;
         private ToolStripMenuItem convertToolStripMenuItem1;
         private Label setupText;
+        private ToolStripMenuItem fAQToolStripMenuItem;
     }
 }
