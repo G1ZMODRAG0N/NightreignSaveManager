@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Diagnostics;
 
-namespace SteamID.Select
+namespace NightreignSaveManager.Helpers
 {
     public static class SteamSelect
     {
@@ -71,7 +68,7 @@ namespace SteamID.Select
             {
                 string selectedID = new DirectoryInfo(listView.SelectedItems[0].Text).Name;
                 string steamURL = "https://steamcommunity.com/profiles/" + selectedID;
-                Helper.Utils.Helpers.OpenURL(steamURL);
+                Link.OpenURL(steamURL);
                 Debug.WriteLine(selectedID);
             };
             System.Windows.Forms.ToolTip toolTip = new System.Windows.Forms.ToolTip();
@@ -87,7 +84,7 @@ namespace SteamID.Select
             steamselect.MinimizeBox = false;
             steamselect.MaximizeBox = false;
             steamselect.HelpButton = true;
-            steamselect.HelpButtonClicked += (sender, e) => { Helper.Utils.Helpers.OpenURL("https://help.steampowered.com/en/faqs/view/2816-BE67-5B69-0FEC"); };
+            steamselect.HelpButtonClicked += (sender, e) => { Link.OpenURL("https://help.steampowered.com/en/faqs/view/2816-BE67-5B69-0FEC"); };
 
 
             System.Windows.Forms.DialogResult result = steamselect.ShowDialog();

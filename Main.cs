@@ -1,70 +1,27 @@
-using Custom.ColorTable;
-using Dialog.Prompt;
-using Helper.Utils;
+using NightreignSaveManager.Helpers;
+using NightreignSaveManager.Custom.ColorTable;
 using System.Diagnostics;
 
 namespace NightreignSaveManager
 {
     //main form class
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        //BND4 entry template
-        public class BND4Entry
-        {
-            public byte[] RawData;
-            public int Index;
-            //public string OutputFolder;
-            public int Size;
-            public int Offset;
-            public int NameOffset;
-            public int FooterLength;
-            public int DataOffset;
-        }
 
         //set versioning
-        static string currentVersion = "1.1.3";
-        static string lastUpdated = "06.21.25";
-
-        //setup paths
-        public static string rootPath = AppDomain.CurrentDomain.BaseDirectory;
-        public static string BaseArchivePath = Path.Combine(rootPath, "archive");
-        public static string archivePath = @"";
-        public static string BaseBackupPath = Path.Combine(rootPath, "backup");
-        public static string backupPath = @"";
-        public static string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
-        public static List<string> steamFolders = Directory.GetDirectories(baseDir)
-            .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17).ToList();
-        public static string savefilePath = @"";
+        private static string currentVersion = "1.1.5";
+        private static string lastUpdated = "06.22.25";
 
         //set mouse pos for click-drag move form
         private Point initialMousePosition;
-        //decrypt entries
-        public void DecryptEntry(byte[] rawData, int index, int size, int offset, int nameOffset, int footerLength, int dataOffset)
-        {
-            var entry = new BND4Entry
-            {
-                RawData = rawData,
-                Index = index,
-                //OutputFolder = outputFolder,
-                Size = size,
-                Offset = offset,
-                NameOffset = nameOffset,
-                FooterLength = footerLength,
-                DataOffset = dataOffset
-            };
-            var encryptedData = rawData.AsSpan(offset, offset + size);
-            //Extract IV from beginning of encrypted data
-            int iv = BitConverter.ToInt32(encryptedData);
-            Debug.Write(iv + "\n");
-        }
         //Initialize Form
-        public Form1()
+        public Main()
         {
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new MyColorTable());
             Debug.WriteLine("Initializing...");
             Debug.WriteLine("Current version:" + currentVersion);
-            Debug.WriteLine("Root set to: " + rootPath);
+            Debug.WriteLine("Root set to: " + Dir.rootPath);
         }
         //refresh listview1
         private async void RefreshListView1()
@@ -73,7 +30,7 @@ namespace NightreignSaveManager
             listView1.Cursor = Cursors.WaitCursor;
             await Task.Delay(500);
             listView1.Cursor = Cursors.Default;
-            string[] archiveFiles = Directory.GetFiles(archivePath);
+            string[] archiveFiles = Directory.GetFiles(Dir.archivePath);
             foreach (var file in archiveFiles)
             {
                 string filename = Path.GetFileName(file);
@@ -115,7 +72,7 @@ namespace NightreignSaveManager
         //refresh listview2
         private async void RefreshListView2()
         {
-            Debug.WriteLine("Refreshing ListView2: " + savefilePath);
+            Debug.WriteLine("Refreshing ListView2: " + Dir.savefilePath);
             listView2.Items.Clear();
             listView2.Cursor = Cursors.WaitCursor;
             button6.Cursor = Cursors.WaitCursor;
@@ -124,7 +81,7 @@ namespace NightreignSaveManager
             listView2.Cursor = Cursors.Default;
             button6.Cursor = Cursors.Default;
             viewBackups.Cursor = Cursors.Default;
-            string[] files = Directory.GetFiles(savefilePath);
+            string[] files = Directory.GetFiles(Dir.savefilePath);
             foreach (var file in files)
             {
                 string filename = Path.GetFileName(file);
@@ -168,7 +125,7 @@ namespace NightreignSaveManager
             backupListView.Cursor = Cursors.WaitCursor;
             await Task.Delay(500);
             backupListView.Cursor = Cursors.Default;
-            string[] files = Directory.GetFiles(backupPath);
+            string[] files = Directory.GetFiles(Dir.backupPath);
             foreach (var file in files)
             {
                 string filename = Path.GetFileName(file);
@@ -244,7 +201,7 @@ namespace NightreignSaveManager
             //apply version to label text
             versionLabel.Text = "v" + currentVersion.ToString();
             //check/update config
-            Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, false);
+            Config.Write(Dir.rootPath, Dir.steamFolders, currentVersion, lastUpdated, this, false);
 
             //setup listview1
             listView1.View = View.Details;
@@ -347,9 +304,9 @@ namespace NightreignSaveManager
         {
             string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
 
-            if (Directory.Exists(savefilePath))
+            if (Directory.Exists(Dir.savefilePath))
             {
-                Helpers.OpenDir(savefilePath);
+                Link.OpenDir(Dir.savefilePath);
             }
             else
             {
@@ -359,9 +316,9 @@ namespace NightreignSaveManager
         //open archive dir
         private void openArchiveDir_Click(Object sender, EventArgs e)
         {
-            if (Directory.Exists(archivePath))
+            if (Directory.Exists(Dir.archivePath))
             {
-                Helpers.OpenDir(archivePath);
+                Link.OpenDir(Dir.archivePath);
             }
             else
             {
@@ -371,9 +328,9 @@ namespace NightreignSaveManager
         //open backup dir
         private void openBackupDir_Click(Object sender, EventArgs e)
         {
-            if (Directory.Exists(backupPath))
+            if (Directory.Exists(Dir.backupPath))
             {
-                Helpers.OpenDir(backupPath);
+                Link.OpenDir(Dir.backupPath);
             }
             else
             {
@@ -387,7 +344,7 @@ namespace NightreignSaveManager
             {
                 openFileDialog.Title = "Select a file(s)";
                 openFileDialog.Multiselect = true;
-                openFileDialog.InitialDirectory = savefilePath;
+                openFileDialog.InitialDirectory = Dir.savefilePath;
                 openFileDialog.Filter = "Save Files (*.sl2)|*.sl2";
                 //if ok selected
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -397,7 +354,7 @@ namespace NightreignSaveManager
                     if (newFileName != null)
                     {
                         string selectedFile = openFileDialog.SafeFileName;
-                        File.Copy(openFileDialog.FileName, archivePath + @"\" + newFileName + ".sl2");
+                        File.Copy(openFileDialog.FileName, Dir.archivePath + @"\" + newFileName + ".sl2");
                         RefreshListView1();
                         // Now `selectedFile` contains the full file path
                         MessageBox.Show(selectedFile + " has been imported as: " + newFileName);
@@ -428,7 +385,7 @@ namespace NightreignSaveManager
                     if (newFileName != null)
                     {
                         string selectedFile = openFileDialog.SafeFileName;
-                        File.Copy(openFileDialog.FileName, archivePath + @"\" + newFileName + ".co2");
+                        File.Copy(openFileDialog.FileName, Dir.archivePath + @"\" + newFileName + ".co2");
                         RefreshListView1();
                         // Now `selectedFile` contains the full file path
                         MessageBox.Show(selectedFile + " has been imported as: " + newFileName);
@@ -495,7 +452,7 @@ namespace NightreignSaveManager
                     );
                 if (userInput == DialogResult.Yes)
                 {
-                    File.Copy(Path.Combine(archivePath, selectedFile), Path.Combine(savefilePath, "NR0000" + outPutFileType), true);
+                    File.Copy(Path.Combine(Dir.archivePath, selectedFile), Path.Combine(Dir.savefilePath, "NR0000" + outPutFileType), true);
                     RefreshListView1();
                     RefreshListView2();
                     MessageBox.Show(
@@ -530,8 +487,8 @@ namespace NightreignSaveManager
                     {
                         continue;
                     }
-                    var filePath = Path.Combine(savefilePath, item.Text);
-                    var backupFilePath = Path.Combine(backupPath, item.Text + ".bak");
+                    var filePath = Path.Combine(Dir.savefilePath, item.Text);
+                    var backupFilePath = Path.Combine(Dir.backupPath, item.Text + ".bak");
                     File.Copy(filePath, backupFilePath, true);
                     // Now `selectedFile` contains the full file path
                 }
@@ -545,10 +502,10 @@ namespace NightreignSaveManager
         //readme button
         private void readmeButton_Click(object sender, EventArgs e)
         {
-            var readmePath = Path.Combine(rootPath, "README.md");
+            var readmePath = Path.Combine(Dir.rootPath, "README.md");
             if (File.Exists(readmePath))
             {
-                Helpers.OpenNote(readmePath);
+                Link.OpenNote(readmePath);
             }
             else
             {
@@ -573,13 +530,13 @@ namespace NightreignSaveManager
                 return;
             }
             string selectedFilename = listView1.SelectedItems[0].Text;
-            string selectedFile = Path.Combine(archivePath, selectedFilename);
+            string selectedFile = Path.Combine(Dir.archivePath, selectedFilename);
             string selectednoExt = Path.GetFileNameWithoutExtension(selectedFilename);
             string selectedExt = Path.GetExtension(selectedFilename);
             string newFileName = Prompt.ShowDialog("Rename save file: '" + selectednoExt + "'", "Rename File"); //fix this
             if (newFileName != null)
             {
-                File.Copy(Path.Combine(archivePath, selectedFilename), Path.Combine(archivePath, newFileName + selectedExt), true);
+                File.Copy(Path.Combine(Dir.archivePath, selectedFilename), Path.Combine(Dir.archivePath, newFileName + selectedExt), true);
                 if (File.Exists(selectedFile))
                 {
                     File.Delete(selectedFile);
@@ -591,8 +548,8 @@ namespace NightreignSaveManager
         private void bakcupContextButton_Click(object sender, EventArgs e)
         {
             string selectedFilename = listView1.SelectedItems[0].Text;
-            string backupSourceFile = Path.Combine(archivePath, selectedFilename);
-            string backupOutputFile = Path.Combine(backupPath, selectedFilename + ".bak");
+            string backupSourceFile = Path.Combine(Dir.archivePath, selectedFilename);
+            string backupOutputFile = Path.Combine(Dir.backupPath, selectedFilename + ".bak");
             if (File.Exists(backupOutputFile))
             {
                 var userInput = MessageBox.Show("Overwrite existing backup file?", "File Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -654,7 +611,7 @@ namespace NightreignSaveManager
                 }
                 openFileDialog.Title = "Select a file(s)";
                 openFileDialog.Multiselect = true;
-                openFileDialog.InitialDirectory = backupPath;
+                openFileDialog.InitialDirectory = Dir.backupPath;
                 openFileDialog.Filter = "Backup Save Files (*.bak)|*.bak";
                 //if ok selected
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -685,7 +642,7 @@ namespace NightreignSaveManager
                         );
                     if (userInput == DialogResult.Yes)
                     {
-                        File.Copy(openFileDialog.FileName, savefilePath + @"\" + outputFile, true);
+                        File.Copy(openFileDialog.FileName, Dir.savefilePath + @"\" + outputFile, true);
                         RefreshListView2();
                         MessageBox.Show(
                             selectedFile + " has been restored and set as your 'active'" + typeOfSave + " save file",
@@ -711,7 +668,7 @@ namespace NightreignSaveManager
                 return;
             }
             string selectedFile = listView1.SelectedItems[0].Text;
-            var inputFilePath = Path.Combine(archivePath, selectedFile);
+            var inputFilePath = Path.Combine(Dir.archivePath, selectedFile);
             string fileExt;
             string fileType;
 
@@ -756,13 +713,13 @@ namespace NightreignSaveManager
         private void titleLink_Click(object sender, EventArgs e)
         {
             CloseBackupWindow();
-            Helpers.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
+            Link.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
 
         }
         //ko-fi click
         private void kofi_Click(object sender, EventArgs e)
         {
-            Helpers.OpenURL("https://ko-fi.com/g1zmo_drag0n");
+            Link.OpenURL("https://ko-fi.com/g1zmo_drag0n");
         }
         //remove click
         private void remove_Click(object sender, EventArgs e)
@@ -772,7 +729,7 @@ namespace NightreignSaveManager
                 return;
             }
             var selectedFile = listView1.SelectedItems[0].Text;
-            var filePath = Path.Combine(archivePath, selectedFile);
+            var filePath = Path.Combine(Dir.archivePath, selectedFile);
             var userInput = MessageBox.Show(
                 "Delete selected save file: " + selectedFile + "?",
                 "Remove",
@@ -788,7 +745,7 @@ namespace NightreignSaveManager
         //check updates click
         private void checkUpdates_Click(object sender, EventArgs e)
         {
-            Helpers.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
+            Link.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
         }
         //seemless coop click
         private void launchseemless_Click(object sender, EventArgs e)
@@ -806,7 +763,7 @@ namespace NightreignSaveManager
                         MessageBox.Show("Unable to locate Seemless Co-op Mod for Nightreign");
                         return;
                     }
-                    Helpers.OpenSeemless(path);
+                    Link.OpenSeemless(path);
                 }
             }
 
@@ -827,127 +784,31 @@ namespace NightreignSaveManager
                         MessageBox.Show("Unable to locate Nightreign executable.");
                         return;
                     }
-                    Helpers.OpenVanilla(path);
+                    Link.OpenVanilla(path);
                 }
-            }
-
-        }
-        //relics
-        private void modifyRelic_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //define raw
-                byte[] raw;
-                //define 4 byte sequence BND4
-                byte[] BND4 = new byte[] { (byte)'B', (byte)'N', (byte)'D', (byte)'4' };
-                var filePath = Path.Combine(archivePath, listView1.SelectedItems[0].Text);
-                if (listView1.SelectedItems[0] != null)
-                {
-                    raw = File.ReadAllBytes(filePath);
-                    Debug.WriteLine("File read successfully. Length: " + raw.Length);
-
-                    //confirm if valid save file; compare first four bytes to BND4
-                    if (!raw.AsSpan(0, 4).SequenceEqual(BND4))
-                    {
-                        Debug.WriteLine("Header does not match BND4. Not a valid SL2 file.");
-                        MessageBox.Show("Not a valid save file.");
-                        return;
-                    }
-                    else
-                    {
-                        Debug.WriteLine("BND4 header found");
-                    }
-
-                    int numBND4Entries = BitConverter.ToInt32(raw, 12); //four bytes starting at offset 12 (little-endian by default)
-                    Debug.WriteLine("Number of BND4 entries: " + numBND4Entries.ToString());
-                    byte unicodeByte = raw[48];
-                    bool unicodeFlag = unicodeByte.Equals(1);
-                    Debug.WriteLine("Unicode flag: " + unicodeFlag);
-
-                    int BND4HeaderLength = 64;
-                    int BND4EntryHeaderLength = 32;
-                    List<string> BND4Entries = new List<string>();
-                    Debug.WriteLine("Now processing " + numBND4Entries + " entries...");
-
-                    //process all bnd4 entries
-                    for (int i = 0; i < numBND4Entries; i++)
-                    {
-                        //define pos
-                        int position = BND4HeaderLength + (BND4EntryHeaderLength * i);
-                        //define end pos
-                        int endPosition = position + BND4EntryHeaderLength;
-                        //if poistion and entry header is greater than raw data skip
-                        if ((position + BND4EntryHeaderLength) > raw.Length)
-                        {
-                            Debug.WriteLine("File is too small to read entry " + i);
-                            break;
-                        }
-                        //if entry header does not match b'\x40\x00\x00\x00\xff\xff\xff\xff' at 0:8 magic value
-                        byte[] entryHeader = raw.Skip(position).Take(BND4EntryHeaderLength).ToArray();
-                        byte[] magicValue = new byte[] { 0x40, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF };
-                        byte[] slice = new byte[4];
-                        if (!entryHeader.Take(8).SequenceEqual(magicValue))
-                        {
-                            Debug.WriteLine($"Warning: Entry header #{i} does not match expected magic value - skipping");
-                            continue;
-                        }
-
-                        int entrySize = BitConverter.ToInt32(entryHeader, 8);
-                        int entryDataOffset = BitConverter.ToInt32(entryHeader, 16);
-                        int entryNameOffset = BitConverter.ToInt32(entryHeader, 20);
-                        int entryFooterLength = BitConverter.ToInt32(entryHeader, 24);
-
-                        //validity check
-                        if (entrySize <= 0 || entrySize > 1000000000)
-                        {
-                            Debug.WriteLine("Entry " + i + " has invalid size...skipping");
-                            continue;
-                        }
-                        if (entryDataOffset <= 0 || entryDataOffset + entrySize > raw.Length)
-                        {
-                            Debug.WriteLine("Entry " + i + " has invalid data offset...skipping");
-                            continue;
-                        }
-                        if (entryNameOffset <= 0 || entryNameOffset >= raw.Length)
-                        {
-                            Debug.WriteLine("Entry " + i + " has invalid name offset...skipping");
-                            continue;
-                        }
-                        try
-                        {
-                            Debug.WriteLine("Processing entry: " + i);
-                            DecryptEntry(raw, i, entrySize, entryDataOffset, entryNameOffset, entryFooterLength, entryDataOffset);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.Write(ex.Message);
-                        }
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error reading file: " + ex.Message);
             }
 
         }
         //change default steamID click
         private void changeSteamID_Click(object sender, EventArgs e)
         {
-            if (steamFolders.Count == 1)
+            if (Dir.steamFolders.Count == 1)
             {
                 MessageBox.Show("Sorry, there appears to be only 1 SteamID to use.");
                 return;
             }
-            Helpers.WriteConfig(rootPath, steamFolders, currentVersion, lastUpdated, this, true);
+            Config.Write(Dir.rootPath, Dir.steamFolders, currentVersion, lastUpdated, this, true);
             RefreshListView2();
         }
         //faq click
         private void faxItem_Click(object sender, EventArgs e)
         {
-            Helpers.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager?tab=readme-ov-file#faq");
+            Link.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager?tab=readme-ov-file#faq");
+        }
+        //decrypt test button click
+        private void DecryptButton_Click(object sender, EventArgs e)
+        {
+            DataProcessor.Decrypt(Path.Combine(Dir.archivePath, listView1.SelectedItems[0].Text));
         }
     }
 }

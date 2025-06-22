@@ -1,6 +1,6 @@
-﻿using System;
+﻿//
 
-namespace Custom.ColorTable
+namespace NightreignSaveManager.Custom.ColorTable
 {
     public class MyColorTable : ProfessionalColorTable
     {

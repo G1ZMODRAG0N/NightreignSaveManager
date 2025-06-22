@@ -1,6 +1,6 @@
 ﻿namespace NightreignSaveManager
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             toolStripSeparator1 = new ToolStripSeparator();
             fileToolStripMenuItem = new ToolStripMenuItem();
             panel1 = new Panel();
@@ -86,6 +86,7 @@
             toolTip1 = new ToolTip(components);
             viewBackups = new Button();
             button2 = new Button();
+            button3 = new Button();
             backupListView = new ListView();
             pictureBox3 = new PictureBox();
             setupText = new Label();
@@ -326,7 +327,7 @@
             modifyToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convertToolStripMenuItem1, renameToolStripMenuItem, relicsToolStripMenuItem, steamIDToolStripMenuItem });
             modifyToolStripMenuItem.ForeColor = SystemColors.Control;
             modifyToolStripMenuItem.Name = "modifyToolStripMenuItem";
-            modifyToolStripMenuItem.Size = new Size(180, 22);
+            modifyToolStripMenuItem.Size = new Size(117, 22);
             modifyToolStripMenuItem.Text = "Modify";
             // 
             // convertToolStripMenuItem1
@@ -358,7 +359,6 @@
             relicsToolStripMenuItem.Size = new Size(141, 22);
             relicsToolStripMenuItem.Text = "Edit Relics";
             relicsToolStripMenuItem.ToolTipText = "Modify existing relics on a selected game ";
-            relicsToolStripMenuItem.Click += modifyRelic_Click;
             // 
             // steamIDToolStripMenuItem
             // 
@@ -375,7 +375,7 @@
             optionsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             optionsToolStripMenuItem.ForeColor = SystemColors.Control;
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(180, 22);
+            optionsToolStripMenuItem.Size = new Size(117, 22);
             optionsToolStripMenuItem.Text = "Restore";
             optionsToolStripMenuItem.ToolTipText = "Restore a backed up save file";
             optionsToolStripMenuItem.Click += restoreSaves_Click;
@@ -385,7 +385,7 @@
             toolStripMenuItem1.BackColor = Color.FromArgb(50, 50, 50);
             toolStripMenuItem1.ForeColor = SystemColors.Control;
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(180, 22);
+            toolStripMenuItem1.Size = new Size(117, 22);
             toolStripMenuItem1.Text = "Remove";
             toolStripMenuItem1.ToolTipText = "Delete a selected save file";
             toolStripMenuItem1.Click += remove_Click;
@@ -405,7 +405,7 @@
             readmeButton.BackColor = Color.FromArgb(50, 50, 50);
             readmeButton.ForeColor = SystemColors.Control;
             readmeButton.Name = "readmeButton";
-            readmeButton.Size = new Size(180, 22);
+            readmeButton.Size = new Size(171, 22);
             readmeButton.Text = "Readme";
             readmeButton.Click += readmeButton_Click;
             // 
@@ -414,7 +414,7 @@
             checkForUpdateToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             checkForUpdateToolStripMenuItem.ForeColor = SystemColors.Control;
             checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
-            checkForUpdateToolStripMenuItem.Size = new Size(180, 22);
+            checkForUpdateToolStripMenuItem.Size = new Size(171, 22);
             checkForUpdateToolStripMenuItem.Text = "Check for Updates";
             checkForUpdateToolStripMenuItem.Click += checkUpdates_Click;
             // 
@@ -423,7 +423,7 @@
             fAQToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             fAQToolStripMenuItem.ForeColor = SystemColors.Control;
             fAQToolStripMenuItem.Name = "fAQToolStripMenuItem";
-            fAQToolStripMenuItem.Size = new Size(180, 22);
+            fAQToolStripMenuItem.Size = new Size(171, 22);
             fAQToolStripMenuItem.Text = "FAQ";
             fAQToolStripMenuItem.Click += faxItem_Click;
             // 
@@ -432,7 +432,7 @@
             aboutButton.BackColor = Color.FromArgb(50, 50, 50);
             aboutButton.ForeColor = SystemColors.Control;
             aboutButton.Name = "aboutButton";
-            aboutButton.Size = new Size(180, 22);
+            aboutButton.Size = new Size(171, 22);
             aboutButton.Text = "About";
             aboutButton.Click += aboutButton_Click;
             // 
@@ -533,13 +533,14 @@
             // 
             // relicsToolStripMenuItem1
             // 
+            relicsToolStripMenuItem1.Enabled = false;
             relicsToolStripMenuItem1.Name = "relicsToolStripMenuItem1";
             relicsToolStripMenuItem1.Size = new Size(141, 22);
             relicsToolStripMenuItem1.Text = "Edit Relics";
-            relicsToolStripMenuItem1.Click += modifyRelic_Click;
             // 
             // changeSteamIDToolStripMenuItem
             // 
+            changeSteamIDToolStripMenuItem.Enabled = false;
             changeSteamIDToolStripMenuItem.Name = "changeSteamIDToolStripMenuItem";
             changeSteamIDToolStripMenuItem.Size = new Size(141, 22);
             changeSteamIDToolStripMenuItem.Text = "Edit SteamID";
@@ -704,6 +705,22 @@
             button2.UseVisualStyleBackColor = false;
             button2.Click += refreshList1_Click;
             // 
+            // button3
+            // 
+            button3.AutoSize = true;
+            button3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button3.BackColor = Color.FromArgb(80, 80, 80);
+            button3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button3.ForeColor = Color.Black;
+            button3.Location = new Point(131, 531);
+            button3.Name = "button3";
+            button3.Size = new Size(63, 27);
+            button3.TabIndex = 35;
+            button3.Text = "Decrypt";
+            toolTip1.SetToolTip(button3, "View list of backup files");
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += DecryptButton_Click;
+            // 
             // backupListView
             // 
             backupListView.BackColor = SystemColors.Menu;
@@ -755,6 +772,7 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(350, 570);
+            Controls.Add(button3);
             Controls.Add(backupListView);
             Controls.Add(setupText);
             Controls.Add(button2);
@@ -863,5 +881,6 @@
         private ToolStripMenuItem convertToolStripMenuItem1;
         private Label setupText;
         private ToolStripMenuItem fAQToolStripMenuItem;
+        private Button button3;
     }
 }
