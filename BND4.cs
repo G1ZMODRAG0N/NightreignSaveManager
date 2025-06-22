@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace Models
 {
@@ -12,7 +9,7 @@ namespace Models
         public int Size { get; }
         public int DataOffset { get; }
         public int FooterLength { get; }
-        public string Name => $"ELDEN_RING_NR_DATA_{Index:00}";
+        public string Name => $"ER_NR_DATA_{Index:00}";
         public bool IsDecrypted { get; private set; }
 
         private const int IV_SIZE = 16;

@@ -4,17 +4,14 @@ using System.Diagnostics;
 
 namespace NightreignSaveManager
 {
-    //main form class
     public partial class Main : Form
     {
-
-        //set versioning
         private static string currentVersion = "1.1.5";
+
         private static string lastUpdated = "06.22.25";
 
-        //set mouse pos for click-drag move form
         private Point initialMousePosition;
-        //Initialize Form
+
         public Main()
         {
             InitializeComponent();
@@ -66,8 +63,21 @@ namespace NightreignSaveManager
             if (listView1.Items.Count <= 0)
             {
                 setupText.Visible = true;
+                convertToolStrip.Enabled = false;
+                renameToolStrip.Enabled = false;
+                removeToolStrip.Enabled = false;
+                duplicateToolStrip.Enabled = false;
+                steamIDToolStrip.Enabled = false;
             }
-            else { setupText.Visible = false; }
+            else 
+            {
+                setupText.Visible = false;
+                convertToolStrip.Enabled = true;
+                renameToolStrip.Enabled = true;
+                removeToolStrip.Enabled = true;
+                duplicateToolStrip.Enabled = true;
+                steamIDToolStrip.Enabled = true;
+            }
         }
         //refresh listview2
         private async void RefreshListView2()
@@ -196,21 +206,23 @@ namespace NightreignSaveManager
             }
         }
         //Load
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            //apply version to label text
             versionLabel.Text = "v" + currentVersion.ToString();
-            //check/update config
+
             Config.Write(Dir.rootPath, Dir.steamFolders, currentVersion, lastUpdated, this, false);
 
-            //setup listview1
             listView1.View = View.Details;
             listView1.Columns.Add("Filename", 150);
             listView1.Columns.Add("Type", 60);
             listView1.Columns.Add("Last Modified", 100);
+            listView1.ContextMenuStrip = null;//override contextstrip for listview
             RefreshListView1();
+            if (listView1_MouseDown != null)
+            {
+                listView1.MouseDown += listView1_MouseDown; //fix later
+            }
 
-            //setup listview2
             listView2.View = View.Details;
             listView2.Columns.Add("Filename", 100);
             listView2.Columns.Add("Type", 60);
@@ -219,20 +231,11 @@ namespace NightreignSaveManager
             listView2.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.HeaderSize);
             RefreshListView2();
 
-            //setup backup listview
             backupListView.View = View.Details;
             backupListView.Columns.Add("Filename", 100);
             backupListView.Columns.Add("Type", 60);
             backupListView.Columns.Add("Last Modified", 130);
             RefreshBackupListview();
-
-            //override contextstrip for listview
-            listView1.ContextMenuStrip = null;
-            //apply to mousedown event
-            if (listView1_MouseDown != null)
-            {
-                listView1.MouseDown += listView1_MouseDown; //fix later
-            }
 
         }
         //mouse down event on panel for click drag form
@@ -419,6 +422,11 @@ namespace NightreignSaveManager
                 MessageBox.Show("There are no files in the archive to make active...");
                 return;
             }
+            else if (listView1.SelectedItems.Count <= 0)
+            {
+                MessageBox.Show("There is no file selected...");
+                return;
+            }
             var selectedFile = listView1.SelectedItems[0].Text;
             if (backupListView.Visible == true)
             {
@@ -527,6 +535,12 @@ namespace NightreignSaveManager
         {
             if (listView1.Items.Count <= 0)
             {
+                MessageBox.Show("There are no files in the archive to rename...");
+                return;
+            }
+            else if (listView1.SelectedItems.Count <= 0)
+            {
+                MessageBox.Show("There is no file selected...");
                 return;
             }
             string selectedFilename = listView1.SelectedItems[0].Text;
@@ -545,7 +559,7 @@ namespace NightreignSaveManager
             }
         }
         //backup context click
-        private void bakcupContextButton_Click(object sender, EventArgs e)
+        private void backupContextButton_Click(object sender, EventArgs e)
         {
             string selectedFilename = listView1.SelectedItems[0].Text;
             string backupSourceFile = Path.Combine(Dir.archivePath, selectedFilename);
@@ -664,7 +678,12 @@ namespace NightreignSaveManager
             }
             if (listView1.Items.Count <= 0)
             {
-                MessageBox.Show("There are no files in the archive to covnert...");
+                MessageBox.Show("There are no files in the archive to make convert...");
+                return;
+            }
+            else if (listView1.SelectedItems.Count <= 0)
+            {
+                MessageBox.Show("There is no file selected...");
                 return;
             }
             string selectedFile = listView1.SelectedItems[0].Text;
@@ -726,6 +745,12 @@ namespace NightreignSaveManager
         {
             if (listView1.Items.Count <= 0)
             {
+                MessageBox.Show("There are no files in the archive to remove...");
+                return;
+            }
+            else if (listView1.SelectedItems.Count <= 0)
+            {
+                MessageBox.Show("There is no file selected...");
                 return;
             }
             var selectedFile = listView1.SelectedItems[0].Text;
@@ -808,7 +833,7 @@ namespace NightreignSaveManager
         //decrypt test button click
         private void DecryptButton_Click(object sender, EventArgs e)
         {
-            DataProcessor.Decrypt(Path.Combine(Dir.archivePath, listView1.SelectedItems[0].Text));
+            Data.Decrypt(Path.Combine(Dir.archivePath, listView1.SelectedItems[0].Text));
         }
     }
 }

@@ -49,14 +49,17 @@
             launchNightreignToolStripMenuItem = new ToolStripMenuItem();
             launchSeemlessToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            renameToolStrip = new ToolStripMenuItem();
+            duplicateToolStrip = new ToolStripMenuItem();
+            removeToolStrip = new ToolStripMenuItem();
             toolsToolStripMenuItem = new ToolStripMenuItem();
             modifyToolStripMenuItem = new ToolStripMenuItem();
-            convertToolStripMenuItem1 = new ToolStripMenuItem();
-            renameToolStripMenuItem = new ToolStripMenuItem();
+            convertToolStrip = new ToolStripMenuItem();
             relicsToolStripMenuItem = new ToolStripMenuItem();
-            steamIDToolStripMenuItem = new ToolStripMenuItem();
+            steamIDToolStrip = new ToolStripMenuItem();
             optionsToolStripMenuItem = new ToolStripMenuItem();
-            toolStripMenuItem1 = new ToolStripMenuItem();
+            backupSaveFilesToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             readmeButton = new ToolStripMenuItem();
             checkForUpdateToolStripMenuItem = new ToolStripMenuItem();
@@ -72,8 +75,9 @@
             convertToolStripMenuItem = new ToolStripMenuItem();
             relicsToolStripMenuItem1 = new ToolStripMenuItem();
             changeSteamIDToolStripMenuItem = new ToolStripMenuItem();
-            renameToolStripMenuItem1 = new ToolStripMenuItem();
             backupToolStripMenuItem = new ToolStripMenuItem();
+            duplicateToolStripMenuItem = new ToolStripMenuItem();
+            renameToolStripMenuItem = new ToolStripMenuItem();
             removeToolStripMenuItem = new ToolStripMenuItem();
             refreshToolTip = new ToolStripMenuItem();
             label1 = new Label();
@@ -86,7 +90,6 @@
             toolTip1 = new ToolTip(components);
             viewBackups = new Button();
             button2 = new Button();
-            button3 = new Button();
             backupListView = new ListView();
             pictureBox3 = new PictureBox();
             setupText = new Label();
@@ -179,7 +182,7 @@
             menuStrip1.AutoSize = false;
             menuStrip1.BackColor = Color.FromArgb(50, 50, 50);
             menuStrip1.Dock = DockStyle.None;
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem1, toolsToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem1, toolStripMenuItem1, toolsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(40, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(0);
@@ -311,10 +314,45 @@
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += pictureBox1_Click_1;
             // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { renameToolStrip, duplicateToolStrip, removeToolStrip });
+            toolStripMenuItem1.ForeColor = Color.WhiteSmoke;
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(39, 35);
+            toolStripMenuItem1.Text = "Edit";
+            // 
+            // renameToolStrip
+            // 
+            renameToolStrip.BackColor = Color.FromArgb(50, 50, 50);
+            renameToolStrip.ForeColor = SystemColors.Control;
+            renameToolStrip.Name = "renameToolStrip";
+            renameToolStrip.Size = new Size(180, 22);
+            renameToolStrip.Text = "Rename";
+            renameToolStrip.Click += renameContextButton_Click;
+            // 
+            // duplicateToolStrip
+            // 
+            duplicateToolStrip.BackColor = Color.FromArgb(50, 50, 50);
+            duplicateToolStrip.Enabled = false;
+            duplicateToolStrip.ForeColor = SystemColors.Control;
+            duplicateToolStrip.Name = "duplicateToolStrip";
+            duplicateToolStrip.Size = new Size(180, 22);
+            duplicateToolStrip.Text = "Duplicate";
+            // 
+            // removeToolStrip
+            // 
+            removeToolStrip.BackColor = Color.FromArgb(50, 50, 50);
+            removeToolStrip.ForeColor = SystemColors.Control;
+            removeToolStrip.Name = "removeToolStrip";
+            removeToolStrip.Size = new Size(180, 22);
+            removeToolStrip.Text = "Remove";
+            removeToolStrip.Click += remove_Click;
+            // 
             // toolsToolStripMenuItem
             // 
             toolsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { modifyToolStripMenuItem, optionsToolStripMenuItem, toolStripMenuItem1 });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { modifyToolStripMenuItem, optionsToolStripMenuItem, backupSaveFilesToolStripMenuItem });
             toolsToolStripMenuItem.ForeColor = Color.WhiteSmoke;
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(61, 35);
@@ -324,31 +362,21 @@
             // modifyToolStripMenuItem
             // 
             modifyToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            modifyToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convertToolStripMenuItem1, renameToolStripMenuItem, relicsToolStripMenuItem, steamIDToolStripMenuItem });
+            modifyToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convertToolStrip, relicsToolStripMenuItem, steamIDToolStrip });
             modifyToolStripMenuItem.ForeColor = SystemColors.Control;
             modifyToolStripMenuItem.Name = "modifyToolStripMenuItem";
-            modifyToolStripMenuItem.Size = new Size(117, 22);
+            modifyToolStripMenuItem.Size = new Size(149, 22);
             modifyToolStripMenuItem.Text = "Modify";
             // 
-            // convertToolStripMenuItem1
+            // convertToolStrip
             // 
-            convertToolStripMenuItem1.BackColor = Color.FromArgb(50, 50, 50);
-            convertToolStripMenuItem1.ForeColor = SystemColors.Control;
-            convertToolStripMenuItem1.Name = "convertToolStripMenuItem1";
-            convertToolStripMenuItem1.Size = new Size(141, 22);
-            convertToolStripMenuItem1.Text = "Convert";
-            convertToolStripMenuItem1.ToolTipText = "Convert a selected save file .sl2<>.co2";
-            convertToolStripMenuItem1.Click += convertSave_Click;
-            // 
-            // renameToolStripMenuItem
-            // 
-            renameToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            renameToolStripMenuItem.ForeColor = SystemColors.Control;
-            renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            renameToolStripMenuItem.Size = new Size(141, 22);
-            renameToolStripMenuItem.Text = "Rename";
-            renameToolStripMenuItem.ToolTipText = "Rename a selected game file";
-            renameToolStripMenuItem.Click += renameContextButton_Click;
+            convertToolStrip.BackColor = Color.FromArgb(50, 50, 50);
+            convertToolStrip.ForeColor = SystemColors.Control;
+            convertToolStrip.Name = "convertToolStrip";
+            convertToolStrip.Size = new Size(141, 22);
+            convertToolStrip.Text = "Convert";
+            convertToolStrip.ToolTipText = "Convert a selected save file .sl2<>.co2";
+            convertToolStrip.Click += convertSave_Click;
             // 
             // relicsToolStripMenuItem
             // 
@@ -360,35 +388,34 @@
             relicsToolStripMenuItem.Text = "Edit Relics";
             relicsToolStripMenuItem.ToolTipText = "Modify existing relics on a selected game ";
             // 
-            // steamIDToolStripMenuItem
+            // steamIDToolStrip
             // 
-            steamIDToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            steamIDToolStripMenuItem.Enabled = false;
-            steamIDToolStripMenuItem.ForeColor = SystemColors.Control;
-            steamIDToolStripMenuItem.Name = "steamIDToolStripMenuItem";
-            steamIDToolStripMenuItem.Size = new Size(141, 22);
-            steamIDToolStripMenuItem.Text = "Edit SteamID";
-            steamIDToolStripMenuItem.ToolTipText = "Modify the SteamID attached to the save file";
+            steamIDToolStrip.BackColor = Color.FromArgb(50, 50, 50);
+            steamIDToolStrip.ForeColor = SystemColors.Control;
+            steamIDToolStrip.Name = "steamIDToolStrip";
+            steamIDToolStrip.Size = new Size(141, 22);
+            steamIDToolStrip.Text = "Edit SteamID";
+            steamIDToolStrip.ToolTipText = "Modify the SteamID attached to the save file";
+            steamIDToolStrip.Click += DecryptButton_Click;
             // 
             // optionsToolStripMenuItem
             // 
             optionsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             optionsToolStripMenuItem.ForeColor = SystemColors.Control;
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(117, 22);
-            optionsToolStripMenuItem.Text = "Restore";
+            optionsToolStripMenuItem.Size = new Size(149, 22);
+            optionsToolStripMenuItem.Text = "Restore a Save";
             optionsToolStripMenuItem.ToolTipText = "Restore a backed up save file";
             optionsToolStripMenuItem.Click += restoreSaves_Click;
             // 
-            // toolStripMenuItem1
+            // backupSaveFilesToolStripMenuItem
             // 
-            toolStripMenuItem1.BackColor = Color.FromArgb(50, 50, 50);
-            toolStripMenuItem1.ForeColor = SystemColors.Control;
-            toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(117, 22);
-            toolStripMenuItem1.Text = "Remove";
-            toolStripMenuItem1.ToolTipText = "Delete a selected save file";
-            toolStripMenuItem1.Click += remove_Click;
+            backupSaveFilesToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
+            backupSaveFilesToolStripMenuItem.ForeColor = SystemColors.Control;
+            backupSaveFilesToolStripMenuItem.Name = "backupSaveFilesToolStripMenuItem";
+            backupSaveFilesToolStripMenuItem.Size = new Size(149, 22);
+            backupSaveFilesToolStripMenuItem.Text = "Backup Saves";
+            backupSaveFilesToolStripMenuItem.Click += backupContextButton_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -503,11 +530,11 @@
             // contextMenu
             // 
             contextMenu.BackColor = SystemColors.ButtonFace;
-            contextMenu.Items.AddRange(new ToolStripItem[] { makeActiveToolStripMenuItem, modifyToolStripMenuItem1, backupToolStripMenuItem, removeToolStripMenuItem, refreshToolTip });
+            contextMenu.Items.AddRange(new ToolStripItem[] { makeActiveToolStripMenuItem, modifyToolStripMenuItem1, backupToolStripMenuItem, duplicateToolStripMenuItem, renameToolStripMenuItem, removeToolStripMenuItem, refreshToolTip });
             contextMenu.Name = "contextMenuStrip1";
             contextMenu.RenderMode = ToolStripRenderMode.Professional;
             contextMenu.ShowImageMargin = false;
-            contextMenu.Size = new Size(115, 114);
+            contextMenu.Size = new Size(115, 158);
             // 
             // makeActiveToolStripMenuItem
             // 
@@ -519,7 +546,7 @@
             // modifyToolStripMenuItem1
             // 
             modifyToolStripMenuItem1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            modifyToolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { convertToolStripMenuItem, relicsToolStripMenuItem1, changeSteamIDToolStripMenuItem, renameToolStripMenuItem1 });
+            modifyToolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { convertToolStripMenuItem, relicsToolStripMenuItem1, changeSteamIDToolStripMenuItem });
             modifyToolStripMenuItem1.Name = "modifyToolStripMenuItem1";
             modifyToolStripMenuItem1.Size = new Size(114, 22);
             modifyToolStripMenuItem1.Text = "Modify";
@@ -540,24 +567,30 @@
             // 
             // changeSteamIDToolStripMenuItem
             // 
-            changeSteamIDToolStripMenuItem.Enabled = false;
             changeSteamIDToolStripMenuItem.Name = "changeSteamIDToolStripMenuItem";
             changeSteamIDToolStripMenuItem.Size = new Size(141, 22);
             changeSteamIDToolStripMenuItem.Text = "Edit SteamID";
-            // 
-            // renameToolStripMenuItem1
-            // 
-            renameToolStripMenuItem1.Name = "renameToolStripMenuItem1";
-            renameToolStripMenuItem1.Size = new Size(141, 22);
-            renameToolStripMenuItem1.Text = "Rename";
-            renameToolStripMenuItem1.Click += renameContextButton_Click;
             // 
             // backupToolStripMenuItem
             // 
             backupToolStripMenuItem.Name = "backupToolStripMenuItem";
             backupToolStripMenuItem.Size = new Size(114, 22);
             backupToolStripMenuItem.Text = "Backup";
-            backupToolStripMenuItem.Click += bakcupContextButton_Click;
+            backupToolStripMenuItem.Click += backupContextButton_Click;
+            // 
+            // duplicateToolStripMenuItem
+            // 
+            duplicateToolStripMenuItem.Enabled = false;
+            duplicateToolStripMenuItem.Name = "duplicateToolStripMenuItem";
+            duplicateToolStripMenuItem.Size = new Size(114, 22);
+            duplicateToolStripMenuItem.Text = "Duplicate";
+            // 
+            // renameToolStripMenuItem
+            // 
+            renameToolStripMenuItem.Name = "renameToolStripMenuItem";
+            renameToolStripMenuItem.Size = new Size(114, 22);
+            renameToolStripMenuItem.Text = "Rename";
+            renameToolStripMenuItem.Click += renameContextButton_Click;
             // 
             // removeToolStripMenuItem
             // 
@@ -705,22 +738,6 @@
             button2.UseVisualStyleBackColor = false;
             button2.Click += refreshList1_Click;
             // 
-            // button3
-            // 
-            button3.AutoSize = true;
-            button3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button3.BackColor = Color.FromArgb(80, 80, 80);
-            button3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button3.ForeColor = Color.Black;
-            button3.Location = new Point(131, 531);
-            button3.Name = "button3";
-            button3.Size = new Size(63, 27);
-            button3.TabIndex = 35;
-            button3.Text = "Decrypt";
-            toolTip1.SetToolTip(button3, "View list of backup files");
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += DecryptButton_Click;
-            // 
             // backupListView
             // 
             backupListView.BackColor = SystemColors.Menu;
@@ -765,14 +782,13 @@
             setupText.TextAlign = ContentAlignment.MiddleCenter;
             setupText.Visible = false;
             // 
-            // Form1
+            // Main
             // 
             AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.FromArgb(30, 30, 30);
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(350, 570);
-            Controls.Add(button3);
             Controls.Add(backupListView);
             Controls.Add(setupText);
             Controls.Add(button2);
@@ -798,11 +814,11 @@
             MaximizeBox = false;
             MaximumSize = new Size(350, 570);
             MinimumSize = new Size(350, 570);
-            Name = "Form1";
+            Name = "Main";
             SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "NR Save Manager";
-            Load += Form1_Load;
+            Load += MainForm_Load;
             SizeChanged += Form1_Resize;
             Click += viewBackupsClose_Click;
             MouseDown += panel1_MouseDown;
@@ -864,7 +880,6 @@
         private ListView backupListView;
         private PictureBox pictureBox3;
         private ToolStripMenuItem refreshToolTip;
-        private ToolStripMenuItem toolStripMenuItem1;
         private Button button2;
         private ToolStripMenuItem launchSeemlessToolStripMenuItem;
         private ToolStripMenuItem launchNightreignToolStripMenuItem;
@@ -873,14 +888,18 @@
         private ToolStripMenuItem modifyToolStripMenuItem1;
         private ToolStripMenuItem relicsToolStripMenuItem1;
         private ToolStripMenuItem changeSteamProfileIDToolStripMenuItem;
-        private ToolStripMenuItem steamIDToolStripMenuItem;
-        private ToolStripMenuItem renameToolStripMenuItem;
-        private ToolStripMenuItem renameToolStripMenuItem1;
+        private ToolStripMenuItem steamIDToolStrip;
         private ToolStripMenuItem changeSteamIDToolStripMenuItem;
         private ToolStripMenuItem convertToolStripMenuItem;
-        private ToolStripMenuItem convertToolStripMenuItem1;
+        private ToolStripMenuItem convertToolStrip;
         private Label setupText;
         private ToolStripMenuItem fAQToolStripMenuItem;
-        private Button button3;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem renameToolStrip;
+        private ToolStripMenuItem duplicateToolStrip;
+        private ToolStripMenuItem removeToolStrip;
+        private ToolStripMenuItem backupSaveFilesToolStripMenuItem;
+        private ToolStripMenuItem renameToolStripMenuItem;
+        private ToolStripMenuItem duplicateToolStripMenuItem;
     }
 }

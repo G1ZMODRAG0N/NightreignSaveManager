@@ -6,6 +6,8 @@ namespace NightreignSaveManager.Helpers
     {
         internal static string rootPath = AppDomain.CurrentDomain.BaseDirectory;
 
+        internal static string dataPath = Path.Combine(rootPath, "data");
+
         internal static string BaseArchivePath = Path.Combine(rootPath, "archive");
         internal static string archivePath = @"";
 
@@ -30,9 +32,10 @@ namespace NightreignSaveManager.Helpers
                 Debug.WriteLine("No backup directory detected. Creating: " + backupPath);
                 Directory.CreateDirectory(backupPath);
             }
-            if (!Directory.Exists(archivePath))
+            if (!Directory.Exists(dataPath))
             {
                 Debug.WriteLine("No data directory detected. Creating: ");
+                Directory.CreateDirectory(dataPath);
             }
         }
     }
