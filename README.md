@@ -14,7 +14,9 @@ This is a simple save manager for Nightreign. I wanted something that let me ret
 - Restore backups
 - Import save files
 - Rename save files
-- Maintain an archive of past saves 
+- Duplicate save files
+- Maintain an archive of past saves
+- Manage multiple steam profiles (editing steamIDs within save files coming soon)
 
 ## Requirements
 
