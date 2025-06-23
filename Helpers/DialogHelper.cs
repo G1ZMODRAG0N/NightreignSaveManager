@@ -25,22 +25,13 @@ namespace NightreignSaveManager.Helpers
             TextBox textBox = new TextBox();
             textBox.Left = 20;
             textBox.Top = 40;
-            textBox.Width = prompt.Width - 60;//200;
+            textBox.Width = prompt.Width - 60;
 
             Button confirmation = new Button();
             confirmation.Text = "Confirm";
             confirmation.Width = 80;
             confirmation.Left = (prompt.Width / 2) - confirmation.Width - 10;
             confirmation.Top = 80;
-            //confirmation.DialogResult = DialogResult.OK;
-            
-            
-
-            Button cancel = new Button();
-            cancel.Text = "Cancel";
-            cancel.Left = confirmation.Left + confirmation.Width + 10;
-            cancel.Width = 80;
-            cancel.Top = 80;
             confirmation.Click += (sender, e) =>
             {
                 if (!string.IsNullOrWhiteSpace(textBox.Text))
@@ -55,11 +46,17 @@ namespace NightreignSaveManager.Helpers
                 }
             };
 
+            Button cancel = new Button();
+            cancel.Text = "Cancel";
+            cancel.Left = confirmation.Left + confirmation.Width + 10;
+            cancel.Width = 80;
+            cancel.Top = 80;
             cancel.Click += (sender, e) =>
             {
                 prompt.DialogResult = DialogResult.Cancel;
                 prompt.Close();
             };
+            
             prompt.Controls.Add(textLabel);
             prompt.Controls.Add(textBox);
             prompt.Controls.Add(confirmation);

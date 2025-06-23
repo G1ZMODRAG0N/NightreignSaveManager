@@ -18,7 +18,9 @@ namespace NightreignSaveManager.Helpers
 
         internal static List<string> steamFolders = Directory.GetDirectories(baseDir)
             .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17).ToList();
+
         internal static string savefilePath = @"";
+
         public static void CheckStructure()
         {
             Debug.WriteLine("Checking for archive directory...");

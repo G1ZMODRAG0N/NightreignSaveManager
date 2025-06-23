@@ -6,9 +6,9 @@ namespace NightreignSaveManager
 {
     public partial class Main : Form
     {
-        private static string currentVersion = "1.1.5";
+        private static readonly string currentVersion = "1.1.5";
 
-        private static string lastUpdated = "06.22.25";
+        private static readonly string lastUpdated = "06.22.25";
 
         private Point initialMousePosition;
 
@@ -63,20 +63,22 @@ namespace NightreignSaveManager
             if (listView1.Items.Count <= 0)
             {
                 setupText.Visible = true;
-                convertToolStrip.Enabled = false;
                 renameToolStrip.Enabled = false;
                 removeToolStrip.Enabled = false;
                 duplicateToolStrip.Enabled = false;
+                convertToolStrip.Enabled = false;
                 steamIDToolStrip.Enabled = false;
+                relicsToolStripMenuItem.Enabled = false;
             }
-            else 
+            else
             {
                 setupText.Visible = false;
-                convertToolStrip.Enabled = true;
                 renameToolStrip.Enabled = true;
                 removeToolStrip.Enabled = true;
                 duplicateToolStrip.Enabled = true;
+                convertToolStrip.Enabled = true;
                 steamIDToolStrip.Enabled = true;
+                relicsToolStripMenuItem.Enabled = true;
             }
         }
         //refresh listview2
@@ -85,11 +87,11 @@ namespace NightreignSaveManager
             Debug.WriteLine("Refreshing ListView2: " + Dir.savefilePath);
             listView2.Items.Clear();
             listView2.Cursor = Cursors.WaitCursor;
-            button6.Cursor = Cursors.WaitCursor;
+            Refresh2.Cursor = Cursors.WaitCursor;
             viewBackups.Cursor = Cursors.WaitCursor;
             await Task.Delay(500);
             listView2.Cursor = Cursors.Default;
-            button6.Cursor = Cursors.Default;
+            Refresh2.Cursor = Cursors.Default;
             viewBackups.Cursor = Cursors.Default;
             string[] files = Directory.GetFiles(Dir.savefilePath);
             foreach (var file in files)
@@ -182,7 +184,7 @@ namespace NightreignSaveManager
             EnableAll();
         }
         //disable all
-        public void DisableAll()
+        private void DisableAll()
         {
             foreach (Control ctrl in this.Controls)
             {
@@ -194,7 +196,7 @@ namespace NightreignSaveManager
             }
         }
         //enable all
-        public void EnableAll()
+        private void EnableAll()
         {
             foreach (Control ctrl in this.Controls)
             {
@@ -218,12 +220,12 @@ namespace NightreignSaveManager
             listView1.Columns.Add("Last Modified", 100);
             listView1.ContextMenuStrip = null;//override contextstrip for listview
             RefreshListView1();
-            if (listView1_MouseDown != null)
+            if (ListView1_MouseDown != null)
             {
-                listView1.MouseDown += listView1_MouseDown; //fix later
+                listView1.MouseDown += ListView1_MouseDown; //fix later
             }
 
-            listView2.View = View.Details;
+                listView2.View = View.Details;
             listView2.Columns.Add("Filename", 100);
             listView2.Columns.Add("Type", 60);
             listView2.Columns.Add("Date", 100);
@@ -239,7 +241,7 @@ namespace NightreignSaveManager
 
         }
         //mouse down event on panel for click drag form
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        private void TitleBar_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -247,7 +249,7 @@ namespace NightreignSaveManager
             }
         }
         //mouse movement position
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
+        private void TitleBar_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -258,35 +260,35 @@ namespace NightreignSaveManager
             }
         }
         //mouse release for click drag form
-        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        private void TitleBar_MouseUp(object sender, MouseEventArgs e)
         {
             // Reset the initial mouse position when dragging is released
             // Optional, but good practice
             initialMousePosition = Point.Empty;
         }
         //close click
-        private void pictureBox1_Click_1(object sender, EventArgs e)
+        private void CloseButton_Click_1(object sender, EventArgs e)
         {
             this.Close(); // Closes the current form
         }
         //close mouse over color change
-        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        private void CloseButton_MouseEnter(object sender, EventArgs e)
         {
-            closeButton.BackColor = Color.FromArgb(100, 220, 220, 220); // Change to your desired highlight color
+            CloseButton.BackColor = Color.FromArgb(100, 220, 220, 220); // Change to your desired highlight color
         }
-        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        private void CloseButton_MouseLeave(object sender, EventArgs e)
         {
-            closeButton.BackColor = Color.Transparent; // Change to your desired highlight color
+            CloseButton.BackColor = Color.Transparent; // Change to your desired highlight color
         }
         //minimize click
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void MiniButton_Click(object sender, EventArgs e)
         {
             // Before Minimizing
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.WindowState = FormWindowState.Minimized;
         }
         //minimize fix
-        private void Form1_Resize(object sender, EventArgs e)
+        private void MainForm_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
             {
@@ -294,16 +296,16 @@ namespace NightreignSaveManager
             }
         }
         //minimize mouse over color change
-        private void pictureBox2_MouseEnter(object sender, EventArgs e)
+        private void MiniButton_MouseEnter(object sender, EventArgs e)
         {
-            miniButton.BackColor = Color.FromArgb(100, 250, 250, 250); // Change to your desired highlight color
+            MiniButton.BackColor = Color.FromArgb(100, 250, 250, 250); // Change to your desired highlight color
         }
-        private void pictureBox2_MouseLeave(object sender, EventArgs e)
+        private void MiniButton_MouseLeave(object sender, EventArgs e)
         {
-            miniButton.BackColor = Color.Transparent; // Change to your desired highlight color
+            MiniButton.BackColor = Color.Transparent; // Change to your desired highlight color
         }
         //open save dir
-        private void openSaveDir_Click(object sender, EventArgs e)
+        private void OpenSaveDir_Click(object sender, EventArgs e)
         {
             string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
 
@@ -317,7 +319,7 @@ namespace NightreignSaveManager
             }
         }
         //open archive dir
-        private void openArchiveDir_Click(Object sender, EventArgs e)
+        private void OpenArchiveDir_Click(Object sender, EventArgs e)
         {
             if (Directory.Exists(Dir.archivePath))
             {
@@ -329,7 +331,7 @@ namespace NightreignSaveManager
             }
         }
         //open backup dir
-        private void openBackupDir_Click(Object sender, EventArgs e)
+        private void OpenBackupDir_Click(Object sender, EventArgs e)
         {
             if (Directory.Exists(Dir.backupPath))
             {
@@ -341,7 +343,7 @@ namespace NightreignSaveManager
             }
         }
         //vanilla import
-        private void vanillaSaveFileToolStripMenuItem_Click(object obj, EventArgs e)
+        private void VanillaImport_Click(object obj, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -367,7 +369,7 @@ namespace NightreignSaveManager
             }
         }
         //seemeless import
-        private void seemlessSaveFileToolStripMenuItem_Click(object obj, EventArgs e)
+        private void SeemlessImport_Click(object obj, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -397,17 +399,39 @@ namespace NightreignSaveManager
             }
         }
         //refresh listview1
-        private void refreshList1_Click(object obj, EventArgs e)
+        private void RefreshList1_Click(object obj, EventArgs e)
         {
             RefreshListView1();
         }
         //refresh listview2
-        private void button6_Click(object obj, EventArgs e)
+        private void RefreshList2_Click(object obj, EventArgs e)
         {
             RefreshListView2();
         }
-        //listview disable selections
-        private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        //listview1 disable when no items selected
+        private void ListView1SelectionChange(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if(listView1.SelectedItems.Count <= 0)
+            {
+                renameToolStrip.Enabled = false;
+                removeToolStrip.Enabled = false;
+                duplicateToolStrip.Enabled = false;
+                convertToolStrip.Enabled = false;
+                steamIDToolStrip.Enabled = false;
+                relicsToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                renameToolStrip.Enabled = true;
+                removeToolStrip.Enabled = true;
+                duplicateToolStrip.Enabled = true;
+                convertToolStrip.Enabled = true;
+                steamIDToolStrip.Enabled= true;
+                relicsToolStripMenuItem.Enabled = true;
+            }
+        }
+        //listview2 disable selections
+        private void ListView2SelectionChange(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (e.Item != null)
             {
@@ -415,18 +439,8 @@ namespace NightreignSaveManager
             }
         }
         //make active click
-        private void makeActiveButton_Click(object obj, EventArgs e)
+        private void MakeActive_Click(object obj, EventArgs e)
         {
-            if (listView1.Items.Count <= 0)
-            {
-                MessageBox.Show("There are no files in the archive to make active...");
-                return;
-            }
-            else if (listView1.SelectedItems.Count <= 0)
-            {
-                MessageBox.Show("There is no file selected...");
-                return;
-            }
             var selectedFile = listView1.SelectedItems[0].Text;
             if (backupListView.Visible == true)
             {
@@ -473,7 +487,7 @@ namespace NightreignSaveManager
             }
         }
         //backup all active click
-        private void backupAllButton_Click(object obj, EventArgs e)
+        private void BackupAll_Click(object obj, EventArgs e)
         {
             if (backupListView.Visible == true)
             {
@@ -508,7 +522,7 @@ namespace NightreignSaveManager
             }
         }
         //readme button
-        private void readmeButton_Click(object sender, EventArgs e)
+        private void Readme_Click(object sender, EventArgs e)
         {
             var readmePath = Path.Combine(Dir.rootPath, "README.md");
             if (File.Exists(readmePath))
@@ -521,7 +535,7 @@ namespace NightreignSaveManager
             }
         }
         //about button
-        private void aboutButton_Click(object sender, EventArgs e)
+        private void About_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
                 " > NR_SaveManager \n > " + currentVersion + "\n > G1ZMO_DRAG0N\n > " + lastUpdated,
@@ -531,18 +545,8 @@ namespace NightreignSaveManager
                 );
         }
         //rename click
-        private void renameContextButton_Click(object sender, EventArgs e)
+        private void Rename_Click(object sender, EventArgs e)
         {
-            if (listView1.Items.Count <= 0)
-            {
-                MessageBox.Show("There are no files in the archive to rename...");
-                return;
-            }
-            else if (listView1.SelectedItems.Count <= 0)
-            {
-                MessageBox.Show("There is no file selected...");
-                return;
-            }
             string selectedFilename = listView1.SelectedItems[0].Text;
             string selectedFile = Path.Combine(Dir.archivePath, selectedFilename);
             string selectednoExt = Path.GetFileNameWithoutExtension(selectedFilename);
@@ -559,7 +563,7 @@ namespace NightreignSaveManager
             }
         }
         //backup context click
-        private void backupContextButton_Click(object sender, EventArgs e)
+        private void Backup_Click(object sender, EventArgs e)
         {
             string selectedFilename = listView1.SelectedItems[0].Text;
             string backupSourceFile = Path.Combine(Dir.archivePath, selectedFilename);
@@ -579,7 +583,7 @@ namespace NightreignSaveManager
             }
         }
         //disallow context menu on click for non-focused items
-        private void listView1_MouseDown(object sender, MouseEventArgs e)
+        private void ListView1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -592,7 +596,7 @@ namespace NightreignSaveManager
             }
         }
         //view backups click
-        private void viewBackups_Click(object sender, EventArgs e)
+        private void ViewBackups_Click(object sender, EventArgs e)
         {
             if (backupListView.Visible == true)
             {
@@ -609,12 +613,12 @@ namespace NightreignSaveManager
             }
         }
         //view backups close
-        private void viewBackupsClose_Click(object sender, EventArgs e)
+        private void ViewBackupsClose_Click(object sender, EventArgs e)
         {
             CloseBackupWindow();
         }
         //restore saves click
-        private void restoreSaves_Click(Object sender, EventArgs e)
+        private void RestoreSaves_Click(Object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -669,23 +673,8 @@ namespace NightreignSaveManager
             }
         }
         //convert save click
-        private void convertSave_Click(object sender, EventArgs e)
+        private void ConvertSave_Click(object sender, EventArgs e)
         {
-            if (backupListView.Visible == true)
-            {
-                CloseBackupWindow();
-                return;
-            }
-            if (listView1.Items.Count <= 0)
-            {
-                MessageBox.Show("There are no files in the archive to make convert...");
-                return;
-            }
-            else if (listView1.SelectedItems.Count <= 0)
-            {
-                MessageBox.Show("There is no file selected...");
-                return;
-            }
             string selectedFile = listView1.SelectedItems[0].Text;
             var inputFilePath = Path.Combine(Dir.archivePath, selectedFile);
             string fileExt;
@@ -724,35 +713,25 @@ namespace NightreignSaveManager
             RefreshListView1();
         }
         //refresh listview1 click
-        private void refreshToolTip_Click(object sender, EventArgs e)
+        private void Refresh_Click(object sender, EventArgs e)
         {
             RefreshListView1();
         }
         //title link click
-        private void titleLink_Click(object sender, EventArgs e)
+        private void TitleLink_Click(object sender, EventArgs e)
         {
             CloseBackupWindow();
             Link.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
 
         }
         //ko-fi click
-        private void kofi_Click(object sender, EventArgs e)
+        private void Kofi_Click(object sender, EventArgs e)
         {
             Link.OpenURL("https://ko-fi.com/g1zmo_drag0n");
         }
         //remove click
-        private void remove_Click(object sender, EventArgs e)
+        private void Remove_Click(object sender, EventArgs e)
         {
-            if (listView1.Items.Count <= 0)
-            {
-                MessageBox.Show("There are no files in the archive to remove...");
-                return;
-            }
-            else if (listView1.SelectedItems.Count <= 0)
-            {
-                MessageBox.Show("There is no file selected...");
-                return;
-            }
             var selectedFile = listView1.SelectedItems[0].Text;
             var filePath = Path.Combine(Dir.archivePath, selectedFile);
             var userInput = MessageBox.Show(
@@ -768,12 +747,12 @@ namespace NightreignSaveManager
             }
         }
         //check updates click
-        private void checkUpdates_Click(object sender, EventArgs e)
+        private void CheckUpdates_Click(object sender, EventArgs e)
         {
             Link.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager/releases");
         }
         //seemless coop click
-        private void launchseemless_Click(object sender, EventArgs e)
+        private void Launchseemless_Click(object sender, EventArgs e)
         {
             //search for nightreign installation
             for (char c = 'A'; c <= 'Z'; c++)
@@ -794,7 +773,7 @@ namespace NightreignSaveManager
 
         }
         //launch nightreign
-        private void launchVanilla_Click(object sender, EventArgs e)
+        private void LaunchVanilla_Click(object sender, EventArgs e)
         {
             //search for nightreign installation
             for (char c = 'A'; c <= 'Z'; c++)
@@ -815,7 +794,7 @@ namespace NightreignSaveManager
 
         }
         //change default steamID click
-        private void changeSteamID_Click(object sender, EventArgs e)
+        private void ChangeSteamID_Click(object sender, EventArgs e)
         {
             if (Dir.steamFolders.Count == 1)
             {
@@ -826,9 +805,13 @@ namespace NightreignSaveManager
             RefreshListView2();
         }
         //faq click
-        private void faxItem_Click(object sender, EventArgs e)
+        private void FAQItem_Click(object sender, EventArgs e)
         {
             Link.OpenURL("https://github.com/G1ZMODRAG0N/NightreignSaveManager?tab=readme-ov-file#faq");
+        }
+        //duplicate click
+        private void Duplicate_Click(object sender, EventArgs e)
+        {
         }
         //decrypt test button click
         private void DecryptButton_Click(object sender, EventArgs e)

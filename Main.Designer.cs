@@ -32,10 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             toolStripSeparator1 = new ToolStripSeparator();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            panel1 = new Panel();
-            closeButton = new PictureBox();
-            miniButton = new PictureBox();
-            pictureBox1 = new PictureBox();
+            TitleBar = new Panel();
+            CloseButton = new PictureBox();
+            MiniButton = new PictureBox();
+            IconImage = new PictureBox();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem1 = new ToolStripMenuItem();
             openToolStripMenuItem = new ToolStripMenuItem();
@@ -65,7 +65,7 @@
             checkForUpdateToolStripMenuItem = new ToolStripMenuItem();
             fAQToolStripMenuItem = new ToolStripMenuItem();
             aboutButton = new ToolStripMenuItem();
-            pictureBox2 = new PictureBox();
+            TitleImage = new PictureBox();
             makeActiveButton = new Button();
             button1 = new Button();
             listView1 = new ListView();
@@ -83,7 +83,7 @@
             label1 = new Label();
             listView2 = new ListView();
             label2 = new Label();
-            button6 = new Button();
+            Refresh2 = new Button();
             backupAllButton = new Button();
             button4 = new Button();
             versionLabel = new Label();
@@ -91,16 +91,16 @@
             viewBackups = new Button();
             button2 = new Button();
             backupListView = new ListView();
-            pictureBox3 = new PictureBox();
+            KofiImage = new PictureBox();
             setupText = new Label();
-            panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)closeButton).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)miniButton).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            TitleBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)CloseButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)MiniButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)IconImage).BeginInit();
             menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)TitleImage).BeginInit();
             contextMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)KofiImage).BeginInit();
             SuspendLayout();
             // 
             // toolStripSeparator1
@@ -116,66 +116,66 @@
             fileToolStripMenuItem.Size = new Size(37, 19);
             fileToolStripMenuItem.Text = "File";
             // 
-            // panel1
+            // TitleBar
             // 
-            panel1.BackColor = Color.FromArgb(50, 50, 50);
-            panel1.Controls.Add(closeButton);
-            panel1.Controls.Add(miniButton);
-            panel1.Controls.Add(pictureBox1);
-            panel1.Controls.Add(menuStrip1);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(350, 35);
-            panel1.TabIndex = 15;
-            panel1.MouseDown += panel1_MouseDown;
-            panel1.MouseMove += panel1_MouseMove;
-            panel1.MouseUp += panel1_MouseUp;
+            TitleBar.BackColor = Color.FromArgb(50, 50, 50);
+            TitleBar.Controls.Add(CloseButton);
+            TitleBar.Controls.Add(MiniButton);
+            TitleBar.Controls.Add(IconImage);
+            TitleBar.Controls.Add(menuStrip1);
+            TitleBar.Dock = DockStyle.Top;
+            TitleBar.Location = new Point(0, 0);
+            TitleBar.Name = "TitleBar";
+            TitleBar.Size = new Size(350, 35);
+            TitleBar.TabIndex = 15;
+            TitleBar.MouseDown += TitleBar_MouseDown;
+            TitleBar.MouseMove += TitleBar_MouseMove;
+            TitleBar.MouseUp += TitleBar_MouseUp;
             // 
-            // closeButton
+            // CloseButton
             // 
-            closeButton.BackColor = Color.Transparent;
-            closeButton.BackgroundImageLayout = ImageLayout.None;
-            closeButton.Image = (Image)resources.GetObject("closeButton.Image");
-            closeButton.Location = new Point(316, 0);
-            closeButton.Margin = new Padding(0);
-            closeButton.Name = "closeButton";
-            closeButton.Size = new Size(34, 35);
-            closeButton.SizeMode = PictureBoxSizeMode.CenterImage;
-            closeButton.TabIndex = 16;
-            closeButton.TabStop = false;
-            closeButton.Click += pictureBox1_Click_1;
-            closeButton.MouseEnter += pictureBox1_MouseEnter;
-            closeButton.MouseLeave += pictureBox1_MouseLeave;
+            CloseButton.BackColor = Color.Transparent;
+            CloseButton.BackgroundImageLayout = ImageLayout.None;
+            CloseButton.Image = (Image)resources.GetObject("CloseButton.Image");
+            CloseButton.Location = new Point(316, 0);
+            CloseButton.Margin = new Padding(0);
+            CloseButton.Name = "CloseButton";
+            CloseButton.Size = new Size(34, 35);
+            CloseButton.SizeMode = PictureBoxSizeMode.CenterImage;
+            CloseButton.TabIndex = 16;
+            CloseButton.TabStop = false;
+            CloseButton.Click += CloseButton_Click_1;
+            CloseButton.MouseEnter += CloseButton_MouseEnter;
+            CloseButton.MouseLeave += CloseButton_MouseLeave;
             // 
-            // miniButton
+            // MiniButton
             // 
-            miniButton.BackColor = Color.Transparent;
-            miniButton.BackgroundImageLayout = ImageLayout.None;
-            miniButton.Image = (Image)resources.GetObject("miniButton.Image");
-            miniButton.Location = new Point(279, 0);
-            miniButton.Name = "miniButton";
-            miniButton.Size = new Size(34, 35);
-            miniButton.SizeMode = PictureBoxSizeMode.CenterImage;
-            miniButton.TabIndex = 16;
-            miniButton.TabStop = false;
-            miniButton.Click += pictureBox2_Click;
-            miniButton.MouseEnter += pictureBox2_MouseEnter;
-            miniButton.MouseLeave += pictureBox2_MouseLeave;
+            MiniButton.BackColor = Color.Transparent;
+            MiniButton.BackgroundImageLayout = ImageLayout.None;
+            MiniButton.Image = (Image)resources.GetObject("MiniButton.Image");
+            MiniButton.Location = new Point(279, 0);
+            MiniButton.Name = "MiniButton";
+            MiniButton.Size = new Size(34, 35);
+            MiniButton.SizeMode = PictureBoxSizeMode.CenterImage;
+            MiniButton.TabIndex = 16;
+            MiniButton.TabStop = false;
+            MiniButton.Click += MiniButton_Click;
+            MiniButton.MouseEnter += MiniButton_MouseEnter;
+            MiniButton.MouseLeave += MiniButton_MouseLeave;
             // 
-            // pictureBox1
+            // IconImage
             // 
-            pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.Image = Properties.Resources.icon;
-            pictureBox1.Location = new Point(11, 10);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(16, 16);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox1.TabIndex = 16;
-            pictureBox1.TabStop = false;
-            pictureBox1.MouseDown += panel1_MouseDown;
-            pictureBox1.MouseMove += panel1_MouseMove;
-            pictureBox1.MouseUp += panel1_MouseUp;
+            IconImage.BackColor = Color.Transparent;
+            IconImage.Image = Properties.Resources.icon;
+            IconImage.Location = new Point(11, 10);
+            IconImage.Name = "IconImage";
+            IconImage.Size = new Size(16, 16);
+            IconImage.SizeMode = PictureBoxSizeMode.CenterImage;
+            IconImage.TabIndex = 16;
+            IconImage.TabStop = false;
+            IconImage.MouseDown += TitleBar_MouseDown;
+            IconImage.MouseMove += TitleBar_MouseMove;
+            IconImage.MouseUp += TitleBar_MouseUp;
             // 
             // menuStrip1
             // 
@@ -190,9 +190,9 @@
             menuStrip1.Size = new Size(254, 35);
             menuStrip1.TabIndex = 11;
             menuStrip1.Text = "menuStrip1";
-            menuStrip1.MouseDown += panel1_MouseDown;
-            menuStrip1.MouseMove += panel1_MouseMove;
-            menuStrip1.MouseUp += panel1_MouseUp;
+            menuStrip1.MouseDown += TitleBar_MouseDown;
+            menuStrip1.MouseMove += TitleBar_MouseMove;
+            menuStrip1.MouseUp += TitleBar_MouseUp;
             // 
             // fileToolStripMenuItem1
             // 
@@ -203,7 +203,7 @@
             fileToolStripMenuItem1.Padding = new Padding(0);
             fileToolStripMenuItem1.Size = new Size(29, 35);
             fileToolStripMenuItem1.Text = "File";
-            fileToolStripMenuItem1.Click += viewBackupsClose_Click;
+            fileToolStripMenuItem1.Click += ViewBackupsClose_Click;
             // 
             // openToolStripMenuItem
             // 
@@ -226,7 +226,7 @@
             vanillaSaveFileToolStripMenuItem.ShowShortcutKeys = false;
             vanillaSaveFileToolStripMenuItem.Size = new Size(183, 22);
             vanillaSaveFileToolStripMenuItem.Text = "Vanilla Save File(s)";
-            vanillaSaveFileToolStripMenuItem.Click += vanillaSaveFileToolStripMenuItem_Click;
+            vanillaSaveFileToolStripMenuItem.Click += VanillaImport_Click;
             // 
             // seemlessSaveFileToolStripMenuItem
             // 
@@ -236,7 +236,7 @@
             seemlessSaveFileToolStripMenuItem.Name = "seemlessSaveFileToolStripMenuItem";
             seemlessSaveFileToolStripMenuItem.Size = new Size(183, 22);
             seemlessSaveFileToolStripMenuItem.Text = "Seemless Save File(s)";
-            seemlessSaveFileToolStripMenuItem.Click += seemlessSaveFileToolStripMenuItem_Click;
+            seemlessSaveFileToolStripMenuItem.Click += SeemlessImport_Click;
             // 
             // openDirectoryToolStripMenuItem
             // 
@@ -254,7 +254,7 @@
             openSaveDir.Name = "openSaveDir";
             openSaveDir.Size = new Size(139, 22);
             openSaveDir.Text = "Game Saves";
-            openSaveDir.Click += openSaveDir_Click;
+            openSaveDir.Click += OpenSaveDir_Click;
             // 
             // openBackupDir
             // 
@@ -263,7 +263,7 @@
             openBackupDir.Name = "openBackupDir";
             openBackupDir.Size = new Size(139, 22);
             openBackupDir.Text = "Backup Files";
-            openBackupDir.Click += openBackupDir_Click;
+            openBackupDir.Click += OpenBackupDir_Click;
             // 
             // openArchiveDir
             // 
@@ -272,7 +272,7 @@
             openArchiveDir.Name = "openArchiveDir";
             openArchiveDir.Size = new Size(139, 22);
             openArchiveDir.Text = "Archive";
-            openArchiveDir.Click += openArchiveDir_Click;
+            openArchiveDir.Click += OpenArchiveDir_Click;
             // 
             // changeSteamProfileIDToolStripMenuItem
             // 
@@ -282,7 +282,7 @@
             changeSteamProfileIDToolStripMenuItem.Size = new Size(201, 22);
             changeSteamProfileIDToolStripMenuItem.Text = "Select Default SteamID";
             changeSteamProfileIDToolStripMenuItem.ToolTipText = "Select the default steamid to use. (Lists from available save dir)";
-            changeSteamProfileIDToolStripMenuItem.Click += changeSteamID_Click;
+            changeSteamProfileIDToolStripMenuItem.Click += ChangeSteamID_Click;
             // 
             // launchNightreignToolStripMenuItem
             // 
@@ -292,7 +292,7 @@
             launchNightreignToolStripMenuItem.Size = new Size(201, 22);
             launchNightreignToolStripMenuItem.Text = "Launch Nightreign";
             launchNightreignToolStripMenuItem.ToolTipText = "Start start_protected_game.exe";
-            launchNightreignToolStripMenuItem.Click += launchVanilla_Click;
+            launchNightreignToolStripMenuItem.Click += LaunchVanilla_Click;
             // 
             // launchSeemlessToolStripMenuItem
             // 
@@ -302,7 +302,7 @@
             launchSeemlessToolStripMenuItem.Size = new Size(201, 22);
             launchSeemlessToolStripMenuItem.Text = "Launch Seemless Co-op";
             launchSeemlessToolStripMenuItem.ToolTipText = "Start Seemless Coop nrsc_launcher.exe";
-            launchSeemlessToolStripMenuItem.Click += launchseemless_Click;
+            launchSeemlessToolStripMenuItem.Click += Launchseemless_Click;
             // 
             // exitToolStripMenuItem
             // 
@@ -312,7 +312,7 @@
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Size = new Size(201, 22);
             exitToolStripMenuItem.Text = "Exit";
-            exitToolStripMenuItem.Click += pictureBox1_Click_1;
+            exitToolStripMenuItem.Click += CloseButton_Click_1;
             // 
             // toolStripMenuItem1
             // 
@@ -327,9 +327,9 @@
             renameToolStrip.BackColor = Color.FromArgb(50, 50, 50);
             renameToolStrip.ForeColor = SystemColors.Control;
             renameToolStrip.Name = "renameToolStrip";
-            renameToolStrip.Size = new Size(180, 22);
+            renameToolStrip.Size = new Size(124, 22);
             renameToolStrip.Text = "Rename";
-            renameToolStrip.Click += renameContextButton_Click;
+            renameToolStrip.Click += Rename_Click;
             // 
             // duplicateToolStrip
             // 
@@ -337,7 +337,7 @@
             duplicateToolStrip.Enabled = false;
             duplicateToolStrip.ForeColor = SystemColors.Control;
             duplicateToolStrip.Name = "duplicateToolStrip";
-            duplicateToolStrip.Size = new Size(180, 22);
+            duplicateToolStrip.Size = new Size(124, 22);
             duplicateToolStrip.Text = "Duplicate";
             // 
             // removeToolStrip
@@ -345,9 +345,9 @@
             removeToolStrip.BackColor = Color.FromArgb(50, 50, 50);
             removeToolStrip.ForeColor = SystemColors.Control;
             removeToolStrip.Name = "removeToolStrip";
-            removeToolStrip.Size = new Size(180, 22);
+            removeToolStrip.Size = new Size(124, 22);
             removeToolStrip.Text = "Remove";
-            removeToolStrip.Click += remove_Click;
+            removeToolStrip.Click += Remove_Click;
             // 
             // toolsToolStripMenuItem
             // 
@@ -357,7 +357,7 @@
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(61, 35);
             toolsToolStripMenuItem.Text = "Options";
-            toolsToolStripMenuItem.Click += viewBackupsClose_Click;
+            toolsToolStripMenuItem.Click += ViewBackupsClose_Click;
             // 
             // modifyToolStripMenuItem
             // 
@@ -376,7 +376,7 @@
             convertToolStrip.Size = new Size(141, 22);
             convertToolStrip.Text = "Convert";
             convertToolStrip.ToolTipText = "Convert a selected save file .sl2<>.co2";
-            convertToolStrip.Click += convertSave_Click;
+            convertToolStrip.Click += ConvertSave_Click;
             // 
             // relicsToolStripMenuItem
             // 
@@ -406,7 +406,7 @@
             optionsToolStripMenuItem.Size = new Size(149, 22);
             optionsToolStripMenuItem.Text = "Restore a Save";
             optionsToolStripMenuItem.ToolTipText = "Restore a backed up save file";
-            optionsToolStripMenuItem.Click += restoreSaves_Click;
+            optionsToolStripMenuItem.Click += RestoreSaves_Click;
             // 
             // backupSaveFilesToolStripMenuItem
             // 
@@ -415,7 +415,7 @@
             backupSaveFilesToolStripMenuItem.Name = "backupSaveFilesToolStripMenuItem";
             backupSaveFilesToolStripMenuItem.Size = new Size(149, 22);
             backupSaveFilesToolStripMenuItem.Text = "Backup Saves";
-            backupSaveFilesToolStripMenuItem.Click += backupContextButton_Click;
+            backupSaveFilesToolStripMenuItem.Click += Backup_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -425,7 +425,7 @@
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(44, 35);
             helpToolStripMenuItem.Text = "Help";
-            helpToolStripMenuItem.Click += viewBackupsClose_Click;
+            helpToolStripMenuItem.Click += ViewBackupsClose_Click;
             // 
             // readmeButton
             // 
@@ -434,7 +434,7 @@
             readmeButton.Name = "readmeButton";
             readmeButton.Size = new Size(171, 22);
             readmeButton.Text = "Readme";
-            readmeButton.Click += readmeButton_Click;
+            readmeButton.Click += Readme_Click;
             // 
             // checkForUpdateToolStripMenuItem
             // 
@@ -443,7 +443,7 @@
             checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
             checkForUpdateToolStripMenuItem.Size = new Size(171, 22);
             checkForUpdateToolStripMenuItem.Text = "Check for Updates";
-            checkForUpdateToolStripMenuItem.Click += checkUpdates_Click;
+            checkForUpdateToolStripMenuItem.Click += CheckUpdates_Click;
             // 
             // fAQToolStripMenuItem
             // 
@@ -452,7 +452,7 @@
             fAQToolStripMenuItem.Name = "fAQToolStripMenuItem";
             fAQToolStripMenuItem.Size = new Size(171, 22);
             fAQToolStripMenuItem.Text = "FAQ";
-            fAQToolStripMenuItem.Click += faxItem_Click;
+            fAQToolStripMenuItem.Click += FAQItem_Click;
             // 
             // aboutButton
             // 
@@ -461,21 +461,21 @@
             aboutButton.Name = "aboutButton";
             aboutButton.Size = new Size(171, 22);
             aboutButton.Text = "About";
-            aboutButton.Click += aboutButton_Click;
+            aboutButton.Click += About_Click;
             // 
-            // pictureBox2
+            // TitleImage
             // 
-            pictureBox2.BackColor = Color.Transparent;
-            pictureBox2.Cursor = Cursors.Hand;
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(54, 41);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(240, 58);
-            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBox2.TabIndex = 16;
-            pictureBox2.TabStop = false;
-            toolTip1.SetToolTip(pictureBox2, "Go to releases");
-            pictureBox2.Click += titleLink_Click;
+            TitleImage.BackColor = Color.Transparent;
+            TitleImage.Cursor = Cursors.Hand;
+            TitleImage.Image = (Image)resources.GetObject("TitleImage.Image");
+            TitleImage.Location = new Point(54, 41);
+            TitleImage.Name = "TitleImage";
+            TitleImage.Size = new Size(240, 58);
+            TitleImage.SizeMode = PictureBoxSizeMode.AutoSize;
+            TitleImage.TabIndex = 16;
+            TitleImage.TabStop = false;
+            toolTip1.SetToolTip(TitleImage, "Go to releases");
+            TitleImage.Click += TitleLink_Click;
             // 
             // makeActiveButton
             // 
@@ -491,7 +491,7 @@
             makeActiveButton.Text = "Make Active";
             toolTip1.SetToolTip(makeActiveButton, "Set a file to be the current save to load into");
             makeActiveButton.UseVisualStyleBackColor = true;
-            makeActiveButton.Click += makeActiveButton_Click;
+            makeActiveButton.Click += MakeActive_Click;
             // 
             // button1
             // 
@@ -507,7 +507,7 @@
             button1.Text = "Convert to Vanilla<->Seemless";
             toolTip1.SetToolTip(button1, "Change the extension of a save file .sl2/.co2 for either Seemless or Vanilla");
             button1.UseVisualStyleBackColor = true;
-            button1.Click += convertSave_Click;
+            button1.Click += ConvertSave_Click;
             // 
             // listView1
             // 
@@ -526,6 +526,7 @@
             listView1.TabIndex = 18;
             toolTip1.SetToolTip(listView1, "Select an archived item to modify or convert");
             listView1.UseCompatibleStateImageBehavior = false;
+            listView1.ItemSelectionChanged += ListView1SelectionChange;
             // 
             // contextMenu
             // 
@@ -541,7 +542,7 @@
             makeActiveToolStripMenuItem.Name = "makeActiveToolStripMenuItem";
             makeActiveToolStripMenuItem.Size = new Size(114, 22);
             makeActiveToolStripMenuItem.Text = "Make Active";
-            makeActiveToolStripMenuItem.Click += makeActiveButton_Click;
+            makeActiveToolStripMenuItem.Click += MakeActive_Click;
             // 
             // modifyToolStripMenuItem1
             // 
@@ -556,7 +557,7 @@
             convertToolStripMenuItem.Name = "convertToolStripMenuItem";
             convertToolStripMenuItem.Size = new Size(141, 22);
             convertToolStripMenuItem.Text = "Convert";
-            convertToolStripMenuItem.Click += convertSave_Click;
+            convertToolStripMenuItem.Click += ConvertSave_Click;
             // 
             // relicsToolStripMenuItem1
             // 
@@ -576,7 +577,7 @@
             backupToolStripMenuItem.Name = "backupToolStripMenuItem";
             backupToolStripMenuItem.Size = new Size(114, 22);
             backupToolStripMenuItem.Text = "Backup";
-            backupToolStripMenuItem.Click += backupContextButton_Click;
+            backupToolStripMenuItem.Click += Backup_Click;
             // 
             // duplicateToolStripMenuItem
             // 
@@ -590,21 +591,21 @@
             renameToolStripMenuItem.Name = "renameToolStripMenuItem";
             renameToolStripMenuItem.Size = new Size(114, 22);
             renameToolStripMenuItem.Text = "Rename";
-            renameToolStripMenuItem.Click += renameContextButton_Click;
+            renameToolStripMenuItem.Click += Rename_Click;
             // 
             // removeToolStripMenuItem
             // 
             removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             removeToolStripMenuItem.Size = new Size(114, 22);
             removeToolStripMenuItem.Text = "Remove";
-            removeToolStripMenuItem.Click += remove_Click;
+            removeToolStripMenuItem.Click += Remove_Click;
             // 
             // refreshToolTip
             // 
             refreshToolTip.Name = "refreshToolTip";
             refreshToolTip.Size = new Size(114, 22);
             refreshToolTip.Text = "Refresh";
-            refreshToolTip.Click += refreshToolTip_Click;
+            refreshToolTip.Click += Refresh_Click;
             // 
             // label1
             // 
@@ -635,7 +636,7 @@
             listView2.TabIndex = 23;
             toolTip1.SetToolTip(listView2, "Game save files are only to provide you an overview of active files. (this section is read-only)");
             listView2.UseCompatibleStateImageBehavior = false;
-            listView2.ItemSelectionChanged += listView1_ItemSelectionChanged;
+            listView2.ItemSelectionChanged += ListView2SelectionChange;
             // 
             // label2
             // 
@@ -648,21 +649,21 @@
             label2.Text = "Archived Save Files";
             label2.TextAlign = ContentAlignment.TopCenter;
             // 
-            // button6
+            // Refresh2
             // 
-            button6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button6.BackColor = SystemColors.ButtonFace;
-            button6.BackgroundImageLayout = ImageLayout.Center;
-            button6.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button6.ForeColor = Color.Black;
-            button6.Image = (Image)resources.GetObject("button6.Image");
-            button6.Location = new Point(297, 514);
-            button6.Name = "button6";
-            button6.Size = new Size(32, 32);
-            button6.TabIndex = 26;
-            toolTip1.SetToolTip(button6, "Refresh list");
-            button6.UseVisualStyleBackColor = false;
-            button6.Click += button6_Click;
+            Refresh2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Refresh2.BackColor = SystemColors.ButtonFace;
+            Refresh2.BackgroundImageLayout = ImageLayout.Center;
+            Refresh2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Refresh2.ForeColor = Color.Black;
+            Refresh2.Image = (Image)resources.GetObject("Refresh2.Image");
+            Refresh2.Location = new Point(297, 514);
+            Refresh2.Name = "Refresh2";
+            Refresh2.Size = new Size(32, 32);
+            Refresh2.TabIndex = 26;
+            toolTip1.SetToolTip(Refresh2, "Refresh list");
+            Refresh2.UseVisualStyleBackColor = false;
+            Refresh2.Click += RefreshList2_Click;
             // 
             // backupAllButton
             // 
@@ -678,7 +679,7 @@
             backupAllButton.Text = "Backup Saves";
             toolTip1.SetToolTip(backupAllButton, "Backup all current save files (overwrites existing)");
             backupAllButton.UseVisualStyleBackColor = true;
-            backupAllButton.Click += backupAllButton_Click;
+            backupAllButton.Click += BackupAll_Click;
             // 
             // button4
             // 
@@ -694,7 +695,7 @@
             button4.Text = "Restore a Save";
             toolTip1.SetToolTip(button4, "Restore a save from backup and make your active save file");
             button4.UseVisualStyleBackColor = true;
-            button4.Click += restoreSaves_Click;
+            button4.Click += RestoreSaves_Click;
             // 
             // versionLabel
             // 
@@ -720,7 +721,7 @@
             viewBackups.Text = "View Backups";
             toolTip1.SetToolTip(viewBackups, "View list of backup files");
             viewBackups.UseVisualStyleBackColor = true;
-            viewBackups.Click += viewBackups_Click;
+            viewBackups.Click += ViewBackups_Click;
             // 
             // button2
             // 
@@ -736,7 +737,7 @@
             button2.TabIndex = 33;
             toolTip1.SetToolTip(button2, "Refresh list");
             button2.UseVisualStyleBackColor = false;
-            button2.Click += refreshList1_Click;
+            button2.Click += RefreshList1_Click;
             // 
             // backupListView
             // 
@@ -753,20 +754,20 @@
             backupListView.TabIndex = 31;
             backupListView.UseCompatibleStateImageBehavior = false;
             backupListView.Visible = false;
-            backupListView.SelectedIndexChanged += viewBackupsClose_Click;
-            backupListView.Click += viewBackupsClose_Click;
+            backupListView.SelectedIndexChanged += ViewBackupsClose_Click;
+            backupListView.Click += ViewBackupsClose_Click;
             // 
-            // pictureBox3
+            // KofiImage
             // 
-            pictureBox3.Cursor = Cursors.Hand;
-            pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
-            pictureBox3.Location = new Point(226, 35);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(119, 16);
-            pictureBox3.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBox3.TabIndex = 32;
-            pictureBox3.TabStop = false;
-            pictureBox3.Click += kofi_Click;
+            KofiImage.Cursor = Cursors.Hand;
+            KofiImage.Image = (Image)resources.GetObject("KofiImage.Image");
+            KofiImage.Location = new Point(226, 35);
+            KofiImage.Name = "KofiImage";
+            KofiImage.Size = new Size(119, 16);
+            KofiImage.SizeMode = PictureBoxSizeMode.AutoSize;
+            KofiImage.TabIndex = 32;
+            KofiImage.TabStop = false;
+            KofiImage.Click += Kofi_Click;
             // 
             // setupText
             // 
@@ -796,16 +797,16 @@
             Controls.Add(versionLabel);
             Controls.Add(button4);
             Controls.Add(backupAllButton);
-            Controls.Add(button6);
+            Controls.Add(Refresh2);
             Controls.Add(listView2);
             Controls.Add(listView1);
-            Controls.Add(panel1);
+            Controls.Add(TitleBar);
             Controls.Add(button1);
             Controls.Add(makeActiveButton);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(pictureBox3);
-            Controls.Add(pictureBox2);
+            Controls.Add(KofiImage);
+            Controls.Add(TitleImage);
             DoubleBuffered = true;
             Font = new Font("Century Gothic", 10F);
             ForeColor = Color.WhiteSmoke;
@@ -819,20 +820,20 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "NR Save Manager";
             Load += MainForm_Load;
-            SizeChanged += Form1_Resize;
-            Click += viewBackupsClose_Click;
-            MouseDown += panel1_MouseDown;
-            MouseMove += panel1_MouseMove;
-            MouseUp += panel1_MouseUp;
-            panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)closeButton).EndInit();
-            ((System.ComponentModel.ISupportInitialize)miniButton).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            SizeChanged += MainForm_Resize;
+            Click += ViewBackupsClose_Click;
+            MouseDown += TitleBar_MouseDown;
+            MouseMove += TitleBar_MouseMove;
+            MouseUp += TitleBar_MouseUp;
+            TitleBar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)CloseButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)MiniButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)IconImage).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)TitleImage).EndInit();
             contextMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)KofiImage).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -840,8 +841,8 @@
         #endregion
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem fileToolStripMenuItem;
-        private Panel panel1;
-        private PictureBox closeButton;
+        private Panel TitleBar;
+        private PictureBox CloseButton;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem1;
         private ToolStripMenuItem openToolStripMenuItem;
@@ -852,9 +853,9 @@
         private ToolStripMenuItem optionsToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutButton;
-        private PictureBox pictureBox1;
-        private PictureBox miniButton;
-        private PictureBox pictureBox2;
+        private PictureBox IconImage;
+        private PictureBox MiniButton;
+        private PictureBox TitleImage;
         private ListView listView1;
         private ToolStripMenuItem readmeButton;
         private Button button1;
@@ -862,7 +863,7 @@
         private Label label1;
         private ListView listView2;
         private Label label2;
-        private Button button6;
+        private Button Refresh2;
         private Button backupAllButton;
         private Button button4;
         private Label versionLabel;
@@ -878,7 +879,7 @@
         private ToolTip toolTip1;
         private Button viewBackups;
         private ListView backupListView;
-        private PictureBox pictureBox3;
+        private PictureBox KofiImage;
         private ToolStripMenuItem refreshToolTip;
         private Button button2;
         private ToolStripMenuItem launchSeemlessToolStripMenuItem;
