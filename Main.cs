@@ -32,6 +32,7 @@ namespace NightreignSaveManager
             {
                 string filename = Path.GetFileName(file);
                 string type = Path.GetExtension(file).TrimStart('.');  // Replace this with actual logic if needed
+                string steamID = Data.GetSteamID(file);
                 //skip if not a er save
                 if (type != "co2" ^ type != "sl2" ^ type != "bak")
                 {
@@ -54,6 +55,7 @@ namespace NightreignSaveManager
                 ListViewItem item = new ListViewItem(filename);
                 item.SubItems.Add(type);
                 item.SubItems.Add(date);
+                item.SubItems.Add(steamID);
 
                 listView1.Items.Add(item);
 
@@ -215,9 +217,10 @@ namespace NightreignSaveManager
             Config.Write(Dir.rootPath, Dir.steamFolders, currentVersion, lastUpdated, this, false);
 
             listView1.View = View.Details;
-            listView1.Columns.Add("Filename", 150);
+            listView1.Columns.Add("Filename", 80);
             listView1.Columns.Add("Type", 60);
             listView1.Columns.Add("Last Modified", 100);
+            listView1.Columns.Add("SteamID", 130);
             listView1.ContextMenuStrip = null;//override contextstrip for listview
             RefreshListView1();
             if (ListView1_MouseDown != null)
@@ -230,6 +233,7 @@ namespace NightreignSaveManager
             listView2.Columns.Add("Type", 60);
             listView2.Columns.Add("Date", 100);
             listView2.Columns.Add("Active", 30);
+            //listView2.Columns.Add("SteamID", 100);
             listView2.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.HeaderSize);
             RefreshListView2();
 
@@ -237,6 +241,7 @@ namespace NightreignSaveManager
             backupListView.Columns.Add("Filename", 100);
             backupListView.Columns.Add("Type", 60);
             backupListView.Columns.Add("Last Modified", 130);
+            backupListView.Columns.Add("SteamID", 100);
             RefreshBackupListview();
 
         }
@@ -809,6 +814,14 @@ namespace NightreignSaveManager
         //duplicate click
         private void Duplicate_Click(object sender, EventArgs e)
         {
+            string sourceItem = listView1.SelectedItems[0].Text;
+            string sourceExt = Path.GetExtension(sourceItem);
+            string destinationItem = Path.GetFileNameWithoutExtension(sourceItem) + " - Copy" + sourceExt;
+            string sourcePath = Path.Combine(Dir.archivePath, sourceItem);
+            string destinationPath = Path.Combine(Dir.archivePath, destinationItem);
+            File.Copy(sourcePath, destinationPath);
+            MessageBox.Show("File successfully copied.");
+            RefreshListView1();
         }
         //decrypt test button click
         private void DecryptButton_Click(object sender, EventArgs e)

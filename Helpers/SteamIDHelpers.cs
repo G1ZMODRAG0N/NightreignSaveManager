@@ -4,22 +4,25 @@ namespace NightreignSaveManager.Helpers
 {
     public static class SteamSelect
     {
+
         public static string ShowDialog(string text, string caption, List<string> path)
         {
-            System.Windows.Forms.Form steamselect = new System.Windows.Forms.Form();
+            string result = null;
+
+            Form steamselect = new Form();
             steamselect.Width = 300;
             steamselect.Height = 200;
-            steamselect.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            steamselect.FormBorderStyle = FormBorderStyle.FixedDialog;
             steamselect.Text = caption;
-            steamselect.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            steamselect.StartPosition = FormStartPosition.CenterScreen;
 
-            System.Windows.Forms.Label textLabel = new System.Windows.Forms.Label();
+            Label textLabel = new Label();
             textLabel.Left = 25;
             textLabel.Top = 20;
             textLabel.Text = text;
             textLabel.AutoSize = true;
 
-            System.Windows.Forms.ListView listView = new System.Windows.Forms.ListView();
+            ListView listView = new ListView();
             listView.Left = 25;
             listView.Top = 40;
             listView.Width = 235;
@@ -42,24 +45,45 @@ namespace NightreignSaveManager.Helpers
 
 
             //confirm button
-            System.Windows.Forms.Button confirmation = new System.Windows.Forms.Button();
+            Button confirmation = new Button();
             confirmation.Text = "Select";
             confirmation.Left = 60;
             confirmation.Width = 80;
             confirmation.Top = 120;
-            confirmation.DialogResult = System.Windows.Forms.DialogResult.OK;
-            confirmation.Click += (sender, e) => { steamselect.Close(); };
+            //confirmation.DialogResult = DialogResult.OK;
+            confirmation.Click += (sender, e) =>
+            {
+                if (listView.SelectedItems.Count > 0 && listView.SelectedItems[0].Text == Config.steamID)
+                {
+                    MessageBox.Show("You cannot select the same steamID.");
+                    
+                }
+                else if (listView.SelectedItems.Count <= 0)
+                {
+                    MessageBox.Show("Please select at least one steamID");
+                } else
+                {
+                    result = listView.SelectedItems[0].Text;
+                    steamselect.DialogResult = DialogResult.OK;
+                    steamselect.Close();
+                }
+            };
 
             //cancel button
-            System.Windows.Forms.Button cancel = new System.Windows.Forms.Button();
+            Button cancel = new Button();
             cancel.Text = "Cancel";
             cancel.Left = 150;
             cancel.Width = 80;
             cancel.Top = 120;
-            cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            //cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            cancel.Click += (sender, e) =>
+            {
+                steamselect.DialogResult = DialogResult.Cancel;
+                steamselect.Close();
+            };
 
             //check id button
-            System.Windows.Forms.Button checkID = new System.Windows.Forms.Button();
+            Button checkID = new Button();
             checkID.Text = "CheckID";
             checkID.Left = 180;
             checkID.Width = 80;
@@ -70,8 +94,9 @@ namespace NightreignSaveManager.Helpers
                 string steamURL = "https://steamcommunity.com/profiles/" + selectedID;
                 Link.OpenURL(steamURL);
                 Debug.WriteLine(selectedID);
-            };
-            System.Windows.Forms.ToolTip toolTip = new System.Windows.Forms.ToolTip();
+            }; 
+
+            ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(checkID, "Click to check your Steam ID. (Opens your steam profile)");
 
             //controls add
@@ -86,13 +111,11 @@ namespace NightreignSaveManager.Helpers
             steamselect.HelpButton = true;
             steamselect.HelpButtonClicked += (sender, e) => { Link.OpenURL("https://help.steampowered.com/en/faqs/view/2816-BE67-5B69-0FEC"); };
 
-
-            System.Windows.Forms.DialogResult result = steamselect.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
+            var dialogResult = steamselect.ShowDialog();
+            if (dialogResult == DialogResult.OK)
             {
-                return listView.SelectedItems[0].Text;
-            }
-            else
+                return result;
+            } else
             {
                 return null;
             }
