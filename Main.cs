@@ -6,7 +6,7 @@ namespace NightreignSaveManager
 {
     public partial class Main : Form
     {
-        private static readonly string currentVersion = "1.1.5";
+        private static readonly string currentVersion = "1.1.7";
 
         private static readonly string lastUpdated = "06.22.25";
 
@@ -67,8 +67,8 @@ namespace NightreignSaveManager
                 removeToolStrip.Enabled = false;
                 duplicateToolStrip.Enabled = false;
                 convertToolStrip.Enabled = false;
-                steamIDToolStrip.Enabled = false;
-                relicsToolStripMenuItem.Enabled = false;
+                modifyToolStripMenuItem.Enabled = false;
+                backupFileToolStrip.Enabled = false;
             }
             else
             {
@@ -77,8 +77,8 @@ namespace NightreignSaveManager
                 removeToolStrip.Enabled = true;
                 duplicateToolStrip.Enabled = true;
                 convertToolStrip.Enabled = true;
-                steamIDToolStrip.Enabled = true;
-                relicsToolStripMenuItem.Enabled = true;
+                modifyToolStripMenuItem.Enabled = true;
+                backupFileToolStrip.Enabled = true;
             }
         }
         //refresh listview2
@@ -417,8 +417,8 @@ namespace NightreignSaveManager
                 removeToolStrip.Enabled = false;
                 duplicateToolStrip.Enabled = false;
                 convertToolStrip.Enabled = false;
-                steamIDToolStrip.Enabled = false;
-                relicsToolStripMenuItem.Enabled = false;
+                modifyToolStripMenuItem.Enabled = false;
+                backupFileToolStrip.Enabled = false;
             }
             else
             {
@@ -426,8 +426,8 @@ namespace NightreignSaveManager
                 removeToolStrip.Enabled = true;
                 duplicateToolStrip.Enabled = true;
                 convertToolStrip.Enabled = true;
-                steamIDToolStrip.Enabled= true;
-                relicsToolStripMenuItem.Enabled = true;
+                modifyToolStripMenuItem.Enabled = true;
+                backupFileToolStrip.Enabled= true;
             }
         }
         //listview2 disable selections
@@ -571,16 +571,13 @@ namespace NightreignSaveManager
             if (File.Exists(backupOutputFile))
             {
                 var userInput = MessageBox.Show("Overwrite existing backup file?", "File Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (userInput == DialogResult.Yes)
+                if (userInput == DialogResult.No)
                 {
                     return;
                 }
             }
-            else
-            {
-                File.Copy(backupSourceFile, backupOutputFile, true);
-                MessageBox.Show("Backup successful.");
-            }
+            File.Copy(backupSourceFile, backupOutputFile, true);
+            MessageBox.Show("Backup of file " + selectedFilename + " successful!");
         }
         //disallow context menu on click for non-focused items
         private void ListView1_MouseDown(object sender, MouseEventArgs e)

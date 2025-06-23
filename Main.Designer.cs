@@ -59,7 +59,8 @@
             relicsToolStripMenuItem = new ToolStripMenuItem();
             steamIDToolStrip = new ToolStripMenuItem();
             optionsToolStripMenuItem = new ToolStripMenuItem();
-            backupSaveFilesToolStripMenuItem = new ToolStripMenuItem();
+            backupFileToolStrip = new ToolStripMenuItem();
+            backupAllActiveToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             readmeButton = new ToolStripMenuItem();
             checkForUpdateToolStripMenuItem = new ToolStripMenuItem();
@@ -352,7 +353,7 @@
             // toolsToolStripMenuItem
             // 
             toolsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { modifyToolStripMenuItem, optionsToolStripMenuItem, backupSaveFilesToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { modifyToolStripMenuItem, optionsToolStripMenuItem, backupFileToolStrip, backupAllActiveToolStripMenuItem });
             toolsToolStripMenuItem.ForeColor = Color.WhiteSmoke;
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(61, 35);
@@ -365,7 +366,7 @@
             modifyToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convertToolStrip, relicsToolStripMenuItem, steamIDToolStrip });
             modifyToolStripMenuItem.ForeColor = SystemColors.Control;
             modifyToolStripMenuItem.Name = "modifyToolStripMenuItem";
-            modifyToolStripMenuItem.Size = new Size(149, 22);
+            modifyToolStripMenuItem.Size = new Size(180, 22);
             modifyToolStripMenuItem.Text = "Modify";
             // 
             // convertToolStrip
@@ -403,19 +404,28 @@
             optionsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             optionsToolStripMenuItem.ForeColor = SystemColors.Control;
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(149, 22);
+            optionsToolStripMenuItem.Size = new Size(180, 22);
             optionsToolStripMenuItem.Text = "Restore a Save";
             optionsToolStripMenuItem.ToolTipText = "Restore a backed up save file";
             optionsToolStripMenuItem.Click += RestoreSaves_Click;
             // 
-            // backupSaveFilesToolStripMenuItem
+            // backupFileToolStrip
             // 
-            backupSaveFilesToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
-            backupSaveFilesToolStripMenuItem.ForeColor = SystemColors.Control;
-            backupSaveFilesToolStripMenuItem.Name = "backupSaveFilesToolStripMenuItem";
-            backupSaveFilesToolStripMenuItem.Size = new Size(149, 22);
-            backupSaveFilesToolStripMenuItem.Text = "Backup Saves";
-            backupSaveFilesToolStripMenuItem.Click += Backup_Click;
+            backupFileToolStrip.BackColor = Color.FromArgb(50, 50, 50);
+            backupFileToolStrip.ForeColor = SystemColors.Control;
+            backupFileToolStrip.Name = "backupFileToolStrip";
+            backupFileToolStrip.Size = new Size(180, 22);
+            backupFileToolStrip.Text = "Backup a Save";
+            backupFileToolStrip.Click += Backup_Click;
+            // 
+            // backupAllActiveToolStripMenuItem
+            // 
+            backupAllActiveToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
+            backupAllActiveToolStripMenuItem.ForeColor = SystemColors.Control;
+            backupAllActiveToolStripMenuItem.Name = "backupAllActiveToolStripMenuItem";
+            backupAllActiveToolStripMenuItem.Size = new Size(180, 22);
+            backupAllActiveToolStripMenuItem.Text = "Backup All Active";
+            backupAllActiveToolStripMenuItem.Click += BackupAll_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -466,7 +476,6 @@
             // TitleImage
             // 
             TitleImage.BackColor = Color.Transparent;
-            TitleImage.Cursor = Cursors.Hand;
             TitleImage.Image = (Image)resources.GetObject("TitleImage.Image");
             TitleImage.Location = new Point(54, 41);
             TitleImage.Name = "TitleImage";
@@ -475,7 +484,6 @@
             TitleImage.TabIndex = 16;
             TitleImage.TabStop = false;
             toolTip1.SetToolTip(TitleImage, "Go to releases");
-            TitleImage.Click += TitleLink_Click;
             // 
             // makeActiveButton
             // 
@@ -899,8 +907,9 @@
         private ToolStripMenuItem renameToolStrip;
         private ToolStripMenuItem duplicateToolStrip;
         private ToolStripMenuItem removeToolStrip;
-        private ToolStripMenuItem backupSaveFilesToolStripMenuItem;
+        private ToolStripMenuItem backupFileToolStrip;
         private ToolStripMenuItem renameToolStripMenuItem;
         private ToolStripMenuItem duplicateToolStripMenuItem;
+        private ToolStripMenuItem backupAllActiveToolStripMenuItem;
     }
 }
