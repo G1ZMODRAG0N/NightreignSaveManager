@@ -25,7 +25,7 @@ namespace NightreignSaveManager.Helpers
                 }
                 else if (folders.Count > 0)
                 {
-                    selectedID = SteamSelect.ShowDialog("Select default SteamID:", "Select SteamID", folders);
+                    selectedID = SteamSelect.ShowDialog("Select or type in a SteamID:", "Select SteamID", folders);
                 }
                 if (selectedID == null && !change)
                 {
@@ -53,7 +53,7 @@ namespace NightreignSaveManager.Helpers
                         writer.WriteLine(jsontoString);
                         if (change)
                         {
-                            MessageBox.Show("Your default SteamID has been updated.");
+                            MessageBox.Show("Your default SteamID has been updated to: " + selectedID);
 
                             Dir.savefilePath = Path.Combine(Dir.baseDir, selectedID);
 

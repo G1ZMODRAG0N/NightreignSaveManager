@@ -95,7 +95,16 @@ namespace NightreignSaveManager
             listView2.Cursor = Cursors.Default;
             Refresh2.Cursor = Cursors.Default;
             viewBackups.Cursor = Cursors.Default;
-            string[] files = Directory.GetFiles(Dir.savefilePath);
+            if (!Path.Exists(Dir.savefilePath))
+            {
+                saveSetup.Visible = true;
+                return;
+            }
+            else
+            {
+                saveSetup.Visible = false;
+            }
+                string[] files = Directory.GetFiles(Dir.savefilePath);
             foreach (var file in files)
             {
                 string filename = Path.GetFileName(file);
@@ -215,6 +224,8 @@ namespace NightreignSaveManager
             versionLabel.Text = "v" + currentVersion.ToString();
 
             Config.Write(Dir.rootPath, Dir.steamFolders, currentVersion, lastUpdated, this, false);
+
+            saveSetup.Text = "NO SAVE FILES\r\nNo directory or save file(s) were found for the default SteamID: . Please select a SteamID that has launched and created a Nightreign save.\r\n";
 
             listView1.View = View.Details;
             listView1.Columns.Add("Filename", 80);
@@ -446,6 +457,16 @@ namespace NightreignSaveManager
         //make active click
         private void MakeActive_Click(object obj, EventArgs e)
         {
+            if (!Path.Exists(Dir.savefilePath))
+            {
+                MessageBox.Show("The Nightreign save folder does not exist for the default \nSteam ID: " + Config.steamID + "\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
+                return;
+            }
+            if (listView1.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select a save file to perform this action.");
+                return;
+            }
             var selectedFile = listView1.SelectedItems[0].Text;
             if (backupListView.Visible == true)
             {
@@ -497,6 +518,11 @@ namespace NightreignSaveManager
             if (backupListView.Visible == true)
             {
                 CloseBackupWindow();
+                return;
+            }
+            if (!Path.Exists(Dir.savefilePath))
+            {
+                MessageBox.Show("The Nightreign save folder does not exist for the default \nSteam ID: " + Config.steamID + "\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
                 return;
             }
             //confirm
@@ -629,6 +655,11 @@ namespace NightreignSaveManager
                     CloseBackupWindow();
                     return;
                 }
+                if (!Path.Exists(Dir.savefilePath))
+                {
+                    MessageBox.Show("The Nightreign save folder does not exist for the default \nSteam ID: " + Config.steamID + "\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
+                    return;
+                }
                 openFileDialog.Title = "Select a file(s)";
                 openFileDialog.Multiselect = true;
                 openFileDialog.InitialDirectory = Dir.backupPath;
@@ -677,6 +708,16 @@ namespace NightreignSaveManager
         //convert save click
         private void ConvertSave_Click(object sender, EventArgs e)
         {
+            if (!Path.Exists(Dir.savefilePath))
+            {
+                MessageBox.Show("The Nightreign save folder does not exist for the default \nSteam ID: " + Config.steamID + "\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
+                return;
+            }
+            if(listView1.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select a save file to perform this action.");
+                return;
+            }
             string selectedFile = listView1.SelectedItems[0].Text;
             var inputFilePath = Path.Combine(Dir.archivePath, selectedFile);
             string fileExt;
@@ -795,15 +836,11 @@ namespace NightreignSaveManager
             }
 
         }
-        //change default steamID click
-        private void ChangeSteamID_Click(object sender, EventArgs e)
+        //default steamID click
+        private void DefaultSteamID_Click(object sender, EventArgs e)
         {
-            if (Dir.steamFolders.Count == 1)
-            {
-                MessageBox.Show("Sorry, there appears to be only 1 SteamID to use.");
-                return;
-            }
             Config.Write(Dir.rootPath, Dir.steamFolders, currentVersion, lastUpdated, this, true);
+            RefreshListView1();
             RefreshListView2();
         }
         //faq click
@@ -823,8 +860,8 @@ namespace NightreignSaveManager
             MessageBox.Show("File successfully copied.");
             RefreshListView1();
         }
-        //decrypt test button click
-        private void DecryptButton_Click(object sender, EventArgs e)
+        //change steamID
+        private void ChangeSteamID_Click(object sender, EventArgs e)
         {
             Data.Decrypt(Path.Combine(Dir.archivePath, listView1.SelectedItems[0].Text));
         }

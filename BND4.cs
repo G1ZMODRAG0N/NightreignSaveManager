@@ -41,8 +41,9 @@ namespace Models
 
             using var transform = aes.CreateDecryptor();
             _data = transform.TransformFinalBlock(_encryptedPayload, 0, _encryptedPayload.Length);
-
+            
             var filePath = Path.Combine(OutputFolder, Name);
+
             if (!Directory.Exists(OutputFolder))
             {
                 try
@@ -54,9 +55,23 @@ namespace Models
                     throw new InvalidOperationException($"Failed to create output directory: {ex.Message}");
                 }
             }
+
             File.WriteAllBytes(filePath, _data);
 
             IsDecrypted = true;
+        }
+        public byte[] DecryptMS()
+        {
+            using var aes = Aes.Create();
+            aes.Key = DS2_KEY; 
+            aes.IV = _iv; 
+            aes.Mode = CipherMode.CBC; 
+            aes.Padding = PaddingMode.None;
+
+            using var transform = aes.CreateDecryptor();
+            _data = transform.TransformFinalBlock(_encryptedPayload, 0, _encryptedPayload.Length);
+
+            return _data;
         }
 
         public void PatchChecksum()
