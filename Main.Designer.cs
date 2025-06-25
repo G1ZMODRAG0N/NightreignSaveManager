@@ -802,7 +802,7 @@
             saveSetup.FlatStyle = FlatStyle.Flat;
             saveSetup.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             saveSetup.ForeColor = SystemColors.Control;
-            saveSetup.Location = new Point(51, 417);
+            saveSetup.Location = new Point(54, 430);
             saveSetup.Name = "saveSetup";
             saveSetup.Size = new Size(240, 101);
             saveSetup.TabIndex = 35;

@@ -6,7 +6,7 @@ namespace NightreignSaveManager
 {
     public partial class Main : Form
     {
-        private static readonly string currentVersion = "1.1.7";
+        private static readonly string currentVersion = "1.1.9";
 
         private static readonly string lastUpdated = "06.22.25";
 
@@ -225,7 +225,7 @@ namespace NightreignSaveManager
 
             Config.Write(Dir.rootPath, Dir.steamFolders, currentVersion, lastUpdated, this, false);
 
-            saveSetup.Text = "NO SAVE FILES\r\nNo directory or save file(s) were found for the default SteamID: . Please select a SteamID that has launched and created a Nightreign save.\r\n";
+            saveSetup.Text = "NO SAVE FILES\r\nNo directory or save file(s) were found for the default SteamID:" + Config.steamID + ". Please select a SteamID that has launched and created a Nightreign save.\r\n";
 
             listView1.View = View.Details;
             listView1.Columns.Add("Filename", 80);
