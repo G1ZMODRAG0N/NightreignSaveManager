@@ -4,6 +4,7 @@ using System.Text;
 
 namespace NightreignSaveManager.Helpers
 {
+    //Credit to EonaCat for use decryption and file handling  
     internal class Data
     {
         private const int HeaderLength = 12;

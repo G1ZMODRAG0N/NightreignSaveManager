@@ -10,6 +10,7 @@ namespace NightreignSaveManager.Helpers
     {
         public static List<string> personaList = new List<string>();
         public static List<string> steamIDList = new List<string>();
+        //Credit to EonaCat for use of loginusers.vdf for usernames 
         public static void FindSteamIDs()
         {
             string registryKey;

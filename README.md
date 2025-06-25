@@ -83,4 +83,10 @@ All required directories for archiving and backups will be generated on first ru
 For feedback open an issue on GitHub https://github.com/G1ZMODRAG0N/NightreignSaveManager 
 or comment on Nexus https://www.nexusmods.com/eldenringnightreign/mods/166.
 
+## Credit
+
+For the decryption and encryption of save files goes to EonaCat's Save Transfer tool: https://github.com/EonaCat/NightReign
+And my understanding of the file structure goes to alfizari's: https://github.com/alfizari/Elden-Ring-Nightreign-Save-Editor-PS4
+
+
 <a href='https://ko-fi.com/T6T41GCSS1' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

@@ -1,3 +1,6 @@
+// Credit for the decryption and encryption of save files aswell as the idea to use loginusers.vdf for steam usernames goes to EonaCat's Save Transfer tool: https://github.com/EonaCat/NightReign
+//And my understanding of SL2 file structure goes to: https://github.com/alfizari/Elden-Ring-Nightreign-Save-Editor-PS4
+
 using NightreignSaveManager.Helpers;
 using NightreignSaveManager.Custom.ColorTable;
 using System.Diagnostics;
