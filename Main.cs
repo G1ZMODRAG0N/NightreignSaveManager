@@ -8,7 +8,7 @@ namespace NightreignSaveManager
     {
         private static readonly string currentVersion = "1.1.9";
 
-        private static readonly string lastUpdated = "06.22.25";
+        private static readonly string lastUpdated = "06.24.25";
 
         private Point initialMousePosition;
 
