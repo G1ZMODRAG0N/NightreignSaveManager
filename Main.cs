@@ -19,7 +19,7 @@ namespace NightreignSaveManager
         {
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new MyColorTable());
-            Debug.WriteLine("Initializing...\nCurrent version:" + currentVersion);
+            Debug.WriteLine($"Initializing...\nCurrent version: {currentVersion}");
         }
         //refresh listview1
         private async void RefreshListView1()
@@ -87,7 +87,7 @@ namespace NightreignSaveManager
         //refresh listview2
         private async void RefreshListView2()
         {
-            Debug.WriteLine("Refreshing ListView2: " + Dir.savefilePath);
+            Debug.WriteLine($"Refreshing ListView2: { Dir.savefilePath}");
             listView2.Items.Clear();
             listView2.Cursor = Cursors.WaitCursor;
             refreshBttn2.Cursor = Cursors.WaitCursor;
@@ -222,11 +222,11 @@ namespace NightreignSaveManager
         //Load
         private void MainForm_Load(object sender, EventArgs e)
         {
-            versionLabel.Text = "v" + currentVersion.ToString();
+            versionLabel.Text = $"v{currentVersion.ToString()}";
 
             Config.Write(Dir.rootPath, Dir.steamFolders, currentVersion, lastUpdated, this, false);
 
-            saveSetup.Text = "NO SAVE FILES\r\nNo directory or save file(s) were found for the default SteamID:" + Config.steamID + ". Please select a SteamID that has launched and created a Nightreign save.\r\n";
+            saveSetup.Text = $"NO SAVE FILES\r\nNo directory or save file(s) were found for the default SteamID: {Config.steamID}. Please select a SteamID that has launched and created a Nightreign save.\r\n";
 
             listView1.View = View.Details;
             listView1.Columns.Add("Filename", 80);
@@ -367,9 +367,9 @@ namespace NightreignSaveManager
                     if (newFileName != null)
                     {
                         string selectedFile = openFileDialog.SafeFileName;
-                        File.Copy(openFileDialog.FileName, Dir.archivePath + @"\" + newFileName + ".sl2");
+                        File.Copy(openFileDialog.FileName, @$"{Dir.archivePath}\{newFileName}.sl2");
                         RefreshListView1();
-                        MessageBox.Show(selectedFile + " has been imported as: " + newFileName);
+                        MessageBox.Show($"{selectedFile} has been imported as: {newFileName}");
                     }
 
                 }
@@ -380,7 +380,7 @@ namespace NightreignSaveManager
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
+                string baseDir = @$"{Environment.ExpandEnvironmentVariables("%APPDATA%")}\Nightreign";
                 var matchingFolders = Directory.GetDirectories(baseDir)
                 .Where(dir => Path.GetFileName(dir).All(char.IsDigit) && Path.GetFileName(dir).Length == 17)
                 .ToList();
@@ -396,9 +396,9 @@ namespace NightreignSaveManager
                     if (newFileName != null)
                     {
                         string selectedFile = openFileDialog.SafeFileName;
-                        File.Copy(openFileDialog.FileName, Dir.archivePath + @"\" + newFileName + ".co2");
+                        File.Copy(openFileDialog.FileName, @$"{Dir.archivePath}\{newFileName}.co2");
                         RefreshListView1();
-                        MessageBox.Show(selectedFile + " has been imported as: " + newFileName);
+                        MessageBox.Show($"{selectedFile} has been imported as: {newFileName}");
                     }
                 }
             }
@@ -445,7 +445,7 @@ namespace NightreignSaveManager
         {
             if (!Path.Exists(Dir.savefilePath))
             {
-                MessageBox.Show("The Nightreign save folder does not exist for the default \nSteam ID: " + Config.steamID + "\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
+                MessageBox.Show($"The Nightreign save folder does not exist for the default \nSteam ID: {Config.steamID}\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
                 return;
             }
             if (listView1.SelectedItems.Count == 0)
@@ -479,7 +479,7 @@ namespace NightreignSaveManager
                 }
                 var userInput = MessageBox.Show
                     (
-                    "The currently selected item " + selectedFile + " will become your active " + typeOfSave + " save file. Proceed?",
+                    $"The currently selected item {selectedFile} will become your active {typeOfSave} save file. Proceed?",
                     "Make Active",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question
@@ -490,7 +490,7 @@ namespace NightreignSaveManager
                     RefreshListView1();
                     RefreshListView2();
                     MessageBox.Show(
-                        selectedFile + " has been set as your 'active' " + typeOfSave + " save file",
+                        $"{selectedFile} has been set as your 'active' {typeOfSave} save file",
                         "Success",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information
@@ -508,7 +508,7 @@ namespace NightreignSaveManager
             }
             if (!Path.Exists(Dir.savefilePath))
             {
-                MessageBox.Show("The Nightreign save folder does not exist for the default \nSteam ID: " + Config.steamID + "\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
+                MessageBox.Show($"The Nightreign save folder does not exist for the default \nSteam ID: {Config.steamID}\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
                 return;
             }
             //confirm
@@ -527,7 +527,7 @@ namespace NightreignSaveManager
                         continue;
                     }
                     var filePath = Path.Combine(Dir.savefilePath, item.Text);
-                    var backupFilePath = Path.Combine(Dir.backupPath, item.Text + ".bak");
+                    var backupFilePath = Path.Combine(Dir.backupPath, $"{item.Text}.bak");
                     File.Copy(filePath, backupFilePath, true);
                 }
                 MessageBox.Show(
@@ -554,7 +554,7 @@ namespace NightreignSaveManager
         private void About_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                " > NR_SaveManager \n > " + currentVersion + "\n > G1ZMO_DRAG0N\n > " + lastUpdated,
+                $" > NR_SaveManager \n > {currentVersion} will become your active {lastUpdated}",
                 "About",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
@@ -567,7 +567,7 @@ namespace NightreignSaveManager
             string selectedFile = Path.Combine(Dir.archivePath, selectedFilename);
             string selectednoExt = Path.GetFileNameWithoutExtension(selectedFilename);
             string selectedExt = Path.GetExtension(selectedFilename);
-            string newFileName = Prompt.ShowDialog("Rename save file: '" + selectednoExt + "'", "Rename File"); //fix this
+            string newFileName = Prompt.ShowDialog($"Rename save file: {selectednoExt}", "Rename File"); //fix this
             if (newFileName != null)
             {
                 File.Copy(Path.Combine(Dir.archivePath, selectedFilename), Path.Combine(Dir.archivePath, newFileName + selectedExt), true);
@@ -583,7 +583,7 @@ namespace NightreignSaveManager
         {
             string selectedFilename = listView1.SelectedItems[0].Text;
             string backupSourceFile = Path.Combine(Dir.archivePath, selectedFilename);
-            string backupOutputFile = Path.Combine(Dir.backupPath, selectedFilename + ".bak");
+            string backupOutputFile = Path.Combine(Dir.backupPath, $"{ selectedFilename}.bak");
             if (File.Exists(backupOutputFile))
             {
                 var userInput = MessageBox.Show("Overwrite existing backup file?", "File Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -593,7 +593,7 @@ namespace NightreignSaveManager
                 }
             }
             File.Copy(backupSourceFile, backupOutputFile, true);
-            MessageBox.Show("Backup of file " + selectedFilename + " successful!");
+            MessageBox.Show($"Backup of file {selectedFilename} successful!");
         }
         //disallow context menu on click for non-focused items
         private void ListView1_MouseDown(object sender, MouseEventArgs e)
@@ -642,7 +642,7 @@ namespace NightreignSaveManager
                 }
                 if (!Path.Exists(Dir.savefilePath))
                 {
-                    MessageBox.Show("The Nightreign save folder does not exist for the default \nSteam ID: " + Config.steamID + "\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
+                    MessageBox.Show($"The Nightreign save folder does not exist for the default \nSteam ID: {Config.steamID}\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
                     return;
                 }
                 openFileDialog.Title = "Select a file(s)";
@@ -671,17 +671,17 @@ namespace NightreignSaveManager
                         return;
                     }
                     var userInput = MessageBox.Show(
-                        "Restore " + selectedFile + " and make this your 'active' " + typeOfSave + " save file?",
+                        $"Restore {selectedFile} and make this your 'active' {typeOfSave} save file?",
                         "Restore Save File",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question
                         );
                     if (userInput == DialogResult.Yes)
                     {
-                        File.Copy(openFileDialog.FileName, Dir.savefilePath + @"\" + outputFile, true);
+                        File.Copy(openFileDialog.FileName, @$"{Dir.savefilePath}\{outputFile}", true);
                         RefreshListView2();
                         MessageBox.Show(
-                            selectedFile + " has been restored and set as your 'active'" + typeOfSave + " save file",
+                            $"{selectedFile} has been restored and set as your 'active' {typeOfSave} save file",
                             "Success",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
@@ -695,7 +695,7 @@ namespace NightreignSaveManager
         {
             if (!Path.Exists(Dir.savefilePath))
             {
-                MessageBox.Show("The Nightreign save folder does not exist for the default \nSteam ID: " + Config.steamID + "\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
+                MessageBox.Show($"The Nightreign save folder does not exist for the default \nSteam ID: {Config.steamID}\nPlease create a folder or select a different Steam ID in File > Select Default SteamID");
                 return;
             }
             if(listView1.SelectedItems.Count == 0)
@@ -737,7 +737,7 @@ namespace NightreignSaveManager
 
             File.Copy(inputFilePath, Path.ChangeExtension(inputFilePath, fileExt));
             File.Delete(inputFilePath);
-            MessageBox.Show("Save file has been converted to a " + fileType + " save.");
+            MessageBox.Show($"Save file has been converted to a {fileType} successful!");
             RefreshListView1();
         }
         //refresh listview1 click
@@ -763,7 +763,7 @@ namespace NightreignSaveManager
             var selectedFile = listView1.SelectedItems[0].Text;
             var filePath = Path.Combine(Dir.archivePath, selectedFile);
             var userInput = MessageBox.Show(
-                "Delete selected save file: " + selectedFile + "?",
+                $"Backup of file {selectedFile} successful!",
                 "Remove",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
@@ -785,7 +785,7 @@ namespace NightreignSaveManager
             //search for nightreign installation
             for (char c = 'A'; c <= 'Z'; c++)
             {
-                var rootPath = c.ToString() + ":";
+                var rootPath = @$"{c.ToString()}:";
                 var path = Path.Join(rootPath, @"\Program Files (x86)\Steam\steamapps\common\ELDEN RING NIGHTREIGN\Game");
                 var file = Path.Combine(path, "nrsc_launcher.exe");
                 if (Path.Exists(path))
@@ -806,7 +806,7 @@ namespace NightreignSaveManager
             //search for nightreign installation
             for (char c = 'A'; c <= 'Z'; c++)
             {
-                var rootPath = c.ToString() + ":";
+                var rootPath = @$"{c.ToString()}:";
                 var path = Path.Join(rootPath, @"\Program Files (x86)\Steam\steamapps\common\ELDEN RING NIGHTREIGN\Game");
                 var file = Path.Combine(path, "start_protected_game.exe");
                 if (Path.Exists(path))
@@ -838,7 +838,7 @@ namespace NightreignSaveManager
         {
             string sourceItem = listView1.SelectedItems[0].Text;
             string sourceExt = Path.GetExtension(sourceItem);
-            string destinationItem = Path.GetFileNameWithoutExtension(sourceItem) + " - Copy" + sourceExt;
+            string destinationItem = $"{Path.GetFileNameWithoutExtension(sourceItem)} - Copy{sourceExt}";
             string sourcePath = Path.Combine(Dir.archivePath, sourceItem);
             string destinationPath = Path.Combine(Dir.archivePath, destinationItem);
             File.Copy(sourcePath, destinationPath);
@@ -846,39 +846,132 @@ namespace NightreignSaveManager
             RefreshListView1();
         }
         //edit steamID
+        //Credit to https://github.com/EonaCat/NightReign for this block. Im terrible with class structures between helpers
         private void EditSteamID_Click(object sender, EventArgs e)
         {
             //get file
-            string inputFile = Path.Combine(Dir.archivePath, listView1.SelectedItems[0].Text);
-            string outputFile = Path.Combine(Dir.archivePath, "IDChange_" + listView1.SelectedItems[0].Text);
+            var selectedFile = listView1.SelectedItems[0];
+            string inputFile = Path.Combine(Dir.archivePath, selectedFile.Text);
+            string outputFile = Path.Combine(Dir.archivePath, $"NewID_{listView1.SelectedItems[0].Text}");
+            string fileExt = Path.GetExtension(outputFile);
 
-            if (!File.Exists(inputFile) || inputFile == null) 
+            if (!File.Exists(inputFile) || string.IsNullOrEmpty(inputFile)) 
             {
                 MessageBox.Show("Unable locate save file or file is corrupted.");
                 return; 
             }
 
             //decrypt index 10, get steam id in bytes
-            string? oldSteamID = Data.GetSteamID(inputFile);
+            string? oldSteamId = Data.GetSteamID(inputFile);
 
-            if (oldSteamID == null)
+            if (string.IsNullOrEmpty(oldSteamId))
             {
                 MessageBox.Show("Unable locate steamID from the save file or file is corrupted.");
                 return;
             }
             //old
-            byte[] oldSteamIDbytes = Data.ConvertToSteamIdBytes(oldSteamID);
-            Debug.WriteLine("Old steamID" + oldSteamID);
-            Debug.WriteLine("Old steamID" + BitConverter.ToString(oldSteamIDbytes));
+            byte[] oldSteamIDbytes = Data.ConvertToSteamIdBytes(oldSteamId);
+            Debug.WriteLine($"Old steamID {oldSteamId}");
+            Debug.WriteLine($"Old steamID {BitConverter.ToString(oldSteamIDbytes)}");
 
             //new
-            string newSteamID = "76561198095430832";
-            byte[] newSteamIDbytes = Data.ConvertToSteamIdBytes(newSteamID);
+            string newSteamID = SteamSelect.ShowDialog("text","caption");
+            if (string.IsNullOrEmpty(newSteamID))
+            {
+                return;
+            }
+            else if (newSteamID == selectedFile.SubItems[3].Text)
+            {
+                MessageBox.Show("The selected steamID is already applied to this save file.");
+                return;
 
-            Debug.WriteLine("New steamID" + newSteamID);
-            Debug.WriteLine("New steamIDbytes" + BitConverter.ToString(newSteamIDbytes));
+            }
+                byte[] newSteamIdBytes = Data.ConvertToSteamIdBytes(newSteamID);
 
-            RefreshListView1();
+            Debug.WriteLine($"New steamID {newSteamID}");
+            Debug.WriteLine($"New steamIDbytes {BitConverter.ToString(newSteamIdBytes)}");
+
+            string folderPath;
+            try
+            {
+                folderPath = FileEngine.Decrypt(inputFile,Console.WriteLine);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to decrypt SL2 file", ex.Message);
+                return;
+            }
+
+            var ERDataFiles = Directory.GetFiles(folderPath, "ELDENRING_DATA*").OrderBy(f => f).ToArray();
+            string ERData10Path = Path.Combine(folderPath, "ELDENRING_DATA_10");
+
+            if (!File.Exists(ERData10Path))
+            {
+                Debug.WriteLine("Missing File", $"ELDENRING_DATA_10 not found in {folderPath}");
+                return;
+            }
+
+            if (newSteamIdBytes == null)
+            {
+                MessageBox.Show("Invalid Steam ID format. Please enter a valid 17-digit Steam ID.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (oldSteamIDbytes.SequenceEqual(newSteamIdBytes))
+            {
+                MessageBox.Show("The new Steam ID is the same as the old one.", "No Changes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+           Debug.WriteLine($"New Steam ID (bytes): {BitConverter.ToString(newSteamIdBytes)}");
+            int filesModified = 0;
+
+            foreach (var file in ERDataFiles)
+            {
+                byte[] data = File.ReadAllBytes(file);
+                if (!data.ContainsSubsequence(oldSteamIDbytes))
+                {
+                    continue;
+                }
+
+                var newData = BytesHelper.ReplaceBytes(data, oldSteamIDbytes, newSteamIdBytes);
+                if (!data.SequenceEqual(newData))
+                {
+                    File.WriteAllBytes(file, newData);
+                    filesModified++;
+                }
+            }
+
+            if (filesModified == 0)
+            {
+                MessageBox.Show("No files were modified. The old Steam ID might not be present in any slots.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+           Debug.WriteLine($"Steam ID replaced in {filesModified} file(s)");
+
+            if (string.IsNullOrEmpty(outputFile))
+            {
+                return;
+            }
+
+            if (File.Exists(outputFile))
+            {
+                outputFile = Path.Combine(Dir.archivePath,Prompt.ShowDialog("File name already exists. Please rename.","Name the save file") + fileExt);
+            }
+
+            try
+            {
+                FileEngine.Encrypt(outputFile);
+                MessageBox.Show($"ID edit successful {new DirectoryInfo(outputFile).Name}");
+                FileEngine.RemoveEncryptedFolder();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to re-encrypt and save", ex.Message);
+            }
+
+        RefreshListView1();
         }
     }
 }

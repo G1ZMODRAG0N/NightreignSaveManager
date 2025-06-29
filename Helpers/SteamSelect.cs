@@ -24,7 +24,7 @@ namespace NightreignSaveManager.Helpers
                 registryKey = @"HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam";
             }
 
-            if(registryKey == null || steamIDList.Count > 0)
+            if(string.IsNullOrEmpty(registryKey) || steamIDList.Count > 0)
             {
                 return;
             }
@@ -74,7 +74,13 @@ namespace NightreignSaveManager.Helpers
                 returnValue = listView.SelectedItems[0].Text;
                 if (Path.Exists(Path.Combine(Dir.baseDir, returnValue)))
                 {
-                    Debug.WriteLine("exists");
+                    result = returnValue;
+                    steamselect.DialogResult = DialogResult.OK;
+                    steamselect.Close();
+                } 
+                else
+                {
+                    MessageBox.Show("Warning: The selected SteamID does not have a save file for Nightreign on this device.");
                     result = returnValue;
                     steamselect.DialogResult = DialogResult.OK;
                     steamselect.Close();
@@ -91,14 +97,12 @@ namespace NightreignSaveManager.Helpers
                     returnValue = textBox.Text;
                     if (Path.Exists(Path.Combine(Dir.baseDir, textBox.Text)))
                     {
-                        Debug.WriteLine("exists");
                         result = returnValue;
                         steamselect.DialogResult = DialogResult.OK;
                         steamselect.Close();
                     }
                     else
                     {
-                        Debug.WriteLine("deosnt");
                         MessageBox.Show("There is no save file directory for that SteamID");
                     }
 
@@ -108,7 +112,7 @@ namespace NightreignSaveManager.Helpers
             return result;
         }
 
-        public static string? ShowDialog(string text, string caption, List<string> path)
+        public static string? ShowDialog(string text, string caption)
         {
             string result = string.Empty;
 

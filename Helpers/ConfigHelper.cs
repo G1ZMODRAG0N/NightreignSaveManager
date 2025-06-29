@@ -25,15 +25,15 @@ namespace NightreignSaveManager.Helpers
                 }
                 else if (folders.Count > 0)
                 {
-                    selectedID = SteamSelect.ShowDialog("Select or type in a SteamID:", "Select SteamID", folders);
+                    selectedID = SteamSelect.ShowDialog("Select or type in a SteamID:", "Select SteamID");
                 }
-                if (selectedID == null && !change)
+                if (string.IsNullOrEmpty(selectedID) && !change)
                 {
                     MessageBox.Show("No SteamID was selected. Exiting...");
                     form.Close();
                     return;
                 }
-                else if (selectedID == null && change)
+                else if (string.IsNullOrEmpty(selectedID) && change)
                 {
                     return;
                 }
