@@ -1,131 +1,88 @@
-﻿using Models;
+﻿//Credit to EonaCat for file structure and data info
+using NightreignSaveManager.Models;
 using System.Diagnostics;
 using System.Text;
 
 namespace NightreignSaveManager.Helpers
 {
-    //Credit to EonaCat for use decryption and file handling  
-    internal class Data
+    public class Data
     {
-        private const int HeaderLength = 12;
-        private const int DataBlock = 32;
-        private const int DataBlockSize = 64;
+        public const string fileIdentifier = "BND4";
 
-        private static readonly List<BND4Entry> entries = new();
-        private static byte[]? RawData;
-
-        private static readonly string _outputFolder = Dir.dataPath;
-        public static string OutputFolder => _outputFolder;
-
+        private static byte[] DS2_KEY = { 0x18, 0xF6, 0x32, 0x66, 0x05, 0xBD, 0x17, 0x8A, 0x55, 0x24, 0x52, 0x3A, 0xC0, 0xA0, 0xC6, 0x09 };
         private static byte[] divider = [0x40, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF];
+
+        public const int DataBlock = 32;
+        public const int DataBlockSize = 64;
+        public const int IV_SIZE = 16;
+        private const int steamIDHex = 16;
 
         private static ulong steamID64;
 
-        public static string? Decrypt(string inputFile)
+        public static string? GetSteamID(string inputFile)
         {
-            RawData = File.ReadAllBytes(inputFile);
+            byte[] rawData = File.ReadAllBytes(inputFile);
+            byte[]? steamID = new byte[8];
 
-            if (!IsValidHeader(BND4Entry.FILEIDENTIFIER, RawData))
+            int pos = DataBlockSize + (10 * DataBlock);//10 is steamid location
+
+            if ((!IsValidHeader(fileIdentifier, rawData))||(pos + DataBlock > rawData.Length) || (!IsValidDivider(rawData, pos)))
             {
                 return null;
             }
 
-            entries.Clear();
-            int numberEntries = BitConverter.ToInt32(RawData, HeaderLength);
+            int size = BitConverter.ToInt32(rawData, pos + 8);
+            int dataOffset = BitConverter.ToInt32(rawData, pos + 16);
+            int footerLength = BitConverter.ToInt32(rawData, pos + 24);
 
-            for (int i = 0; i < numberEntries; i++)
-            {
-                int pos = DataBlockSize + (i * DataBlock);
-                if (pos + DataBlock > RawData.Length)
-                {
-                    break;
-                }
+            byte[] encryptedData = rawData.Skip(dataOffset).Take(size).ToArray();
+            byte[] iv = encryptedData.Take(IV_SIZE).ToArray();
+            byte[] encryptedPayload = encryptedData.Skip(IV_SIZE).ToArray();
 
-                if (!IsValidDivider(RawData, pos))
-                {
-                    continue;
-                }
-
-                int size = BitConverter.ToInt32(RawData, pos + 8);
-                int dataOffset = BitConverter.ToInt32(RawData, pos + 16);
-                int footerLength = BitConverter.ToInt32(RawData, pos + 24);
-
-                var entry = new BND4Entry(RawData, i, _outputFolder, size, dataOffset, footerLength);
-                entry.Decrypt();//creates decrypted file
-                entries.Add(entry);
-
-                Debug.WriteLine($"Decrypted Entry #{i}: {entry.Name}");
-                if (i == 10)
-                {
-                    byte[] oldSteamId;
-                    byte[] newSteamId;
-                    string ERData10Path = Path.Combine(Dir.dataPath, "ER_NR_DATA_10");
-                    try
-                    {
-                        using var fs = new FileStream(ERData10Path, FileMode.Open, FileAccess.Read);//reads file; 'using var' auto closes stream after use
-                        fs.Seek(0x8, SeekOrigin.Begin);//Moves the read position 8 bytes from the beginning of the file; 0x8 hex for 8
-                        oldSteamId = new byte[8];//Initializes a new 8-byte array
-                        fs.Read(oldSteamId, 0, 8);//Reads 8 bytes from the current file position (offset 8) into oldSteamId
-                        Debug.WriteLine("Old Steam ID (bytes): " + BitConverter.ToString(oldSteamId));
-                        ulong oldSteamId64 = BitConverter.ToUInt64(oldSteamId, 0);//ulong is a 64bit unsigned int; after convert is just an int
-                        Debug.WriteLine("Old Steam ID (unsigned 64 int): " + oldSteamId64);
-                        newSteamId = BitConverter.GetBytes(oldSteamId64);//convert back to 8
-                        Debug.WriteLine("New Steam ID (bytes): " + BitConverter.ToString(newSteamId));
-                    }
-                    catch (Exception ex) { Debug.WriteLine(ex.ToString()); }
-                }
-            }
-            Debug.WriteLine(entries.ToString());
-            //FileHelper.TryCreateDirectory(_outputFolder, logger);
-            return _outputFolder;
-        }
-        public static string GetSteamID(string inputFile)
-        {
-            RawData = File.ReadAllBytes(inputFile);
-            int pos = DataBlockSize + (10 * DataBlock);//64 + 10 x 64
-
-            if ((!IsValidHeader(BND4Entry.FILEIDENTIFIER, RawData))||(pos + DataBlock > RawData.Length) || (!IsValidDivider(RawData, pos)))
-            {
-                return "unknown";
-            }
-
-            int size = BitConverter.ToInt32(RawData, pos + 8);
-            int dataOffset = BitConverter.ToInt32(RawData, pos + 16);
-            int footerLength = BitConverter.ToInt32(RawData, pos + 24);
-
-            var entry = new BND4Entry(RawData, 10, "", size, dataOffset, footerLength);
-
-            byte[] steamID = new byte[8];
+            byte[] decryptedData = Transform.DecryptEngine(rawData, DS2_KEY, iv, encryptedPayload);
 
             try
             {
-                using var ms = new MemoryStream(entry.DecryptMS());
+                //decriptor using decrypted entry
+                using var ms = new MemoryStream(decryptedData);
                 ms.Seek(0x8, SeekOrigin.Begin);
                 ms.Read(steamID, 0, 8);
                 steamID64 = BitConverter.ToUInt64(steamID, 0);
-                //Debug.WriteLine("Steam ID (bytes): " + BitConverter.ToString(steamID));
-                //Debug.WriteLine("Steam ID (unsigned 64 int): " + steamID64);
+                Debug.WriteLine("Steam ID (bytes): " + BitConverter.ToString(steamID));
+                Debug.WriteLine("Steam ID (unsigned 64 int): " + steamID64);
             }
             catch (Exception ex) 
             {
                 Debug.WriteLine(ex.ToString());
             }
-
-            //Debug.Write("SteamID decrypted");
-            return steamID64.ToString();
+            if(steamID == null)
+            {
+                return null;
+            } 
+            else
+            {
+                return steamID64.ToString();
+            }
         }
-        public static string? Encrypt(string inputFile)
+        internal static byte[]? ConvertToSteamIdBytes(string steamId)
         {
-            return "";
-        }
+            if (string.IsNullOrEmpty(steamId) || steamId.Length != 17 || !steamId.All(char.IsDigit))
+            {
+                return null;
+            }
 
+            var hex = Convert.ToUInt64(steamId).ToString("x").PadLeft(steamIDHex, '0');
+            var steamIdBytes = Enumerable.Range(0, hex.Length)
+                                         .Where(i => i % 2 == 0)
+                                         .Select(i => Convert.ToByte(hex.Substring(i, 2), 16))
+                                         .Reverse().ToArray();
+            return steamIdBytes;
+        }
         internal static bool IsValidHeader(string fileIdentifier, byte[] data)
         {
-            //Debug.WriteLine("Checking data for valid header " + fileIdentifier);
             byte[] byteIdentifier = Encoding.ASCII.GetBytes(fileIdentifier);
             if (data != null && data.Length >= fileIdentifier.Length && data.Take(fileIdentifier.Length).SequenceEqual(byteIdentifier))
             {
-                //Debug.WriteLine("Header is valid");
                 return true;
             }
             else { return false; }
@@ -134,5 +91,6 @@ namespace NightreignSaveManager.Helpers
         {
             return data.Skip(position).Take(divider.Length).SequenceEqual(divider);
         }
+
     }
 }

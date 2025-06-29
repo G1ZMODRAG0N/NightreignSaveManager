@@ -6,7 +6,7 @@ namespace NightreignSaveManager.Helpers
 {
     internal static class Config
     {
-        internal static string steamID = "";
+        internal static string steamID = string.Empty;
         public static void Write(string root, List<string> folders, string version, string lastUpdate, Form form, bool change)
         {
             Debug.WriteLine("Checking if config exists...");
@@ -15,7 +15,7 @@ namespace NightreignSaveManager.Helpers
             {
                 Debug.WriteLine("Creating/Updating config. Setting SteamID...");
 
-                string selectedID = new DirectoryInfo(folders[0]).Name;
+                string? selectedID = new DirectoryInfo(folders[0]).Name;
 
                 if (folders == null)
                 {
@@ -45,21 +45,28 @@ namespace NightreignSaveManager.Helpers
                     LastUpdated = lastUpdate
                 };
                 string jsontoString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-
-                using (FileStream fs = File.Create(Path.Combine(root, "config.json")))
+                try
                 {
-                    using (StreamWriter writer = new StreamWriter(fs))
+                    using (FileStream fs = File.Create(Path.Combine(root, "config.json")))
                     {
-                        writer.WriteLine(jsontoString);
-                        if (change)
+                        using (StreamWriter writer = new StreamWriter(fs))
                         {
-                            MessageBox.Show("Your default SteamID has been updated to: " + selectedID);
+                            writer.WriteLine(jsontoString);
+                            if (change)
+                            {
+                                MessageBox.Show("Your default SteamID has been updated to: " + selectedID);
 
-                            Dir.savefilePath = Path.Combine(Dir.baseDir, selectedID);
+                                Dir.savefilePath = Path.Combine(Dir.baseDir, selectedID);
 
+                            }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
             }
 
             string jsonPath = Path.Combine(root, "config.json");

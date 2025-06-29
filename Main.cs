@@ -4,6 +4,7 @@
 using NightreignSaveManager.Helpers;
 using NightreignSaveManager.Custom.ColorTable;
 using System.Diagnostics;
+using NightreignSaveManager.Models;
 
 namespace NightreignSaveManager
 {
@@ -19,9 +20,7 @@ namespace NightreignSaveManager
         {
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new MyColorTable());
-            Debug.WriteLine("Initializing...");
-            Debug.WriteLine("Current version:" + currentVersion);
-            Debug.WriteLine("Root set to: " + Dir.rootPath);
+            Debug.WriteLine("Initializing...\nCurrent version:" + currentVersion);
         }
         //refresh listview1
         private async void RefreshListView1()
@@ -247,7 +246,6 @@ namespace NightreignSaveManager
             listView2.Columns.Add("Type", 60);
             listView2.Columns.Add("Date", 100);
             listView2.Columns.Add("Active", 30);
-            //listView2.Columns.Add("SteamID", 100);
             listView2.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.HeaderSize);
             RefreshListView2();
 
@@ -281,28 +279,25 @@ namespace NightreignSaveManager
         //mouse release for click drag form
         private void TitleBar_MouseUp(object sender, MouseEventArgs e)
         {
-            // Reset the initial mouse position when dragging is released
-            // Optional, but good practice
             initialMousePosition = Point.Empty;
         }
         //close click
         private void CloseButton_Click_1(object sender, EventArgs e)
         {
-            this.Close(); // Closes the current form
+            this.Close();
         }
         //close mouse over color change
         private void CloseButton_MouseEnter(object sender, EventArgs e)
         {
-            CloseButton.BackColor = Color.FromArgb(100, 220, 220, 220); // Change to your desired highlight color
+            CloseButton.BackColor = Color.FromArgb(100, 220, 220, 220);
         }
         private void CloseButton_MouseLeave(object sender, EventArgs e)
         {
-            CloseButton.BackColor = Color.Transparent; // Change to your desired highlight color
+            CloseButton.BackColor = Color.Transparent;
         }
         //minimize click
         private void MiniButton_Click(object sender, EventArgs e)
         {
-            // Before Minimizing
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.WindowState = FormWindowState.Minimized;
         }
@@ -317,17 +312,15 @@ namespace NightreignSaveManager
         //minimize mouse over color change
         private void MiniButton_MouseEnter(object sender, EventArgs e)
         {
-            MiniButton.BackColor = Color.FromArgb(100, 250, 250, 250); // Change to your desired highlight color
+            MiniButton.BackColor = Color.FromArgb(100, 250, 250, 250);
         }
         private void MiniButton_MouseLeave(object sender, EventArgs e)
         {
-            MiniButton.BackColor = Color.Transparent; // Change to your desired highlight color
+            MiniButton.BackColor = Color.Transparent;
         }
         //open save dir
         private void OpenSaveDir_Click(object sender, EventArgs e)
         {
-            string baseDir = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Nightreign";
-
             if (Directory.Exists(Dir.savefilePath))
             {
                 Link.OpenDir(Dir.savefilePath);
@@ -370,17 +363,14 @@ namespace NightreignSaveManager
                 openFileDialog.Multiselect = true;
                 openFileDialog.InitialDirectory = Dir.savefilePath;
                 openFileDialog.Filter = "Save Files (*.sl2)|*.sl2";
-                //if ok selected
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string newFileName = Prompt.ShowDialog("Name the save file:", "Rename File"); //fix this
-                    //if null
                     if (newFileName != null)
                     {
                         string selectedFile = openFileDialog.SafeFileName;
                         File.Copy(openFileDialog.FileName, Dir.archivePath + @"\" + newFileName + ".sl2");
                         RefreshListView1();
-                        // Now `selectedFile` contains the full file path
                         MessageBox.Show(selectedFile + " has been imported as: " + newFileName);
                     }
 
@@ -404,14 +394,12 @@ namespace NightreignSaveManager
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string newFileName = Prompt.ShowDialog("Name the save file:", "Rename File"); //fix this
-                    //if null
+                    string newFileName = Prompt.ShowDialog("Name the save file:", "Rename File");
                     if (newFileName != null)
                     {
                         string selectedFile = openFileDialog.SafeFileName;
                         File.Copy(openFileDialog.FileName, Dir.archivePath + @"\" + newFileName + ".co2");
                         RefreshListView1();
-                        // Now `selectedFile` contains the full file path
                         MessageBox.Show(selectedFile + " has been imported as: " + newFileName);
                     }
                 }
@@ -430,23 +418,20 @@ namespace NightreignSaveManager
         //listview1 disable when no items selected
         private void ListView1SelectionChange(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            if(listView1.SelectedItems.Count <= 0)
+            bool isEnabled = listView1.SelectedItems.Count > 0;
+            var menuItems = new ToolStripItem[]
             {
-                renameToolStrip.Enabled = false;
-                removeToolStrip.Enabled = false;
-                duplicateToolStrip.Enabled = false;
-                convertToolStrip.Enabled = false;
-                modifyToolStripMenuItem.Enabled = false;
-                backupFileToolStrip.Enabled = false;
-            }
-            else
+                renameToolStrip,
+                removeToolStrip,
+                duplicateToolStrip,
+                convertToolStrip,
+                modifyToolStripMenuItem,
+                backupFileToolStrip
+            };
+
+            foreach (var item in menuItems)
             {
-                renameToolStrip.Enabled = true;
-                removeToolStrip.Enabled = true;
-                duplicateToolStrip.Enabled = true;
-                convertToolStrip.Enabled = true;
-                modifyToolStripMenuItem.Enabled = true;
-                backupFileToolStrip.Enabled= true;
+                item.Enabled = isEnabled;
             }
         }
         //listview2 disable selections
@@ -537,7 +522,7 @@ namespace NightreignSaveManager
                 );
             if (confirmation == DialogResult.Yes)
             {
-                foreach (System.Windows.Forms.ListViewItem item in listView2.Items)
+                foreach (ListViewItem item in listView2.Items)
                 {
                     if (item.Text.Contains(".bak"))
                     {
@@ -546,7 +531,6 @@ namespace NightreignSaveManager
                     var filePath = Path.Combine(Dir.savefilePath, item.Text);
                     var backupFilePath = Path.Combine(Dir.backupPath, item.Text + ".bak");
                     File.Copy(filePath, backupFilePath, true);
-                    // Now `selectedFile` contains the full file path
                 }
                 MessageBox.Show(
                     "All active save files have successfully backed up!",
@@ -565,7 +549,7 @@ namespace NightreignSaveManager
             }
             else
             {
-                MessageBox.Show("Folder: " + readmePath + " does not exist.");
+                MessageBox.Show("Cannot locate the README.ms file.");
             }
         }
         //about button
@@ -863,10 +847,40 @@ namespace NightreignSaveManager
             MessageBox.Show("File successfully copied.");
             RefreshListView1();
         }
-        //change steamID
-        private void ChangeSteamID_Click(object sender, EventArgs e)
+        //edit steamID
+        private void EditSteamID_Click(object sender, EventArgs e)
         {
-            Data.Decrypt(Path.Combine(Dir.archivePath, listView1.SelectedItems[0].Text));
+            //get file
+            string inputFile = Path.Combine(Dir.archivePath, listView1.SelectedItems[0].Text);
+            string outputFile = Path.Combine(Dir.archivePath, "IDChange_" + listView1.SelectedItems[0].Text);
+
+            if (!File.Exists(inputFile) || inputFile == null) 
+            {
+                MessageBox.Show("Unable locate save file or file is corrupted.");
+                return; 
+            }
+
+            //decrypt index 10, get steam id in bytes
+            string? oldSteamID = Data.GetSteamID(inputFile);
+
+            if (oldSteamID == null)
+            {
+                MessageBox.Show("Unable locate steamID from the save file or file is corrupted.");
+                return;
+            }
+            //old
+            byte[] oldSteamIDbytes = Data.ConvertToSteamIdBytes(oldSteamID);
+            Debug.WriteLine("Old steamID" + oldSteamID);
+            Debug.WriteLine("Old steamID" + BitConverter.ToString(oldSteamIDbytes));
+
+            //new
+            string newSteamID = "76561198095430832";
+            byte[] newSteamIDbytes = Data.ConvertToSteamIdBytes(newSteamID);
+
+            Debug.WriteLine("New steamID" + newSteamID);
+            Debug.WriteLine("New steamIDbytes" + BitConverter.ToString(newSteamIDbytes));
+
+            RefreshListView1();
         }
     }
 }

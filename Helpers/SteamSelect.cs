@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -10,7 +9,9 @@ namespace NightreignSaveManager.Helpers
     {
         public static List<string> personaList = new List<string>();
         public static List<string> steamIDList = new List<string>();
+
         //Credit to EonaCat for use of loginusers.vdf for usernames 
+        //
         public static void FindSteamIDs()
         {
             string registryKey;
@@ -63,49 +64,53 @@ namespace NightreignSaveManager.Helpers
 
         public static string Confirmation(ListView listView, TextBox textBox, string result, Form steamselect)
         {
+            string returnValue = string.Empty;
             if (listView.SelectedItems.Count <= 0 && textBox.Text.Length <= 0)
             {
-                MessageBox.Show("Please select at least one steamID");
-
+                MessageBox.Show("Please type in or select a steamID");
             }
-            else if ((textBox.Text.Length > 17 || textBox.Text.Length < 17 || Regex.IsMatch(textBox.Text, "[a-zA-Z]")) && listView.SelectedItems.Count <= 0)
+            else if(textBox.Text.Length <= 0)
             {
-                MessageBox.Show("SteamID input must be 17 digits with no letters");
-            }
-            else if (textBox.Text.Length > 0)
-            {
-                if (Path.Exists(Path.Combine(Dir.baseDir, textBox.Text)))
+                returnValue = listView.SelectedItems[0].Text;
+                if (Path.Exists(Path.Combine(Dir.baseDir, returnValue)))
                 {
-                    result = textBox.Text;
+                    Debug.WriteLine("exists");
+                    result = returnValue;
                     steamselect.DialogResult = DialogResult.OK;
                     steamselect.Close();
                 }
-                else
-                {
-                    MessageBox.Show("There is no save file directory for that SteamID");
-                }
-
             }
-            else
+            if (textBox.Text.Length > 0)
             {
-                if (Path.Exists(Path.Combine(Dir.baseDir, textBox.Text)))
+                if (!textBox.Text.All(char.IsDigit) || textBox.Text.Length > 17)
                 {
-                    result = listView.SelectedItems[0].Text;
-                    steamselect.DialogResult = DialogResult.OK;
-                    steamselect.Close();
+                    MessageBox.Show("SteamID input must be 17 digits with no letters");
                 }
-                else
+                else if (textBox.Text.Length == 17)
                 {
-                    MessageBox.Show("There is no save file directory for that SteamID");
+                    returnValue = textBox.Text;
+                    if (Path.Exists(Path.Combine(Dir.baseDir, textBox.Text)))
+                    {
+                        Debug.WriteLine("exists");
+                        result = returnValue;
+                        steamselect.DialogResult = DialogResult.OK;
+                        steamselect.Close();
+                    }
+                    else
+                    {
+                        Debug.WriteLine("deosnt");
+                        MessageBox.Show("There is no save file directory for that SteamID");
+                    }
+
                 }
 
             }
             return result;
         }
 
-        public static string ShowDialog(string text, string caption, List<string> path)
+        public static string? ShowDialog(string text, string caption, List<string> path)
         {
-            string result = "";
+            string result = string.Empty;
 
             Form steamselect = new Form();
             steamselect.Width = 300;
@@ -132,14 +137,11 @@ namespace NightreignSaveManager.Helpers
             listView.AllowColumnReorder = false;
             listView.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             
-
             TextBox textBox = new TextBox();
             textBox.Left = 25;
             textBox.Top = 150;
             textBox.Width = 235;
 
-
-            //populate listview with steamids from folders listed
             FindSteamIDs();
             for (int i = 0; i < steamIDList.Count; i++)
             {
@@ -149,15 +151,13 @@ namespace NightreignSaveManager.Helpers
             }
 
             listView.Items[0].Selected = true;
-            listView.Select(); // Gives focus to the ListView, so selection is visible
+            listView.Select();
 
-            //confirm button
             Button confirmation = new Button();
             confirmation.Text = "Select";
             confirmation.Left = 60;
             confirmation.Width = 80;
             confirmation.Top = 180;
-            //confirmation.DialogResult = DialogResult.OK;
             confirmation.Click += (sender, e) =>
             {
                 result = Confirmation( listView, textBox, result, steamselect);
@@ -167,20 +167,17 @@ namespace NightreignSaveManager.Helpers
                 result = Confirmation(listView, textBox, result, steamselect);
             };
 
-            //cancel button
             Button cancel = new Button();
             cancel.Text = "Cancel";
             cancel.Left = 150;
             cancel.Width = 80;
             cancel.Top = 180;
-            //cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             cancel.Click += (sender, e) =>
             {
                 steamselect.DialogResult = DialogResult.Cancel;
                 steamselect.Close();
             };
 
-            //check id button
             Button checkID = new Button();
             checkID.Text = "CheckID";
             checkID.Left = 180;
@@ -220,10 +217,12 @@ namespace NightreignSaveManager.Helpers
             var dialogResult = steamselect.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
+                Debug.WriteLine("done");
                 return result;
             }
             else
             {
+                Debug.WriteLine("null done");
                 return null;
             }
         }

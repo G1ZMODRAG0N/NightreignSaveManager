@@ -1,6 +1,7 @@
-﻿using System.Security.Cryptography;
+﻿//Credit to https://github.com/EonaCat/NightReign
+using System.Security.Cryptography;
 
-namespace Models
+namespace NightreignSaveManager.Models
 {
     public class BND4Entry
     {
@@ -9,7 +10,7 @@ namespace Models
         public int Size { get; }
         public int DataOffset { get; }
         public int FooterLength { get; }
-        public string Name => $"ER_NR_DATA_{Index:00}";
+        public string Name => $"ELDENRING_DATA_{Index:00}";
         public bool IsDecrypted { get; private set; }
 
         private const int IV_SIZE = 16;
@@ -41,9 +42,8 @@ namespace Models
 
             using var transform = aes.CreateDecryptor();
             _data = transform.TransformFinalBlock(_encryptedPayload, 0, _encryptedPayload.Length);
-            
-            var filePath = Path.Combine(OutputFolder, Name);
 
+            var filePath = Path.Combine(OutputFolder, Name);
             if (!Directory.Exists(OutputFolder))
             {
                 try
@@ -55,23 +55,9 @@ namespace Models
                     throw new InvalidOperationException($"Failed to create output directory: {ex.Message}");
                 }
             }
-
             File.WriteAllBytes(filePath, _data);
 
             IsDecrypted = true;
-        }
-        public byte[] DecryptMS()
-        {
-            using var aes = Aes.Create();
-            aes.Key = DS2_KEY; 
-            aes.IV = _iv; 
-            aes.Mode = CipherMode.CBC; 
-            aes.Padding = PaddingMode.None;
-
-            using var transform = aes.CreateDecryptor();
-            _data = transform.TransformFinalBlock(_encryptedPayload, 0, _encryptedPayload.Length);
-
-            return _data;
         }
 
         public void PatchChecksum()
