@@ -4,7 +4,6 @@
 using NightreignSaveManager.Helpers;
 using NightreignSaveManager.Custom.ColorTable;
 using System.Diagnostics;
-using NightreignSaveManager.Models;
 
 namespace NightreignSaveManager
 {
@@ -91,11 +90,11 @@ namespace NightreignSaveManager
             Debug.WriteLine("Refreshing ListView2: " + Dir.savefilePath);
             listView2.Items.Clear();
             listView2.Cursor = Cursors.WaitCursor;
-            Refresh2.Cursor = Cursors.WaitCursor;
+            refreshBttn2.Cursor = Cursors.WaitCursor;
             viewBackups.Cursor = Cursors.WaitCursor;
             await Task.Delay(500);
             listView2.Cursor = Cursors.Default;
-            Refresh2.Cursor = Cursors.Default;
+            refreshBttn2.Cursor = Cursors.Default;
             viewBackups.Cursor = Cursors.Default;
             if (!Path.Exists(Dir.savefilePath))
             {
@@ -193,7 +192,7 @@ namespace NightreignSaveManager
             backupListView.Enabled = false;
             backupListView.Visible = false;
             if (listView1.Items.Count <= 0) { setupText.Visible = true; }
-            viewBackups.Text = "View Backups";
+            //viewBackups.Text = "View Backups";
             EnableAll();
         }
         //disable all
@@ -201,11 +200,11 @@ namespace NightreignSaveManager
         {
             foreach (Control ctrl in this.Controls)
             {
-                if (ctrl.Name == "viewBackups" || ctrl.Name == "closeButton" || ctrl.Name == "miniButton" || ctrl.Name == "listView1" || ctrl.Name == "listView2")
+                if (ctrl.Name != "viewBackups")
                 {
-                    continue;
+                    Debug.WriteLine(ctrl.Name);
+                    ctrl.Enabled = false;
                 }
-                ctrl.Enabled = false;
             }
         }
         //enable all
@@ -213,11 +212,11 @@ namespace NightreignSaveManager
         {
             foreach (Control ctrl in this.Controls)
             {
-                if (ctrl.Name == "viewBackups" || ctrl.Name == "closeButton" || ctrl.Name == "miniButton" || ctrl.Name == "listView1" || ctrl.Name == "listView2")
+                if (ctrl.Name != "viewBackups")
                 {
-                    continue;
+                    Debug.WriteLine(ctrl.Name);
+                    ctrl.Enabled = true;
                 }
-                ctrl.Enabled = true;
             }
         }
         //Load
@@ -241,7 +240,7 @@ namespace NightreignSaveManager
                 listView1.MouseDown += ListView1_MouseDown; //fix later
             }
 
-                listView2.View = View.Details;
+            listView2.View = View.Details;
             listView2.Columns.Add("Filename", 100);
             listView2.Columns.Add("Type", 60);
             listView2.Columns.Add("Date", 100);
@@ -253,7 +252,6 @@ namespace NightreignSaveManager
             backupListView.Columns.Add("Filename", 100);
             backupListView.Columns.Add("Type", 60);
             backupListView.Columns.Add("Last Modified", 130);
-            backupListView.Columns.Add("SteamID", 100);
             RefreshBackupListview();
 
         }
@@ -623,7 +621,7 @@ namespace NightreignSaveManager
                 backupListView.Enabled = true;
                 backupListView.Visible = true;
                 setupText.Visible = false;
-                viewBackups.Text = "Close Window";
+                //viewBackups.Text = "Close Window";
                 RefreshBackupListview();
             }
         }

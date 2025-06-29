@@ -84,11 +84,11 @@
             label1 = new Label();
             listView2 = new ListView();
             label2 = new Label();
-            Refresh2 = new Button();
+            refreshBttn2 = new Button();
             versionLabel = new Label();
             toolTip1 = new ToolTip(components);
             viewBackups = new Button();
-            button2 = new Button();
+            refreshBttn1 = new Button();
             convertButton = new Button();
             importButton = new Button();
             makeActiveButton = new Button();
@@ -649,21 +649,21 @@
             label2.Text = "Archived Save Files";
             label2.TextAlign = ContentAlignment.TopCenter;
             // 
-            // Refresh2
+            // refreshBttn2
             // 
-            Refresh2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            Refresh2.BackColor = SystemColors.ButtonFace;
-            Refresh2.BackgroundImageLayout = ImageLayout.Center;
-            Refresh2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Refresh2.ForeColor = Color.Black;
-            Refresh2.Image = (Image)resources.GetObject("Refresh2.Image");
-            Refresh2.Location = new Point(297, 514);
-            Refresh2.Name = "Refresh2";
-            Refresh2.Size = new Size(32, 32);
-            Refresh2.TabIndex = 26;
-            toolTip1.SetToolTip(Refresh2, "Refresh list");
-            Refresh2.UseVisualStyleBackColor = false;
-            Refresh2.Click += RefreshList2_Click;
+            refreshBttn2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            refreshBttn2.BackColor = SystemColors.ButtonFace;
+            refreshBttn2.BackgroundImageLayout = ImageLayout.Center;
+            refreshBttn2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            refreshBttn2.ForeColor = Color.Black;
+            refreshBttn2.Image = (Image)resources.GetObject("refreshBttn2.Image");
+            refreshBttn2.Location = new Point(297, 514);
+            refreshBttn2.Name = "refreshBttn2";
+            refreshBttn2.Size = new Size(32, 32);
+            refreshBttn2.TabIndex = 26;
+            toolTip1.SetToolTip(refreshBttn2, "Refresh list");
+            refreshBttn2.UseVisualStyleBackColor = false;
+            refreshBttn2.Click += RefreshList2_Click;
             // 
             // versionLabel
             // 
@@ -680,64 +680,65 @@
             // 
             viewBackups.Anchor = AnchorStyles.Top;
             viewBackups.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            viewBackups.BackColor = Color.FromArgb(80, 80, 80);
+            viewBackups.BackColor = SystemColors.ButtonFace;
             viewBackups.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             viewBackups.ForeColor = Color.Black;
-            viewBackups.Location = new Point(225, 3);
+            viewBackups.Location = new Point(221, 3);
             viewBackups.Name = "viewBackups";
-            viewBackups.Size = new Size(105, 30);
+            viewBackups.Size = new Size(100, 30);
             viewBackups.TabIndex = 30;
             viewBackups.Text = "View Backups";
             toolTip1.SetToolTip(viewBackups, "View list of backup files");
-            viewBackups.UseVisualStyleBackColor = true;
+            viewBackups.UseVisualStyleBackColor = false;
             viewBackups.Click += ViewBackups_Click;
             // 
-            // button2
+            // refreshBttn1
             // 
-            button2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button2.BackColor = SystemColors.ButtonFace;
-            button2.BackgroundImageLayout = ImageLayout.Center;
-            button2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button2.ForeColor = Color.Black;
-            button2.Image = (Image)resources.GetObject("button2.Image");
-            button2.Location = new Point(297, 321);
-            button2.Name = "button2";
-            button2.Size = new Size(32, 32);
-            button2.TabIndex = 33;
-            toolTip1.SetToolTip(button2, "Refresh list");
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += RefreshList1_Click;
+            refreshBttn1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            refreshBttn1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            refreshBttn1.BackColor = SystemColors.ButtonFace;
+            refreshBttn1.BackgroundImageLayout = ImageLayout.Center;
+            refreshBttn1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            refreshBttn1.ForeColor = Color.Black;
+            refreshBttn1.Image = (Image)resources.GetObject("refreshBttn1.Image");
+            refreshBttn1.Location = new Point(297, 322);
+            refreshBttn1.Name = "refreshBttn1";
+            refreshBttn1.Size = new Size(32, 32);
+            refreshBttn1.TabIndex = 33;
+            toolTip1.SetToolTip(refreshBttn1, "Refresh list");
+            refreshBttn1.UseVisualStyleBackColor = false;
+            refreshBttn1.Click += RefreshList1_Click;
             // 
             // convertButton
             // 
             convertButton.Anchor = AnchorStyles.Top;
             convertButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            convertButton.BackColor = Color.FromArgb(80, 80, 80);
+            convertButton.BackColor = SystemColors.ButtonFace;
             convertButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             convertButton.ForeColor = Color.Black;
-            convertButton.Location = new Point(114, 3);
+            convertButton.Location = new Point(111, 3);
             convertButton.Name = "convertButton";
-            convertButton.Size = new Size(105, 30);
+            convertButton.Size = new Size(100, 30);
             convertButton.TabIndex = 0;
             convertButton.Text = "Convert Save";
             toolTip1.SetToolTip(convertButton, "Change the extension of a save file .sl2/.co2 for either Seemless or Vanilla");
-            convertButton.UseVisualStyleBackColor = true;
+            convertButton.UseVisualStyleBackColor = false;
             convertButton.Click += ConvertSave_Click;
             // 
             // importButton
             // 
             importButton.Anchor = AnchorStyles.Top;
             importButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            importButton.BackColor = Color.FromArgb(80, 80, 80);
+            importButton.BackColor = SystemColors.ButtonFace;
             importButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             importButton.ForeColor = Color.Black;
             importButton.Location = new Point(3, 3);
             importButton.Name = "importButton";
-            importButton.Size = new Size(105, 30);
+            importButton.Size = new Size(100, 30);
             importButton.TabIndex = 37;
             importButton.Text = "Import File";
             toolTip1.SetToolTip(importButton, "Change the extension of a save file .sl2/.co2 for either Seemless or Vanilla");
-            importButton.UseVisualStyleBackColor = true;
+            importButton.UseVisualStyleBackColor = false;
             importButton.Click += VanillaImport_Click;
             // 
             // makeActiveButton
@@ -749,43 +750,43 @@
             makeActiveButton.ForeColor = Color.Black;
             makeActiveButton.Location = new Point(3, 39);
             makeActiveButton.Name = "makeActiveButton";
-            makeActiveButton.Size = new Size(105, 30);
+            makeActiveButton.Size = new Size(100, 30);
             makeActiveButton.TabIndex = 1;
             makeActiveButton.Text = "Make Active";
             toolTip1.SetToolTip(makeActiveButton, "Set a file to be the current save to load into");
-            makeActiveButton.UseVisualStyleBackColor = true;
+            makeActiveButton.UseVisualStyleBackColor = false;
             makeActiveButton.Click += MakeActive_Click;
             // 
             // restoreButton
             // 
             restoreButton.Anchor = AnchorStyles.Top;
             restoreButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            restoreButton.BackColor = Color.FromArgb(80, 80, 80);
+            restoreButton.BackColor = SystemColors.ButtonFace;
             restoreButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             restoreButton.ForeColor = Color.Black;
-            restoreButton.Location = new Point(114, 39);
+            restoreButton.Location = new Point(109, 39);
             restoreButton.Name = "restoreButton";
-            restoreButton.Size = new Size(105, 30);
+            restoreButton.Size = new Size(104, 30);
             restoreButton.TabIndex = 28;
             restoreButton.Text = "Restore a Save";
             toolTip1.SetToolTip(restoreButton, "Restore a save from backup and make your active save file");
-            restoreButton.UseVisualStyleBackColor = true;
+            restoreButton.UseVisualStyleBackColor = false;
             restoreButton.Click += RestoreSaves_Click;
             // 
             // backupAllButton
             // 
             backupAllButton.Anchor = AnchorStyles.Top;
             backupAllButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            backupAllButton.BackColor = Color.FromArgb(80, 80, 80);
+            backupAllButton.BackColor = SystemColors.ButtonFace;
             backupAllButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             backupAllButton.ForeColor = Color.Black;
-            backupAllButton.Location = new Point(225, 39);
+            backupAllButton.Location = new Point(221, 39);
             backupAllButton.Name = "backupAllButton";
-            backupAllButton.Size = new Size(105, 30);
+            backupAllButton.Size = new Size(100, 30);
             backupAllButton.TabIndex = 27;
             backupAllButton.Text = "Backup Saves";
             toolTip1.SetToolTip(backupAllButton, "Backup all current save files (overwrites existing)");
-            backupAllButton.UseVisualStyleBackColor = true;
+            backupAllButton.UseVisualStyleBackColor = false;
             backupAllButton.Click += BackupAll_Click;
             // 
             // backupListView
@@ -795,10 +796,10 @@
             backupListView.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             backupListView.ForeColor = SystemColors.ControlText;
             backupListView.FullRowSelect = true;
-            backupListView.Location = new Point(21, 413);
+            backupListView.Location = new Point(11, 165);
             backupListView.MultiSelect = false;
             backupListView.Name = "backupListView";
-            backupListView.Size = new Size(301, 95);
+            backupListView.Size = new Size(327, 387);
             backupListView.Sorting = SortOrder.Ascending;
             backupListView.TabIndex = 31;
             backupListView.UseCompatibleStateImageBehavior = false;
@@ -870,19 +871,20 @@
             // 
             // Main
             // 
-            AutoScaleMode = AutoScaleMode.None;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             BackColor = Color.FromArgb(30, 30, 30);
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(350, 570);
-            Controls.Add(KofiImage);
             Controls.Add(backupListView);
+            Controls.Add(KofiImage);
             Controls.Add(saveSetup);
             Controls.Add(setupText);
-            Controls.Add(button2);
+            Controls.Add(refreshBttn1);
             Controls.Add(versionLabel);
-            Controls.Add(Refresh2);
+            Controls.Add(refreshBttn2);
             Controls.Add(listView2);
             Controls.Add(listView1);
             Controls.Add(TitleBar);
@@ -945,7 +947,7 @@
         private Label label1;
         private ListView listView2;
         private Label label2;
-        private Button Refresh2;
+        private Button refreshBttn2;
         private Label versionLabel;
         private ToolStripMenuItem openDirectoryToolStripMenuItem;
         private ToolStripMenuItem openSaveDir;
@@ -961,7 +963,7 @@
         private ListView backupListView;
         private PictureBox KofiImage;
         private ToolStripMenuItem refreshToolTip;
-        private Button button2;
+        private Button refreshBttn1;
         private ToolStripMenuItem launchSeemlessToolStripMenuItem;
         private ToolStripMenuItem launchNightreignToolStripMenuItem;
         private ToolStripMenuItem modifyToolStripMenuItem;
