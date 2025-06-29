@@ -66,7 +66,6 @@
             checkForUpdateToolStripMenuItem = new ToolStripMenuItem();
             fAQToolStripMenuItem = new ToolStripMenuItem();
             aboutButton = new ToolStripMenuItem();
-            toolStripMenuItem2 = new ToolStripMenuItem();
             TitleImage = new PictureBox();
             listView1 = new ListView();
             contextMenu = new ContextMenuStrip(components);
@@ -191,7 +190,7 @@
             menuStrip1.BackColor = Color.FromArgb(50, 50, 50);
             menuStrip1.Dock = DockStyle.None;
             menuStrip1.ImageScalingSize = new Size(24, 24);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem1, toolStripMenuItem1, toolsToolStripMenuItem, helpToolStripMenuItem, toolStripMenuItem2 });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem1, toolStripMenuItem1, toolsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(40, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(0);
@@ -336,7 +335,7 @@
             renameToolStrip.BackColor = Color.FromArgb(50, 50, 50);
             renameToolStrip.ForeColor = SystemColors.Control;
             renameToolStrip.Name = "renameToolStrip";
-            renameToolStrip.Size = new Size(180, 22);
+            renameToolStrip.Size = new Size(124, 22);
             renameToolStrip.Text = "Rename";
             renameToolStrip.Click += Rename_Click;
             // 
@@ -345,7 +344,7 @@
             duplicateToolStrip.BackColor = Color.FromArgb(50, 50, 50);
             duplicateToolStrip.ForeColor = SystemColors.Control;
             duplicateToolStrip.Name = "duplicateToolStrip";
-            duplicateToolStrip.Size = new Size(180, 22);
+            duplicateToolStrip.Size = new Size(124, 22);
             duplicateToolStrip.Text = "Duplicate";
             duplicateToolStrip.Click += Duplicate_Click;
             // 
@@ -354,7 +353,7 @@
             removeToolStrip.BackColor = Color.FromArgb(50, 50, 50);
             removeToolStrip.ForeColor = SystemColors.Control;
             removeToolStrip.Name = "removeToolStrip";
-            removeToolStrip.Size = new Size(180, 22);
+            removeToolStrip.Size = new Size(124, 22);
             removeToolStrip.Text = "Remove";
             removeToolStrip.Click += Remove_Click;
             // 
@@ -374,7 +373,7 @@
             modifyToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convertToolStrip, relicsToolStripMenuItem, steamIDToolStrip });
             modifyToolStripMenuItem.ForeColor = SystemColors.Control;
             modifyToolStripMenuItem.Name = "modifyToolStripMenuItem";
-            modifyToolStripMenuItem.Size = new Size(180, 22);
+            modifyToolStripMenuItem.Size = new Size(166, 22);
             modifyToolStripMenuItem.Text = "Modify";
             // 
             // convertToolStrip
@@ -413,7 +412,7 @@
             optionsToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             optionsToolStripMenuItem.ForeColor = SystemColors.Control;
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(180, 22);
+            optionsToolStripMenuItem.Size = new Size(166, 22);
             optionsToolStripMenuItem.Text = "Restore a Save";
             optionsToolStripMenuItem.ToolTipText = "Restore a backed up save file";
             optionsToolStripMenuItem.Click += RestoreSaves_Click;
@@ -423,7 +422,7 @@
             backupFileToolStrip.BackColor = Color.FromArgb(50, 50, 50);
             backupFileToolStrip.ForeColor = SystemColors.Control;
             backupFileToolStrip.Name = "backupFileToolStrip";
-            backupFileToolStrip.Size = new Size(180, 22);
+            backupFileToolStrip.Size = new Size(166, 22);
             backupFileToolStrip.Text = "Backup a Save";
             backupFileToolStrip.Click += Backup_Click;
             // 
@@ -432,7 +431,7 @@
             backupAllActiveToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             backupAllActiveToolStripMenuItem.ForeColor = SystemColors.Control;
             backupAllActiveToolStripMenuItem.Name = "backupAllActiveToolStripMenuItem";
-            backupAllActiveToolStripMenuItem.Size = new Size(180, 22);
+            backupAllActiveToolStripMenuItem.Size = new Size(166, 22);
             backupAllActiveToolStripMenuItem.Text = "Backup All Active";
             backupAllActiveToolStripMenuItem.Click += BackupAll_Click;
             // 
@@ -451,7 +450,7 @@
             readmeButton.BackColor = Color.FromArgb(50, 50, 50);
             readmeButton.ForeColor = SystemColors.Control;
             readmeButton.Name = "readmeButton";
-            readmeButton.Size = new Size(180, 22);
+            readmeButton.Size = new Size(171, 22);
             readmeButton.Text = "Readme";
             readmeButton.Click += Readme_Click;
             // 
@@ -460,7 +459,7 @@
             checkForUpdateToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             checkForUpdateToolStripMenuItem.ForeColor = SystemColors.Control;
             checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
-            checkForUpdateToolStripMenuItem.Size = new Size(180, 22);
+            checkForUpdateToolStripMenuItem.Size = new Size(171, 22);
             checkForUpdateToolStripMenuItem.Text = "Check for Updates";
             checkForUpdateToolStripMenuItem.Click += CheckUpdates_Click;
             // 
@@ -469,7 +468,7 @@
             fAQToolStripMenuItem.BackColor = Color.FromArgb(50, 50, 50);
             fAQToolStripMenuItem.ForeColor = SystemColors.Control;
             fAQToolStripMenuItem.Name = "fAQToolStripMenuItem";
-            fAQToolStripMenuItem.Size = new Size(180, 22);
+            fAQToolStripMenuItem.Size = new Size(171, 22);
             fAQToolStripMenuItem.Text = "FAQ";
             fAQToolStripMenuItem.Click += FAQItem_Click;
             // 
@@ -478,14 +477,9 @@
             aboutButton.BackColor = Color.FromArgb(50, 50, 50);
             aboutButton.ForeColor = SystemColors.Control;
             aboutButton.Name = "aboutButton";
-            aboutButton.Size = new Size(180, 22);
+            aboutButton.Size = new Size(171, 22);
             aboutButton.Text = "About";
             aboutButton.Click += About_Click;
-            // 
-            // toolStripMenuItem2
-            // 
-            toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(12, 35);
             // 
             // TitleImage
             // 
@@ -979,7 +973,6 @@
         private ToolStripMenuItem duplicateToolStripMenuItem;
         private ToolStripMenuItem backupAllActiveToolStripMenuItem;
         private Label saveSetup;
-        private ToolStripMenuItem toolStripMenuItem2;
         private TableLayoutPanel tableLayoutPanel1;
         private Button convertButton;
         private Button importButton;

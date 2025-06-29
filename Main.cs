@@ -9,9 +9,9 @@ namespace NightreignSaveManager
 {
     public partial class Main : Form
     {
-        private static readonly string currentVersion = "1.1.9";
+        private static readonly string currentVersion = "1.2.0";
 
-        private static readonly string lastUpdated = "06.24.25";
+        private static readonly string lastUpdated = "06.29.25";
 
         private Point initialMousePosition;
 
@@ -960,6 +960,7 @@ namespace NightreignSaveManager
                 outputFile = Path.Combine(Dir.archivePath,Prompt.ShowDialog("File name already exists. Please rename.","Name the save file") + fileExt);
             }
 
+            this.Cursor = Cursors.WaitCursor;
             try
             {
                 FileEngine.Encrypt(outputFile);
@@ -969,6 +970,10 @@ namespace NightreignSaveManager
             catch (Exception ex)
             {
                 Debug.WriteLine("Failed to re-encrypt and save", ex.Message);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
             }
 
         RefreshListView1();
