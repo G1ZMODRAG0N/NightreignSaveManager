@@ -10,6 +10,7 @@ This is a simple save manager for Nightreign. I wanted something that let me ret
 ## Features
 
 - Save conversion Vanilla .sl2/ Seemless .co2
+- Edit SteamIDs on save files
 - Backup all active save files
 - Restore backups
 - Import save files
@@ -72,11 +73,12 @@ All required directories for archiving and backups will be generated on first ru
 
 ## Planned Additions
 
-- Launch shortcuts for Vanilla and Seemless
-- Additional warnings and checks for files
-- Multiple steam profile support
-- Possible relic modifications
-- Adjustments with usability
+- Launch shortcuts for Vanilla and Seemless DONE v1.2.0
+- Additional warnings and checks for files DONE v1.2.0
+- Multiple steam profile support DONE v1.1.7
+- Possible relic modifications TBD
+- Adjustments with usability DONE v1.2.0
+- Edit SteamIDs  DONE v1.2.0
 
 ## Suggestions/Feedback/Issues
 
