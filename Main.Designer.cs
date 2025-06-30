@@ -644,7 +644,7 @@
             refreshBttn2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             refreshBttn2.ForeColor = Color.Black;
             refreshBttn2.Image = (Image)resources.GetObject("refreshBttn2.Image");
-            refreshBttn2.Location = new Point(297, 514);
+            refreshBttn2.Location = new Point(297, 500);
             refreshBttn2.Name = "refreshBttn2";
             refreshBttn2.Size = new Size(32, 32);
             refreshBttn2.TabIndex = 26;
@@ -688,7 +688,7 @@
             refreshBttn1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             refreshBttn1.ForeColor = Color.Black;
             refreshBttn1.Image = (Image)resources.GetObject("refreshBttn1.Image");
-            refreshBttn1.Location = new Point(297, 322);
+            refreshBttn1.Location = new Point(297, 307);
             refreshBttn1.Name = "refreshBttn1";
             refreshBttn1.Size = new Size(32, 32);
             refreshBttn1.TabIndex = 33;

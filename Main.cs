@@ -27,42 +27,54 @@ namespace NightreignSaveManager
             listView1.Items.Clear();
             listView1.Cursor = Cursors.WaitCursor;
             await Task.Delay(500);
-            listView1.Cursor = Cursors.Default;
-            string[] archiveFiles = Directory.GetFiles(Dir.archivePath);
-            foreach (var file in archiveFiles)
+            try 
             {
-                string filename = Path.GetFileName(file);
-                string type = Path.GetExtension(file).TrimStart('.');  // Replace this with actual logic if needed
-                string steamID = Data.GetSteamID(file);
-                //skip if not a er save
-                if (type != "co2" ^ type != "sl2" ^ type != "bak")
+                string[] archiveFiles = Directory.GetFiles(Dir.archivePath); 
+                foreach (var file in archiveFiles)
                 {
-                    continue;
-                }
-                if (type == "co2")
-                {
-                    type = "Seemless";
-                }
-                else if (type == "sl2")
-                {
-                    type = "Vanilla";
-                }
-                else if (type == "bak")
-                {
-                    type = "Backup";
-                }
-                string date = File.GetLastWriteTime(file).ToString("yyyy-MM-dd HH:mm");
+                    string filename = Path.GetFileName(file);
+                    string type = Path.GetExtension(file).TrimStart('.');  // Replace this with actual logic if needed
+                    string steamID = Data.GetSteamID(file);
+                    //skip if not a er save
+                    if (type != "co2" ^ type != "sl2" ^ type != "bak")
+                    {
+                        continue;
+                    }
+                    if (type == "co2")
+                    {
+                        type = "Seemless";
+                    }
+                    else if (type == "sl2")
+                    {
+                        type = "Vanilla";
+                    }
+                    else if (type == "bak")
+                    {
+                        type = "Backup";
+                    }
+                    string date = File.GetLastWriteTime(file).ToString("yyyy-MM-dd HH:mm");
 
-                ListViewItem item = new ListViewItem(filename);
-                item.SubItems.Add(type);
-                item.SubItems.Add(date);
-                item.SubItems.Add(steamID);
+                    ListViewItem item = new ListViewItem(filename);
+                    item.SubItems.Add(type);
+                    item.SubItems.Add(date);
+                    item.SubItems.Add(steamID);
 
-                listView1.Items.Add(item);
+                    listView1.Items.Add(item);
 
-                listView1.Items[0].Selected = true;
-                listView1.Select(); // Gives focus to the ListView, so selection is visible
+                    listView1.Items[0].Selected = true;
+                    listView1.Select(); // Gives focus to the ListView, so selection is visible
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+            finally 
+            {
+                listView1.Cursor = Cursors.Default;
+            }
+            
+           
             if (listView1.Items.Count <= 0)
             {
                 setupText.Visible = true;
@@ -202,7 +214,6 @@ namespace NightreignSaveManager
             {
                 if (ctrl.Name != "viewBackups")
                 {
-                    Debug.WriteLine(ctrl.Name);
                     ctrl.Enabled = false;
                 }
             }
@@ -214,7 +225,6 @@ namespace NightreignSaveManager
             {
                 if (ctrl.Name != "viewBackups")
                 {
-                    Debug.WriteLine(ctrl.Name);
                     ctrl.Enabled = true;
                 }
             }
@@ -760,19 +770,21 @@ namespace NightreignSaveManager
         //remove click
         private void Remove_Click(object sender, EventArgs e)
         {
+            DialogResult warning = new DialogResult();
+            warning = MessageBox.Show(
+                "Are you sure you want to delete the selected file?",
+                "Delete File",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information
+                );
+            if (warning != DialogResult.Yes)
+            {
+                return;
+            }
             var selectedFile = listView1.SelectedItems[0].Text;
             var filePath = Path.Combine(Dir.archivePath, selectedFile);
-            var userInput = MessageBox.Show(
-                $"Backup of file {selectedFile} successful!",
-                "Remove",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-                );
-            if (userInput == DialogResult.Yes)
-            {
-                File.Delete(filePath);
-                RefreshListView1();
-            }
+            File.Delete(filePath);
+            RefreshListView1();
         }
         //check updates click
         private void CheckUpdates_Click(object sender, EventArgs e)
@@ -849,6 +861,17 @@ namespace NightreignSaveManager
         //Credit to https://github.com/EonaCat/NightReign for this block. Im terrible with class structures between helpers
         private void EditSteamID_Click(object sender, EventArgs e)
         {
+            DialogResult warning = new DialogResult();
+            warning = MessageBox.Show(
+                "Editing the SteamID within a save file has a chance of corrupting your file. Please make sure to backup the save before proceeding with this process. Continue?",
+                "Continue",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information
+                );
+            if( warning != DialogResult.Yes) 
+            {
+                return;
+            }
             //get file
             var selectedFile = listView1.SelectedItems[0];
             string inputFile = Path.Combine(Dir.archivePath, selectedFile.Text);
